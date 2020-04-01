@@ -1,0 +1,31 @@
+
+- name: configure license in gateway primary node
+  hosts: gateway_primary_db
+  serial: 1
+  pre_tasks:
+    - name: Check if controller license directory is empty before proceeding
+      find:
+        paths: "{{ controller_dir_license_location }}"
+        patterns: "*.xml"
+      register: licenses_found
+      delegate_to: localhost
+    - debug:
+        msg: "This play will end if no license files are found in {{ controller_dir_license_location }}"
+    - name: Stop the license configuration play if there are no license files found
+      meta: end_play
+      when: licenses_found.matched < 1
+
+    - name: Stop the Gateway application
+      import_role:
+        name: gateway_common
+        tasks_from: stop_gateway
+  roles:
+    - gateway_install_license
+
+  post_tasks:
+    - name: Start the Gateway application
+      import_role:
+        name: gateway_common
+        tasks_from: start_gateway
+
+

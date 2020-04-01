@@ -1,0 +1,8 @@
+---
+- hosts: gateway_papim_dest
+  gather_facts: no
+  become: true
+                            
+  tasks:
+  - include_role:
+      name: gateway_papim_restore_backup

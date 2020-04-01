@@ -1,0 +1,3 @@
+---
+- import_tasks: initial-update-ssgconfig-password.yml
+- import_tasks: initial-update-root-password.yml

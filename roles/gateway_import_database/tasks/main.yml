@@ -1,0 +1,63 @@
+- name: create temp direcory for output files
+  file:
+    path: "{{ remote_db_temp_dir }}"
+    state: directory
+- name: unzip mysql output to remote server
+  unarchive:
+    src: '{{ controller_dir_db_backup_location }}/{{ source }}{{ db_dump_zip_file }}.zip'
+    dest: '{{ remote_db_temp_dir }}'
+
+- name: Delete gateway database 
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} drop {{ ssgdb_name }} -f
+  failed_when: false
+
+- name: create gateway database
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} create {{ ssgdb_name }}
+
+- name: import gateway database from source gateway 
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} {{ ssgdb_name }} < {{remote_db_temp_dir}}/ssg.sql
+
+- name: clean up cluster_info table
+  no_log: true
+  shell:
+    cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} -e 'truncate table ssg.cluster_info'
+
+- name: Import otk source database
+  when: otkdb_name is defined
+  block:
+    - name: create otk user if not exists
+      no_log: true # don't log decrypted passwords in responses
+      shell:
+        cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} -e "{{ command_mysql_create_otkuser }}"
+
+    - name: grant otk user privileges
+      no_log: true # don't log decrypted passwords in responses
+      shell:
+        cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} -e "{{ command_mysql_grant_otkuser_privileges }}"
+
+    - name: delete otk database
+      no_log: true # don't log decrypted passwords in responses
+      shell: 
+        cmd: mysqladmin  -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} drop {{otkdb_name}} -f
+      failed_when: false
+
+    - name: create otk database 
+      no_log: true # don't log decrypted passwords in responses
+      shell:
+        cmd: mysqladmin -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} create {{otkdb_name}}
+
+    - name: import otk database 
+      no_log: true # don't log decrypted passwords in responses
+      shell:
+        cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} {{otkdb_name}} < {{remote_db_temp_dir}}/otk.sql
+
+- name: clean up remote temp directory
+  file:
+    path: "{{remote_db_temp_dir}}"
+    state: absent

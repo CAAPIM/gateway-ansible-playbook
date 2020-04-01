@@ -1,0 +1,5 @@
+---
+- name: Replicate Gateway MySQL 8 Database
+  hosts: gateway_primary_db
+  roles:
+    - gateway_replicate_database

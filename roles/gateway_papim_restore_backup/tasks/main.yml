@@ -1,0 +1,131 @@
+---
+# Tasks file for gateway_papim_restore_backup
+#
+# This task will restore PAPIM configuration files
+
+- name: Check requirement that the PAPIM backup file exists on the controller.
+  local_action:
+    module: stat
+    path: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+  register: file_status
+  failed_when: file_status.stat.exists == False
+
+- name: Set the backup filename to a fact.
+  set_fact:
+    fact_backup_file: "ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+
+- name: Check if epagent service exists.
+  stat:
+    path: /etc/init.d/epagent
+  register: service_status
+
+- name: Stop epagent service if exists.
+  when: service_status.stat.exists
+  service:
+    name: epagent
+    state: stopped
+
+- name: Copy backup file from controller to inventory_host.
+  copy:
+    src: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+    dest: /opt/
+
+- name: Ensure /tmp/papimrestore exists to restore PAPIM configuration.
+  file:
+    path: "{{ temp_folder }}"
+    state: directory
+
+- name: Extract PAPIM files from backup.
+  unarchive:
+    src: "/opt/{{ fact_backup_file }}"
+    dest: "{{ temp_folder }}"
+    remote_src: yes
+
+- name: Create PAPIM user.
+  user:
+    name: "{{ papim_user }}"
+    shell: /bin/bash
+    groups: layer7,gateway
+    append: yes
+
+- name: Restore PAPIM installation folder.
+  copy:
+    src: "{{ temp_folder }}/{{ papim_installation_dir }}"
+    dest: /opt/
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 01775
+
+- name: Change agent host name in IntroscopeEPAgent.properties (<papim_installation_dir>/epagent/IntroscopeEPAgent.properties).
+  lineinfile:
+    path: "{{ papim_installation_dir }}/epagent/IntroscopeEPAgent.properties"
+    regexp: '^introscope.agent.hostName='
+    line: introscope.agent.hostName={{ inventory_hostname }}
+
+- name: Create PAPIM user's .my.cnf file.
+  when: papim_read_mysql_stats
+  file:
+    path: "{{ papim_user_dir }}/.my.cnf"
+    state: touch
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0644
+
+- name: Update PAPIM user's .my.cnf file.
+  when: papim_read_mysql_stats
+  blockinfile:
+    path: "{{ papim_user_dir }}/.my.cnf"
+    insertbefore: BOF
+    block: |
+      [client]
+      host={{ gateway_mysql_host }}
+      database={{ gateway_mysql_db_name }}
+      user={{ gateway_mysql_user }}
+      port={{ gateway_mysql_port }}
+      password={{ gateway_mysql_password }}
+
+- name: Restore PAPIM user's bash profile.
+  copy:
+    src: "{{ temp_folder }}{{ papim_user_dir }}/.bash_profile"
+    dest: "{{ papim_user_dir }}"
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0644
+
+- name: Change agent control script path in epagent file.
+  lineinfile:
+    path: "{{ temp_folder }}/etc/init.d/epagent"
+    regexp: '^EPACTRL='
+    line: "EPACTRL={{ papim_installation_dir }}/epagent/bin/EPACtrl-SSG.sh"
+
+- name: Restore epagent to /etc/init.d.
+  copy:
+    src: "{{ temp_folder }}/etc/init.d/epagent"
+    dest: /etc/init.d/
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0755
+
+- name: Enable the epagent service.
+  service:
+    name: epagent
+    enabled: yes
+
+- name: Start the epagent service if not already started.
+  service:
+    name: epagent
+    state: started
+
+- name: Delete backup file from /opt/.
+  file:
+    state: absent
+    path: "/opt/{{ fact_backup_file }}"
+  
+- name: Delete /tmp/papimrestore folder.
+  file:
+    state: absent
+    path: "{{ temp_folder }}"
+     

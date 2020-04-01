@@ -1,0 +1,6 @@
+---
+# vars file for pre-upgrade-analyzer
+remote_report_temp_dir: '/tmp/report'
+gateway_modular_assertions_dir: '/opt/SecureSpan/Gateway/runtime/modules/assertions'
+gateway_custom_assertions_dir: '/opt/SecureSpan/Gateway/runtime/modules/lib'
+gateway_external_libs_dir: '/opt/SecureSpan/Gateway/runtime/lib/ext'

@@ -1,0 +1,10 @@
+# multiple root user commands to auto-provision a license
+# mv command is used to confirm that license file has copied to the directory successfully
+command_root_auto_provision_license: ">
+  rm -r -f {{ gateway_license_install_dir }};
+  mkdir -p {{ gateway_license_install_dir }};
+  chmod -R 775 {{ gateway_bootstrap_dir }};
+  yes | cp -f {{ gateway_license_upload_dir }}/*.xml {{ gateway_license_install_dir }}/;
+  chmod -R 775 {{ gateway_license_install_dir }}/*.xml;
+  chown -R layer7:gateway {{ gateway_bootstrap_dir }};
+  mv {{ gateway_license_upload_dir }}/*.xml {{ gateway_license_install_dir }}/."

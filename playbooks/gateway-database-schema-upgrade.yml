@@ -1,0 +1,10 @@
+
+- name: Upgrade database schema in destination gateway
+  hosts: gateway_mysql_dest
+  serial: 1
+  tasks:
+    - name: upgrade Gateway database schema
+      delegate_to: localhost
+      import_role:
+        name: gateway_import_database
+        tasks_from: upgrade_gateway_database_schema

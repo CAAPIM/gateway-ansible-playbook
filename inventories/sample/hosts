@@ -1,0 +1,34 @@
+[gateway:children]
+gateway_primary_db
+gateway_failover_db
+gateway_processing_node
+gateway_dest
+gateway_hsm
+
+# when renaming this group, update cluster_host/database_host properties in group_vars
+[gateway_primary_db]
+sourcegateway.placeholder.com dest=targetgateway.placeholder.com
+
+[gateway_failover_db]
+
+[gateway_processing_node]
+
+[gateway_dest]
+
+[gateway_hsm]
+
+[gateway_mysql:children]
+gateway_mysql_source
+gateway_mysql_dest
+
+[gateway_mysql_source]
+sourcegateway.placeholder.com dest=targetgateway.placeholder.com
+
+[gateway_mysql_dest]
+targetgateway.placeholder.com source=sourcegateway.placeholder.com
+
+[hsm:children]
+hsm_luna7
+
+[hsm_luna7]
+luna7.placeholder.com ansible_connection=ssh ansible_user=admin

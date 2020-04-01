@@ -1,0 +1,178 @@
+---
+- import_tasks: pip_install_online.yml
+
+# Uncomment this line if there is no internet available on your gateway appliance and comment the last line out
+#- import_tasks: pip_install_locally.yml
+
+- import_tasks: sshpass_install_online.yml
+
+# Uncomment this line if there is no internet available on your gateway appliance and comment the last line out
+#- import_tasks: sshpass_install_locally.yml
+
+- import_tasks: check_valid_input.yml
+
+- name: Create a directory and make it as Luna7 home directory
+  file:
+    path: /home/ssgconfig/hsm
+    state: directory
+    remote_src: yes
+
+- name: Copy the LunaClient binary to Luna7 home directory
+  copy:
+    src: files/LunaClient_7.2.0-220_Linux.zip
+    dest: /home/ssgconfig/hsm
+    mode: '0755'
+
+- name: Unzip the Luna7 client binary
+  unarchive:
+    src: /home/ssgconfig/hsm/LunaClient_7.2.0-220_Linux.zip
+    dest: /home/ssgconfig/hsm
+    remote_src: yes
+
+- name: Install Luna7
+  register: luna
+  shell:
+    chdir: /home/ssgconfig/hsm/LunaClient_7.2.0-220_Linux/64
+    cmd: (echo y) | sh install.sh -p sa -c jsp -c jcprov
+  ignore_errors: yes
+
+- name: Check if luna client already installed
+  fail:
+    msg: "You may already have a version of luna client. Please go to /usr/safenet/lunaclient/bin to run ./uninstall.sh first "
+  when: "'No such' in luna.stdout or 'uninstall' in luna.stdout"
+
+- name: Copy the Luna appliance server certificate to the client
+  register: copsercert
+  expect:
+    chdir: /usr/safenet/lunaclient/bin
+    command: scp {{ hsm_usr }}@{{ hsm_hostname }}:server.pem .
+    responses:
+      "Are you sure you want to continue connecting (yes/no)?": 'yes'
+      "'s password:": "{{ hsm_password }}"
+  ignore_errors: yes
+
+- name: Check if server certificate exists
+  fail:
+    msg: "You could follow: https://cawiki.ca.com/display/AG/SafeNet+Luna+Network+HSM+7 to regenerate the server certificate"
+  when: "'No such file or directory' in copsercert.stdout"
+
+- name: Register the Luna server with the Luna client
+  register: regser
+  command:
+    chdir: /usr/safenet/lunaclient/bin
+    cmd: ./vtl addServer -n {{ hsm_hostname }} -c server.pem
+  ignore_errors: yes
+
+- name: Check if the Luna server already registered
+  fail:
+    msg: 'You already registered this Luna server!'
+  when: "'Error:  This server is already registered in the SafeNet-INC' in regser.stdout"
+
+- name: Generate a client certificate
+  command:
+    chdir: /usr/safenet/lunaclient/bin
+    cmd: ./vtl createCert -n {{ inventory_hostname }}
+
+- name: Copy the client certificate to the server
+  expect:
+    chdir: /usr/safenet/lunaclient/bin
+    command: 'scp /usr/safenet/lunaclient/cert/client/{{ inventory_hostname }}.pem {{ hsm_usr }}@{{ hsm_hostname }}:'
+    responses:
+      "'s password:": "{{ hsm_password }}"
+
+- name: Log in to the Luna HSM appliance and register the client
+  register: clientreg
+  command: sshpass -p '{{ hsm_password }}' ssh {{ ansible_ssh_extra_args }} {{ hsm_usr }}@{{ hsm_hostname }} client register -client {{ inventory_hostname }} -hostname {{ inventory_hostname }}
+  ignore_errors: yes
+
+- name: Check if client already been registered
+  fail:
+    msg: "Sorry, a client with the same hostname has already been registered. If this is you,
+     please follow this doc: https://cawiki.ca.com/display/AG/SafeNet+Luna+Network+HSM+7
+     to delete this client first and re-run the playbook; If this is not you, please change the host name first"
+  when: "'ERROR: A client with the same hostname has already been registered.' in clientreg.stdout"
+
+- name: Assign the client to a server partition
+  register: partexist
+  command: sshpass -p '{{ hsm_password }}' ssh {{ ansible_ssh_extra_args }} {{ hsm_usr }}@{{ hsm_hostname }} client assignPartition -client {{ inventory_hostname }} -partition {{ partition_nm }}
+  ignore_errors: yes
+
+- name: Check if the input partition exists
+  fail:
+    msg: "Sorry, The partition you specified does not exist. Use 'partition list' to see all
+    available partitions. And change the set up of patition_name in host_vars/luna*.placeholder.com.yml"
+  when: "'The partition you specified does not exist' in partexist.stdout"
+
+- name: Verify that the client is connected to its assigned partition
+  register: verify
+  command:
+    chdir: /usr/safenet/lunaclient/bin
+    cmd: ./vtl verify
+  changed_when: "'The following Luna SA Slots/Partitions were found: ' in verify.stdout"
+  ignore_errors: yes
+# In order to show more detailed custom error message to users, choose to ignore error here and handle the error in the next fail module.
+
+- name: Check if client already connected to the partition
+  fail:
+    msg: "Sorry, you did not successfully connect to assigned partition, please try again"
+  when: "'The following Luna SA Slots/Partitions were found: ' not in verify.stdout"
+
+- name: Verify that your token client PIN is correct for this partition and that the partition is empty
+  register: vertoken
+  expect:
+    chdir: /usr/safenet/lunaclient/bin
+    command: ./cmu list
+    responses:
+      "Please enter password for token in slot 0 :": "{{ partition_password }}"
+  changed_when: "'handle=' in vertoken.stdout"
+  ignore_errors: yes
+
+- name: Check if token client PIN is correct
+  fail:
+    msg: "Sorry, token client PIN is not correct for this partition or that the partition is not empty,
+    please try to check the password setting in host_vars/luna*.placeholder.com.yml"
+  when: "'handle=' not in vertoken.stdout"
+
+- name: Set the file permissions for the Luna client
+  command:
+    cmd: chmod -R 655 /usr/safenet
+
+- name: Copy the Luna* .JAR files over to the Gateway
+  copy:
+    src: /usr/safenet/lunaclient/jsp/lib/libLunaAPI.so
+    dest: /opt/SecureSpan/JDK/jre/lib/ext
+    mode: '0755'
+    remote_src: yes
+
+- name: Copy the Luna .JAR files over to the Gateway
+  copy:
+    src: /usr/safenet/lunaclient/jsp/lib/LunaProvider.jar
+    dest: /opt/SecureSpan/JDK/jre/lib/ext
+    mode: '0755'
+    remote_src: yes
+
+- name: Set the file permissions for the JDK library as follows
+  shell: chmod a+r /opt/SecureSpan/JDK/jre/lib/ext/*Luna*
+
+- name: Modify the security file
+  blockinfile:
+    path: /opt/SecureSpan/JDK/jre/lib/security/java.security
+    insertafter: EOF
+    backup: yes
+    block: |
+      com.safenetinc.luna.provider.createExtractablePrivateKeys=true
+      com.safenetinc.luna.provider.createExtractableSecretKeys=true
+
+- name: Set the read permissions for the certificate files in the server cert directories
+  shell: chmod a+r /usr/safenet/lunaclient/cert/server/*.pem
+
+- name: Set the read permissions for the certificate files in the client cert directories
+  shell: chmod a+r /usr/safenet/lunaclient/cert/client/*.pem
+
+- name: Add the ‘Gateway’ user to the hsmusers group
+  command: gpasswd --add gateway hsmusers
+
+- name: Restart the Gateway
+  command: service ssg restart
+
+

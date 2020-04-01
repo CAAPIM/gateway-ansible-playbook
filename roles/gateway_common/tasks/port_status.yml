@@ -1,0 +1,13 @@
+---
+
+# This task may be imported into any play, along with arguments for the variables defined below.
+# This task will check the port status on a single Gateway.
+# For reference, see https://docs.ansible.com/ansible/latest/modules/wait_for_module.html
+
+- name: "Waiting for port status: {{ wait_for_state }} on port {{ status_port }}"
+  wait_for:
+    port: "{{ status_port }}"
+    host: "{{ host_to_check }}"
+    delay: 10 # seconds to wait before starting to check status
+    state: "{{ wait_for_state }}" # valid values are specified in docs for Ansible wait_for module 
+    timeout: "{{ timeout_status_check }}" # seconds

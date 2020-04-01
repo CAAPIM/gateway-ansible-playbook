@@ -1,0 +1,214 @@
+---
+  # Tasks file for gateway_papim_install
+  # This task will install PAPIM epagent in target machine
+
+- name: Check requirement that the installation file <APIM-PM-GW.tar.gz> exists on the controller.
+  local_action:
+    module: stat
+    path: "{{ controller_dir_papim_source_location }}/APIM-PM-GW.tar.gz"
+  register: file_status
+  failed_when: file_status.stat.exists == False
+
+- name: Set the installation TAR file to a fact.
+  set_fact:
+    fact_tar_file: "APIM-PM-GW.tar.gz"
+
+- name: Check if epagent service exists.
+  stat:
+    path: /etc/init.d/epagent
+  register: service_status
+
+- name: Stop epagent service if exists.
+  when: service_status.stat.exists
+  service:
+    name: epagent
+    state: stopped
+
+- name: Ensure /tmp/papiminstall exists to extract tar file and install PAPIM epagent.
+  file:
+    path: "{{ temp_folder }}"
+    state: directory
+
+- name: Copy installation file from controller to inventory_host <temp_folder>.
+  copy:
+    src: "{{ controller_dir_papim_source_location }}/APIM-PM-GW.tar.gz"
+    dest: "{{ temp_folder }}"
+
+- name: Extract PAPIM files from installation tar file.
+  unarchive:
+    src: "{{ temp_folder }}/{{ fact_tar_file }}"
+    dest: "{{ temp_folder }}"
+    remote_src: yes
+
+- name: Find epagent package file from extracted tar.
+  find:
+    paths: "{{ temp_folder }}/APIM-PM-GW/"
+    patterns: "EPAgent*unix.tar"
+  register: output
+
+- name: Extract files from epagent package.
+  unarchive:
+    src: "{{ item.path }}"
+    dest: "{{ temp_folder }}/APIM-PM-GW/"
+    remote_src: yes
+  with_items: "{{ output.files }}"
+
+- name: Create PAPIM user.
+  user:
+    name: "{{ papim_user }}"
+    shell: /bin/bash
+    groups: layer7,gateway
+    append: yes
+
+- name: Create PAPIM installation directory.
+  file:
+    path: "{{ papim_installation_dir }}"
+    state: directory
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 01775
+
+- name: Copy epagent package files to installation folder <papim_installation_dir>.
+  copy:
+    src: "{{ temp_folder }}/APIM-PM-GW/epagent"
+    dest: "{{ papim_installation_dir }}"
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+
+- name: Create <apim> plugin directory in <papim_installation_dir>/epagent/epaplugins .
+  file:
+    path: "{{ papim_installation_dir }}/epagent/epaplugins/apim/"
+    state: directory
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+
+- name: Configure agent ports(TCP and REST) and APM server details in IntroscopeEPAgent.properties (<papim_installation_dir>/epagent/IntroscopeEPAgent.properties).
+  lineinfile:
+    path: "{{ papim_installation_dir }}/epagent/IntroscopeEPAgent.properties"
+    regexp: '{{item.From}}'
+    line: '{{item.To}}'
+    state: present
+  with_items:
+    - { From: '^agentManager.url.1=localhost:5001', To: 'agentManager.url.1={{ apm_server_hostname }}'}
+    - { From: '^#agentManager.url.1=http://localhost:8081', To: 'agentManager.url.1={{ apm_server_hostname }}'}
+    - { From: '^#agentManager.url.1=https://localhost:8444', To: 'agentManager.url.1={{ apm_server_hostname }}'}
+    - { From: '^#agentManager.url.1=ssl://localhost:5443', To: 'agentManager.url.1={{ apm_server_hostname }}'}
+    - { From: '^#introscope.epagent.config.networkDataPort=8000', To: 'introscope.epagent.config.networkDataPort={{ epagent_tcp_port }}'}
+    - { From: '^#introscope.epagent.config.httpServerPort=8080', To: 'introscope.epagent.config.httpServerPort={{ epagent_rest_port }}'}
+
+- name: Add plugin scripts configuration in IntroscopeEPAgent.properties.
+  blockinfile:
+    path: "{{ papim_installation_dir }}/epagent/IntroscopeEPAgent.properties"
+    insertafter: "^#introscope.epagent.plugins.stateless.names=DISK,ORACLE,HTTP,KSTAT"
+    block: |
+      introscope.epagent.plugins.stateless.names=OS_RESOURCE,OPERATING_STATUS
+      introscope.epagent.stateless.OS_RESOURCE.command=perl {{ papim_installation_dir }}/epagent/epaplugins/apim/gatewayOSResource.pl
+      introscope.epagent.stateless.OS_RESOURCE.delayInSeconds={{ epagent_delay_os_resource }}
+      introscope.epagent.stateless.OPERATING_STATUS.command=perl {{ papim_installation_dir }}/epagent/epaplugins/apim/gatewayOperatingStatus.pl
+      introscope.epagent.stateless.OPERATING_STATUS.delayInSeconds={{ epagent_delay_operating_status }}
+
+- name: Add epagent host name in IntroscopeEPAgent.properties.
+  lineinfile:
+    path: "{{ papim_installation_dir }}/epagent/IntroscopeEPAgent.properties"
+    insertafter: '^introscope.agent.agentName=EPAgent'
+    line: introscope.agent.hostName={{ inventory_hostname }}
+
+- name: Copy epagent start script to (<papim_installation_dir>/epagent/bin).
+  copy:
+    src: "{{ temp_folder }}/APIM-PM-GW/EPACtrl-SSG.sh"
+    dest: "{{ papim_installation_dir }}/epagent/bin"
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0775
+
+- name: Copy Operating status script to (<papim_installation_dir>/epagent/epaplugins/apim).
+  copy:
+    src: "{{ temp_folder }}/APIM-PM-GW/gatewayOperatingStatus.pl"
+    dest: "{{ papim_installation_dir }}/epagent/epaplugins/apim"
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0775
+
+- name: Copy OS RESOURCE script (with MySQL) to (<papim_installation_dir>/epagent/epaplugins/apim).
+  when: papim_read_mysql_stats
+  copy:
+    src: "{{ temp_folder }}/APIM-PM-GW/gatewayOSResource-mysql.pl"
+    dest: "{{ papim_installation_dir }}/epagent/epaplugins/apim/gatewayOSResource.pl"
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0775
+
+- name: Copy OS RESOURCE script (without MySQL) to (<papim_installation_dir>/epagent/epaplugins/apim).
+  when: not papim_read_mysql_stats
+  copy:
+    src: "{{ temp_folder }}/APIM-PM-GW/gatewayOSResource-without.pl"
+    dest: "{{ papim_installation_dir }}/epagent/epaplugins/apim/gatewayOSResource.pl"
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0775
+
+- name: Create PAPIM user's .my.cnf file.
+  when: papim_read_mysql_stats
+  file:
+    path: "{{ papim_user_dir }}/.my.cnf"
+    state: touch
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0644
+
+- name: Update PAPIM user's .my.cnf file.
+  when: papim_read_mysql_stats
+  blockinfile:
+    path: "{{ papim_user_dir }}/.my.cnf"
+    insertbefore: BOF
+    block: |
+      [client]
+      host={{ gateway_mysql_host }}
+      database={{ gateway_mysql_db_name }}
+      user={{ gateway_mysql_user }}
+      port={{ gateway_mysql_port }}
+      password={{ gateway_mysql_password }}
+
+- name: Add JAVA_HOME PATH in PAPIM user's .bash_profile file.
+  blockinfile:
+    path: "{{ papim_user_dir }}/.bash_profile"
+    insertafter: EOF
+    block: |
+      export JAVA_HOME=/opt/SecureSpan/JDK
+      PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+      export PATH
+
+- name: Copy epagent service script to (/etc/init.d).
+  copy:
+    src: "{{ temp_folder }}/APIM-PM-GW/epagent.rc"
+    dest: /etc/init.d/epagent
+    remote_src: true
+    group: "{{ papim_user }}"
+    owner: "{{ papim_user }}"
+    mode: 0755
+
+- name: Update agent control script path in epagent service script.
+  lineinfile:
+    path: /etc/init.d/epagent
+    regexp: '^EPACTRL='
+    line: "EPACTRL={{ papim_installation_dir }}/epagent/bin/EPACtrl-SSG.sh"
+
+- name: Enable the epagent service.
+  service:
+    name: epagent
+    enabled: yes
+
+- name: Start the epagent service if not already started.
+  service:
+    name: epagent
+    state: started
+
+- name: Delete /tmp/papimrestore folder.
+  file:
+    state: absent
+    path: "{{ temp_folder }}"

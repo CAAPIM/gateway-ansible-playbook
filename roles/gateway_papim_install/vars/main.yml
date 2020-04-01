@@ -1,0 +1,3 @@
+---
+# The directory on the target host to extract installation files.
+temp_folder: /tmp/papiminstall

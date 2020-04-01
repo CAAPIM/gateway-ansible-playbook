@@ -1,0 +1,23 @@
+---
+- name: Install sshpass
+  block:
+   - name: Copy the sshpass package from local
+     copy:
+       src: files/sshpass-1.06.tar.gz
+       dest: /etc/sshpass-1.06.tar.gz
+       mode: '0755'
+
+   - name: Uncompress the sshpass package
+     command:
+       chdir: /etc
+       cmd: tar -xvf sshpass-1.06.tar.gz
+
+   - name: Execute configuration file
+     command:
+       chdir: /etc/sshpass-1.06
+       cmd: ./configure
+
+   - name: Install sshpass
+     command:
+       chdir: /etc/sshpass-1.06
+       cmd: sudo make install

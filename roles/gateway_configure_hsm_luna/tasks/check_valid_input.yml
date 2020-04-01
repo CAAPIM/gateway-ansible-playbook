@@ -1,0 +1,59 @@
+---
+- name: Check host name exists in group[hsm].
+  fail:
+    msg: "Please ensure the HSM hostname provided in the hosts file, under hsm group is valid."
+  when: "'{{ hsm_hostname }}' not in groups['hsm']"
+
+- name: Check if the input user attribute is a valid one and set up HSM user value
+  register: hsmusratt
+  set_fact:
+    hsm_usr="{{ hostvars[hsm_hostname]['hsm_user'] }}"
+  ignore_errors: yes
+
+- name: Check the hsm_user exists.
+  fail:
+    msg: "Please ensure the value for the hsm_user variable is set and check if the syntax for hsm_user is right in host_vars/luna*.placeholder.com.yml"
+  when: "hsmusratt.msg is defined and 'undefined' in hsmusratt.msg and 'attribute' in hsmusratt.msg"
+
+- name: Check if the input user password attribute is a valid one and set up hsm user password value
+  register: hsmpassatt
+  set_fact:
+    hsm_password="{{ hostvars[hsm_hostname]['hsm_pass'] }}"
+  ignore_errors: yes
+
+- name: Check the hsm_pass exists
+  fail:
+    msg: "Please ensure the value for the hsm_pass variable is set and check if the syntax for hsm_pass is right in host_vars/luna*.placeholder.com.yml"
+  when: "hsmpassatt.msg is defined and 'undefined' in hsmpassatt.msg and 'attribute' in hsmpassatt.msg"
+
+- name: Check if the input partition name attribute is a valid one and set up the value
+  register: hsmpartnm
+  set_fact:
+    partition_nm="{{ hostvars[hsm_hostname]['partition_name'] }}"
+  ignore_errors: yes
+
+- name: Check the partition_name exists.
+  fail:
+    msg: "Please ensure the value for the partition_name variable is set and check if the syntax for partition_name is right in host_vars/luna*.placeholder.com.yml"
+  when: "hsmpartnm.msg is defined and 'undefined' in hsmpartnm.msg and 'attribute' in hsmpartnm.msg"
+
+- name: Check if the input partition password attribute is a valid one and set up the value
+  register: hsmpartpass
+  set_fact:
+    partition_password="{{ hostvars[hsm_hostname]['partition_pass'] }}"
+  ignore_errors: yes
+
+- name: Check the partition_password exists.
+  fail:
+    msg: "Please ensure the value for the partition_pass variable is set and check if the syntax for partition_pass is right in host_vars/luna*.placeholder.com.yml"
+  when: "hsmpartpass.msg is defined and 'undefined' in hsmpartpass.msg and 'attribute' in hsmpartpass.msg"
+
+- name: Check if the input hsm user name and password is correct for the HSM server
+  register: hsmcheck
+  command: sshpass -p '{{ hsm_password }}' ssh {{ ansible_ssh_extra_args }} {{ hsm_usr }}@{{ hsm_hostname }} client list
+  ignore_errors: yes
+
+- name: Check the correctness of the input hsm username and password
+  fail:
+    msg: "Sorry, your username or password is incorrect. Please ensure your hsm_user and hsm_password variable in the host_vars/luna*.placeholder.com.yml file are correct"
+  when: "'Permission denied' in hsmcheck.stderr"

@@ -1,0 +1,8 @@
+---
+- name: Delete temp files created by gateway-basic-backup role.
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+    - gateway_controller_cleanup
+  tags: cleanup_backup_config_assertion_files

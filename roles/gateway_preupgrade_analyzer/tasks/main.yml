@@ -1,0 +1,30 @@
+---
+# Assertions
+- include_tasks: assertions.yml
+# External Libraies
+- include_tasks: external_libs.yml
+# Rpms
+- include_tasks: rpms.yml
+# Include compatibility checker
+- include_tasks: mysql8_compatibility_checker.yml
+
+- name: Create temp directory for output report file
+  file:
+    path: "{{remote_report_temp_dir}}"
+    state: directory
+
+- name: Generate Pre-upgrade Analyzer Report
+  template:
+    src: pre_upgrade_analyzer_report.txt.j2
+    dest: "{{remote_report_temp_dir}}/pre_upgrade_analyzer_report.txt"
+
+- name: Fetch report file for gateway
+  fetch:
+    src: "{{remote_report_temp_dir}}/pre_upgrade_analyzer_report.txt"
+    dest: "report/{{ inventory_hostname }}/"
+    flat: true
+
+- name: Cleanup
+  file:
+    path: "{{remote_report_temp_dir}}"
+    state: absent

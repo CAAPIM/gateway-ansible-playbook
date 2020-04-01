@@ -1,0 +1,10 @@
+---
+# vars file for gateway_import_database 
+## Role specific password can be added here
+#ssgdb_adminpwd:
+#ssgdb_userpwd:
+
+# command to create otk user for detination gateway
+command_mysql_create_otkuser: "CREATE USER IF NOT EXISTS '{{ otkdb_user }}'@'{{ inventory_hostname}}' IDENTIFIED BY '{{ otkdb_userpwd }}';"
+# command to grant otk user privileges in destination gateway
+command_mysql_grant_otkuser_privileges: "GRANT SELECT, DELETE, UPDATE, INSERT on {{ otkdb_name }}.* to '{{ otkdb_user }}'@'{{ inventory_hostname}}'; flush privileges;"

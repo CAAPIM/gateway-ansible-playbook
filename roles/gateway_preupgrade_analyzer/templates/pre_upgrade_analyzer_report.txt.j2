@@ -1,0 +1,75 @@
+Pre Upgrade Analyser Report
+
+Host: {{ inventory_hostname }}
+OS: {{ ansible_os_family }}
+{% if inventory_hostname in groups['gateway_primary_db'] %}
+Database: Primary Database
+{% endif %}
+{% if inventory_hostname in groups['gateway_failover_db'] %}
+Database: Failover Database
+{% endif %}
+Time: {{ ansible_date_time.date}} - {{ ansible_date_time.time}}
+Reported by: {{ ansible_user }}
+
+Modular Assertions
+--------------------------------
+{% if report_modular_assertions is defined and report_modular_assertions.stdout_lines is defined %}
+  {% for item in report_modular_assertions.stdout_lines %}
+  {% if 'HOTFIX' in item|upper %}
+   ***{{ item }}
+  {% else %}
+      {{ item }}
+  {% endif %}
+  {% endfor %}
+{% endif %}
+
+Custom Assertions
+--------------------------------
+{% if report_custom_assertions is defined and report_custom_assertions.stdout_lines is defined %}
+    {% for item in report_custom_assertions.stdout_lines %}
+      {{ item }}
+    {% endfor %}
+{% endif %}
+
+Server Module Files
+--------------------------------
+{% if report_server_module_files is defined %}
+    {% for item in report_server_module_files %}
+      {{ item }}
+    {% endfor %}
+{% endif %}
+
+
+External Libraries
+--------------------------------
+{% if report_external_libs is defined and report_external_libs.stdout_lines is defined %}
+    {% for item in report_external_libs.stdout_lines %}
+      {{ item }}
+    {% endfor %}
+{% endif %}
+
+RPM Results
+--------------------------------
+{% if report_modular_assertions is defined and report_rpms.stdout_lines is defined %}
+    {% for item in report_rpms.stdout_lines %}
+      {{ item }}
+    {% endfor %}
+{% endif %}
+
+
+Mysql8 Compatibility Checker Results
+--------------------------------
+{% if report_mysql8_compatibility_check is defined and report_mysql8_compatibility_check.stdout_lines is defined %}
+   {% for item in report_mysql8_compatibility_check.stdout_lines %}
+     {{ item }}
+   {% endfor %}
+{% endif %}
+
+Note
+---------------------------------
+Please review the pre-upgrade analyzer report before upgrading the gateway.
+
+Warnings:  Includes a disclaimer that non-standard user/permissions will not be migrated, and custom OS users will not be migrated either
+Warnings:  User logs and audit will not migrated.
+
+

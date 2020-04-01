@@ -1,0 +1,26 @@
+---
+# This task report assertions installed on the gateway. It includes modular assertion, customer assertion and server module file
+- name:  List modular assertions
+  shell: "ls -v *.aar"
+  args:
+    chdir: "{{ gateway_modular_assertions_dir }}"
+  register: report_modular_assertions
+  ignore_errors: True
+
+- name: List custom assertions
+  shell: "ls -v *.jar"
+  args:
+    chdir: "{{ gateway_custom_assertions_dir }}"
+  register: report_custom_assertions
+  ignore_errors: True
+
+- name: Retrieve Server Module Files from database ssg, table server_module_file
+  block:
+    - name: Retrieve Server Module Assertions.
+      shell:
+        cmd: mysql -u{{ database_admin_user}}  -p{{ database_admin_pass }} -N {{ database_name }} -e "select properties from server_module_file"
+      register: query_server_module_files
+      check_mode: no
+      changed_when: False
+    - set_fact: report_server_module_files="{{ query_server_module_files.stdout | regex_findall('([a-zA-Z0-9.-]+(?:.sjar|.saar))') }}"
+  when: inventory_hostname in groups['gateway_primary_db'] or inventory_hostname in groups['gateway_failover_db']
