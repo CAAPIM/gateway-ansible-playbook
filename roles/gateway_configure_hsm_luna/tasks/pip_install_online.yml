@@ -1,0 +1,13 @@
+---
+- name: Download pip
+  command: curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+
+- name: Install pip
+  command: python get-pip.py
+
+- name: Install pexpect
+  command: pip install pexpect
+
+- name: Checking that pexpect is usable
+  shell:
+    cmd: (echo import pexpect;) | /usr/bin/python

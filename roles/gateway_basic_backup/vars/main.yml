@@ -1,0 +1,11 @@
+---
+# vars file for ssg-basic-backup
+
+# The type of files to backup.  The following are valid backup parameters:
+# 
+# -os: Files in /etc folder such has hosts, ntp.conf, resolv.conf, snmpd.conf, and sysconfig files.
+# -config: Gateway property files such as node, ssglog, and system.properties
+# -ca: Custom assertions in /opt/SecureSpan/Gateway/runtime/modules/lib.
+# -ma: Modular assertions including tactical assertions. Any assertions /opt/SecureSpan/Gateway/runtime/modules/assertions. Does not include server modular files.      
+# -ext: Files in the /opt/SecureSpan/Gateway/runtime/lib/ext.
+ssgbackup_parameters: -os -config -ca -ma -ext

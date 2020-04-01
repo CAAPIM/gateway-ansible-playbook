@@ -1,0 +1,3 @@
+---
+# The directory on the target host where to store temporary files used to restore operating system files from backup.
+temp_folder: /tmp/papimrestore

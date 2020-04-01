@@ -1,0 +1,8 @@
+---
+# Runs mysql to get gateway and OTK database dump against all the hosts and uploads the results into downloads folder (set by default)
+- name: Execute mysql dump and store
+  hosts: gateway_mysql_source
+  serial: 1
+  strategy: free
+  roles:
+    - gateway_export_database

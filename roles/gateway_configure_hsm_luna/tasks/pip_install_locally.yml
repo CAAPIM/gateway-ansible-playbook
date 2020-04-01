@@ -1,0 +1,18 @@
+---
+- name: Copy the pip package from local
+  copy:
+    src: files/get-pip.py
+    dest: /etc/get-pip.py
+    mode: '0755'
+
+- name: Install pip
+  command:
+    chdir: /etc
+    cmd: python get-pip.py
+
+- name: Install pexpect
+  command: pip install pexpect
+
+- name: Checking that pexpect is usable
+  shell:
+    cmd: (echo import pexpect;) | /usr/bin/python

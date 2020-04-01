@@ -1,0 +1,25 @@
+---
+# vars file for ssg_basic_restore_backup
+
+# Use this configuration to specify whether Gateway configuration files, custom assertions, module assertions,
+# and/or binaries from the ext folder should berestored from backup. The following are ssgrestore parameters:
+# 
+# -config: Gateway property files such as node.properties, ssglog.properties, and system.properties
+# -ca: Custom assertions in /opt/SecureSpan/Gateway/runtime/modules/lib. Also includes telemetry.properties and
+#      syslog.properties.
+# -ma: Assertions in the /opt/SecureSpan/Gateway/runtime/modules/assertions. Modular assertions including tactical assertions.      
+#      Does not include server modular files.       
+# -ext: Files in the /opt/SecureSpan/Gateway/runtime/lib/ext.
+ssgrestore_parameters: -config -ca -ma -ext
+
+# Use this configuration to specify which of the operating system files should be restored from backup.
+restore_os_config: 
+  sysconfig_folder: false # Note: this should not be enabled for upgrade from RHEL6/CentOS6 to 7+ as the networking is done differently in 7+.
+  snmp_folder: true
+  ntp_folder: false
+  hosts: false
+  ntp_conf: false
+  resolv_conf: false
+  
+# The directory on the target host where to store temporary files used to restore operating system files from backup.
+temp_folder: /tmp/ssgrestore

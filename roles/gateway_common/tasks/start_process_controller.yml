@@ -1,0 +1,11 @@
+---
+# This starts the ssg process controller
+- name: Start service ssg, if not started
+  service:
+    name: ssg
+    state: started
+
+- name: wait for Process Controller port (8765) to open
+  wait_for:
+    port: 8765
+    timeout: "{{ gateway_startup_wait_timeout }}"

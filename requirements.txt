@@ -1,0 +1,4 @@
+virtualenv==16.3.0 # temp workaround for https://github.com/ansible/ansible-lint/issues/590
+pexpect==4.7.0
+pre-commit==1.21.0
+ansible-lint==4.2.0

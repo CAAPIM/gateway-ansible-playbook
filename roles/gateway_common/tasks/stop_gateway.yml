@@ -1,0 +1,16 @@
+---
+# This task stops the gateway application.
+- name: stopping Gateway application, leave process controller on
+  # sudo to allow ssgconfig user to call this command, use raw instead of command to suppress ansible warning of suggesting become
+  raw: sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -lifecycle ensureStopped
+
+- name: checking to see if gateway pid does not exist anymore after stopping Gateway application
+  shell: pgrep -f "Gateway.jar"
+  register: gateway_pid_after
+  failed_when: 'gateway_pid_after.rc >= 2 or gateway_pid_after.stdout != ""'
+  changed_when: no
+  until: gateway_pid_after.stdout == ""
+
+- name: gateway pid after stopping Gateway application
+  debug:
+    msg: "{{ gateway_pid_after.stdout }}"

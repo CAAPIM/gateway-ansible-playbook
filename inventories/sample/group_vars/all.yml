@@ -1,0 +1,58 @@
+---
+# this is the site wide default
+ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
+
+# gateway default password
+vault_gateway_default_password: placeholder
+
+# dest gateway ssgconfig user password
+vault_gateway_ssgconfig_password: placeholder 
+
+# dest gateway root password
+vault_gateway_root_password: placeholder 
+
+# CA API Gateway Policy Manager Password 
+vault_gateway_admin_pass: placeholder 
+
+# Cluster Passphrase
+vault_gateway_cluster_pass: placeholder
+
+# Gateway Database Password
+vault_gateway_database_pass: placeholder 
+
+# Administrative Database Password
+vault_gateway_database_admin_pass: placeholder 
+
+# Replication User Password
+vault_gateway_database_repl_pass: placeholder 
+
+# Luna7 server password
+vault_hsm_luna7_password: placeholder 
+
+#qa-manual partition password
+vault_qa_manual_partition_password: placeholder 
+
+# The location on the controller to store the configuration and assertion backups of each node.
+# The folder will be automatically created on the controller if it does not exist.
+controller_dir_backup_location: /var/local/ssgbackup/
+
+# The location on the controller to store the license files.
+# Create the folder and copy all license files to this folder if it does not exist.
+# User for running Ansible should have access to this directory and files within it. 
+controller_dir_license_location: /tmp/license
+
+# The location on the controller to store the database dump for database export and import roles.
+# The folder will be automatically be created on the controller if it does not exist.
+controller_dir_db_backup_location: /tmp/db_dump
+
+# Timeout (seconds) for Gateway to start. After this time has elapsed, Gateway is considered to have failed to start. 
+gateway_startup_wait_timeout: 600 # seconds
+
+# Timeout (seconds) for Gateway to shutdown. After this time has elapsed, Gateway is considered to have failed to shutdown. 
+gateway_shutdown_wait_timeout: "{{ gateway_startup_wait_timeout }}"
+
+# Port used for checking if Gateway is running
+port_gateway_health_check: 8080 # default HTTP port is 8080
+
+# Port used for SSH on Gateways
+port_gateway_ssh: 22

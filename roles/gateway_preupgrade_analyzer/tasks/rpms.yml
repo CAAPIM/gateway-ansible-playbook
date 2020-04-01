@@ -1,0 +1,5 @@
+---
+# This task report rpms installed on the gateway.
+- name: list installed rpms
+  shell: "rpm -qa"
+  register: report_rpms

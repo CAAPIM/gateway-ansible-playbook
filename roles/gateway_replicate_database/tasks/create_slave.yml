@@ -1,0 +1,16 @@
+- name: Run create_slave.sh on {{ master_node }}
+  no_log: true # don't log decrypted passwords in responses
+  expect:
+    command: sshpass -p '{{ hostvars[master_node].ansible_ssh_pass }}' ssh {{ ansible_ssh_extra_args }} {{ hostvars[master_node].ansible_user }}@{{master_node}} {{command_create_slave}}
+    responses:
+      "Enter hostname or IP for the MASTER:": "{{slave_node}}"
+      "Enter replication user:": "{{ hostvars[slave_node].database_repl_user }}"
+      "Enter replication password:": "{{ hostvars[slave_node].database_repl_pass }}"
+      "Enter MySQL root user:": "{{ hostvars[slave_node].database_admin_user }}"
+      "Enter MySQL root password:": "{{ hostvars[slave_node].database_admin_pass }}"
+      "Do you want to clone a database" : "no"
+  register: status
+  changed_when:
+    - status.rc == 0
+    - '"Slave successfully created" in status.stdout'
+  failed_when: (status.rc != 0) or ("Slave successfully created" not in status.stdout)

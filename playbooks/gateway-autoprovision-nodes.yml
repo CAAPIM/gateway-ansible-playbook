@@ -1,0 +1,19 @@
+
+- hosts: gateway
+  vars:
+    ansible_connection: local
+  roles:
+    - gateway_common
+
+- hosts: gateway_primary_db
+  vars:
+    ansible_connection: local
+  serial: 1
+  roles:
+    - gateway_primary_db_node
+
+- hosts: gateway_processing_node
+  vars:
+    ansible_connection: local
+  roles:
+    - gateway_processing_node

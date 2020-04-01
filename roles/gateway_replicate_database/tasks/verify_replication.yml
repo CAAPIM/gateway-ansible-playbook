@@ -1,0 +1,10 @@
+- name: Verify replication has started
+  shell:
+    cmd: mysql -e "show slave status\G;" | grep Slave
+  register: status
+  changed_when:
+    - '"Slave_IO_Running: Yes" in status.stdout'
+    - '"Slave_SQL_Running: Yes" in status.stdout'
+  failed_when:
+    - '"Slave_IO_Running: Yes" not in status.stdout'
+    - '"Slave_SQL_Running: Yes" not in status.stdout'

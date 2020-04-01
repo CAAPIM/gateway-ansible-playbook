@@ -1,0 +1,22 @@
+---
+# This task installs the gateway license file as root user.
+- name: create bootstrap direcory
+  file:
+    path: "{{ gateway_bootstrap_dir }}"
+    state: directory
+    mode: '0755'
+    recurse: yes
+    owner: layer7
+    group: gateway
+
+- name: create license directory under bootstrap directory
+  file:
+    path: "{{ gateway_license_install_dir }}"
+    state: directory
+
+- name: copy over the license files to gateway server
+  copy:
+    src: "{{item}}"
+    dest: "{{ gateway_license_install_dir }}"
+  with_fileglob: "{{controller_dir_license_location}}/*.xml"
+

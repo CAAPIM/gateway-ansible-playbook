@@ -1,0 +1,6 @@
+---
+- hosts: gateway
+  roles:
+    - { role: gateway_configure_hsm_luna, hsm_hostname: 'luna7.ric.broadcom.net'}
+
+

@@ -1,0 +1,40 @@
+---
+
+# This set of tasks will restart a Gateway appliance, then monitor the shutdown/startup progress by
+# checking that the Gateway cannot be reached via SSH (shutting down), that it can be reached via
+# SSH (starting up), and finally that the Gateway is listening on the HTTP service request port (it
+# is back up and ready to accept requests).
+
+- name: Restart the Gateway appliance
+  shell:
+    cmd: "sudo /sbin/reboot"
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: Check if Gateway is shutting down (by checking if SSH is unavailable)
+  include: port_status.yml
+  vars:
+    - status_port: "{{ port_gateway_ssh }}"
+    - host_to_check: "{{ inventory_hostname }}"
+    - wait_for_state: stopped
+    - timeout_status_check: "{{ gateway_shutdown_wait_timeout }}"
+  delegate_to: localhost
+
+- name: Check if Gateway is starting (by checking if SSH is available)
+  include: port_status.yml
+  vars:
+    - status_port: "{{ port_gateway_ssh }}"
+    - host_to_check: "{{ inventory_hostname }}"
+    - wait_for_state: started 
+    - timeout_status_check: "{{ gateway_startup_wait_timeout }}"
+  delegate_to: localhost
+
+- name: Wait for Gateway to be running (by checking if the Gateway HTTP port is ready)
+  include: port_status.yml
+  vars:
+    - status_port: "{{ port_gateway_health_check }}"
+    - host_to_check: "{{ inventory_hostname }}"
+    - wait_for_state: started 
+    - timeout_status_check: "{{ gateway_startup_wait_timeout }}"
+  delegate_to: localhost
