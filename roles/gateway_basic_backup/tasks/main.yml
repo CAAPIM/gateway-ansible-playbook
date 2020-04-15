@@ -45,7 +45,7 @@
     use_regex: yes
     patterns: ".*_ansible_basic_ssgbackup.zip"
   register: files_to_delete
-- 
+
 - name: Rename backup file for easier storage.
   copy: remote_src=True src={{ files_to_delete.files[0].path }} dest=/opt/SecureSpan/Gateway/config/backup/images/ansible_basic_ssgbackup_{{ inventory_hostname }}.zip   
       

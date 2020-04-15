@@ -7,7 +7,7 @@
      path: "{{ controller_dir_backup_location }}"
      state: absent
 
-  - name: Delete backup files on Ansible controller created by gateway_papim_backup role.
+ - name: Delete backup files on Ansible controller created by gateway_papim_backup role.
    local_action:
      module: file
      path: "{{ controller_dir_papim_backup_location }}"
