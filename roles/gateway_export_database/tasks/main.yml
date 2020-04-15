@@ -4,14 +4,12 @@
     module: file
     path: "{{ controller_dir_db_backup_location }}"
     state: directory
-    mode: '0700'
-    owner: "{{ ansible_user }}"
+    mode: "0700"
 
 - name: create remote temp directory for output files
   file:
     path: "{{ remote_db_temp_dir }}"
     state: directory
-
 
 - name: Dump gateway source database # noqa 305 must use shell
   no_log: true # don't log decrypted passwords in responses
@@ -31,7 +29,6 @@
 - name: Dump otk source database
   when: otkdb_name is defined
   block:
-
     - name: Dump otk source database # noqa 305 must use shell
       no_log: true # don't log decrypted passwords in responses
       shell:
@@ -45,14 +42,14 @@
 
 - name: zip mysql output
   archive:
-    path: '{{ remote_db_temp_dir }}/*'
-    dest: '{{ db_dump_zip_file }}.zip'
+    path: "{{ remote_db_temp_dir }}/*"
+    dest: "{{ db_dump_zip_file }}.zip"
     format: zip
 
 - name: copy over the zip file to controller
   fetch:
-    src: '{{ db_dump_zip_file }}.zip'
-    dest: '{{ controller_dir_db_backup_location }}'
+    src: "{{ db_dump_zip_file }}.zip"
+    dest: "{{ controller_dir_db_backup_location }}"
 
 - name: cleanup
   file:

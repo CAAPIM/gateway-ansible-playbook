@@ -27,4 +27,4 @@
     - name: Save list of files to fact
       set_fact:
         report_server_module_files: "{{ query_server_module_files.stdout | regex_findall('([a-zA-Z0-9.-]+(?:.sjar|.saar))') }}"
-  when: inventory_hostname in groups['gateway_primary_db'] or inventory_hostname in groups['gateway_failover_db']
+  when: inventory_hostname in groups['gateway_mysql']

@@ -1,7 +1,7 @@
 ---
 command_ssh_base: "ssh {{ ansible_ssh_extra_args }} {{ ansible_user }}@"
-command_ssh_source_gateway: "{{ command_ssh_base }}{{ inventory_hostname }}"
-command_ssh_dest_gateway: "{{ command_ssh_base }}{{ dest }}"
+command_ssh_source_gateway: "{{ command_ssh_base }}{{ src }}"
+command_ssh_dest_gateway: "{{ command_ssh_base }}{{ inventory_hostname }}"
 command_check_node_configured: "echo '' | sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch show"
 command_retrieve_props: "/opt/SecureSpan/Gateway/config/bin/ssgconfig-headless create -template"
 command_autoprovision_node: "/opt/SecureSpan/Gateway/config/bin/ssgconfig-headless create"

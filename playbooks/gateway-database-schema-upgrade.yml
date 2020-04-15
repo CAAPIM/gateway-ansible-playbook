@@ -1,6 +1,6 @@
 
 - name: Upgrade database schema in destination gateway
-  hosts: gateway_mysql_dest
+  hosts: gateway_primary_db
   serial: 1
   tasks:
     - name: upgrade Gateway database schema

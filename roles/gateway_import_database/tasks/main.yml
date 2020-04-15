@@ -4,7 +4,7 @@
     state: directory
 - name: unzip mysql output to remote server
   unarchive:
-    src: '{{ controller_dir_db_backup_location }}/{{ source }}{{ db_dump_zip_file }}.zip'
+    src: '{{ controller_dir_db_backup_location }}/{{ src }}{{ db_dump_zip_file }}.zip'
     dest: '{{ remote_db_temp_dir }}'
 
 - name: Delete gateway database # noqa 305 must use shell

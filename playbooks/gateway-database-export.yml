@@ -1,7 +1,20 @@
 ---
 # Runs mysql to get gateway and OTK database dump against all the hosts and uploads the results into downloads folder (set by default)
+- name: Detect source gateway mysql nodes
+  hosts: gateway_mysql
+  gather_facts: no
+  tasks:
+    - name: collect src hosts
+      add_host:
+        hostname: "{{ hostvars[item].src }}"
+        ansible_connection: "ssh"
+        groups:
+          - gateway_mysql
+          - gateway_src
+      with_items: "{{ groups['gateway_mysql'] }}"
+
 - name: Execute mysql dump and store
-  hosts: gateway_mysql_source
+  hosts: gateway_src
   serial: 1
   strategy: free
   roles:
