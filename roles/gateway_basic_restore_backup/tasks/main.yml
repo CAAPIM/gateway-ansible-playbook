@@ -16,7 +16,7 @@
 # in the vars folder for more information.
 
 - name: Check requirement that the backup file exists on the controller.
-  local_action:
+  local_action: # noqa 504
     module: stat
     path: "{{ controller_dir_backup_location }}/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
   register: file_status

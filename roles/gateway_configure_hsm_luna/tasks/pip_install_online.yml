@@ -1,5 +1,5 @@
 ---
-- name: Download pip
+- name: Download pip # noqa 303
   command: curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
   register: status
   changed_when: status.rc == 0

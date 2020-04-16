@@ -4,7 +4,7 @@
 # This task will restore PAPIM configuration files
 
 - name: Check requirement that the PAPIM backup file exists on the controller.
-  local_action:
+  local_action: # noqa 504
     module: stat
     path: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
   register: file_status

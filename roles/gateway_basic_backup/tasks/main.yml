@@ -13,8 +13,9 @@
   register: file_status
   failed_when: not file_status.stat.exists
 
-- name: Create backup folder on controller. #Cannot be created by fetch module below due to limitation of fetch module. Must be explicitly created.
-  local_action:
+#Cannot be created by fetch module below due to limitation of fetch module. Must be explicitly created.
+- name: Create backup folder on controller.
+  local_action: # noqa 504
     module: file
     path: "{{ controller_dir_backup_location }}"
     state: directory

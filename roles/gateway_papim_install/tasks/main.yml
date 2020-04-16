@@ -3,7 +3,7 @@
   # This task will install PAPIM epagent in target machine
 
 - name: Check requirement that the installation file <APIM-PM-GW.tar.gz> exists on the controller.
-  local_action:
+  local_action: # noqa 504
     module: stat
     path: "{{ controller_dir_papim_source_location }}/APIM-PM-GW.tar.gz"
   register: file_status

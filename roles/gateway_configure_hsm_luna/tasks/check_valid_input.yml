@@ -1,8 +1,9 @@
 ---
-- name: Check host name exists in group[hsm].
-  fail:
-    msg: "Please ensure the HSM hostname provided in the hosts file, under hsm group is valid."
-  when: "'{{ hsm_hostname }}' not in groups['hsm']"
+- name: Check host name exists in [hsm] group.
+  assert:
+    that:
+      - hsm_hostname in groups['hsm']
+    fail_msg: "Ensure the Luna HSM hostname argument is present under inventory's [hsm_luna7] group."
 
 - name: Check if the input user attribute is a valid one and set up HSM user value
   register: hsmusratt

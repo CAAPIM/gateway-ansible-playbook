@@ -1,4 +1,7 @@
 ---
+
+- import_tasks: check_valid_input.yml
+
 - import_tasks: pip_install_online.yml
 
 # Uncomment this line if there is no internet available on your gateway appliance and comment the last line out
@@ -8,8 +11,6 @@
 
 # Uncomment this line if there is no internet available on your gateway appliance and comment the last line out
 #- import_tasks: sshpass_install_locally.yml
-
-- import_tasks: check_valid_input.yml
 
 - name: Create a directory and make it as Luna7 home directory
   file:
@@ -145,7 +146,7 @@
 
 - name: Set the file permissions for the Luna client
   command:
-    cmd: chmod -R 655 /usr/safenet
+    cmd: chmod -R 655 /usr/safenet # noqa 302
   register: status
   changed_when: status.rc == 0
 
@@ -164,7 +165,7 @@
     remote_src: yes
 
 - name: Set the file permissions for the JDK library as follows
-  shell: chmod a+r /opt/SecureSpan/JDK/jre/lib/ext/*Luna*
+  shell: chmod a+r /opt/SecureSpan/JDK/jre/lib/ext/*Luna*  # noqa 302
   register: status
   changed_when: status.rc == 0
 
@@ -178,12 +179,12 @@
       com.safenetinc.luna.provider.createExtractableSecretKeys=true
 
 - name: Set the read permissions for the certificate files in the server cert directories
-  shell: chmod a+r /usr/safenet/lunaclient/cert/server/*.pem
+  shell: chmod a+r /usr/safenet/lunaclient/cert/server/*.pem  # noqa 302
   register: status
   changed_when: status.rc == 0
 
 - name: Set the read permissions for the certificate files in the client cert directories
-  shell: chmod a+r /usr/safenet/lunaclient/cert/client/*.pem
+  shell: chmod a+r /usr/safenet/lunaclient/cert/client/*.pem  # noqa 302
   register: status
   changed_when: status.rc == 0
 
@@ -192,7 +193,7 @@
   register: status
   changed_when: status.rc == 0
 
-- name: Restart the Gateway
+- name: Restart the Gateway # noqa 303
   command: service ssg restart
   register: status
   changed_when: status.rc == 0

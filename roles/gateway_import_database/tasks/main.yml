@@ -7,7 +7,7 @@
     src: '{{ controller_dir_db_backup_location }}/{{ source }}{{ db_dump_zip_file }}.zip'
     dest: '{{ remote_db_temp_dir }}'
 
-- name: Delete gateway database # noqa 305 - no alternative to shell command
+- name: Delete gateway database # noqa 305 must use shell
   no_log: true # don't log decrypted passwords in responses
   shell:
     cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} drop {{ ssgdb_name }} -f
@@ -15,21 +15,21 @@
   register: status
   changed_when: status.rc == 0
 
-- name: create gateway database # noqa 305 - no alternative to shell command
+- name: create gateway database # noqa 305 must use shell
   no_log: true # don't log decrypted passwords in responses
   shell:
     cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} create {{ ssgdb_name }}
   register: status
   changed_when: status.rc == 0
 
-- name: import gateway database from source gateway # noqa 305 - no alternative to shell command
+- name: import gateway database from source gateway # noqa 305 must use shell
   no_log: true # don't log decrypted passwords in responses
   shell:
     cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} {{ ssgdb_name }} < {{ remote_db_temp_dir }}/ssg.sql
   register: status
   changed_when: status.rc == 0
 
-- name: clean up cluster_info table # noqa 305 - no alternative to shell command
+- name: clean up cluster_info table # noqa 305 must use shell
   no_log: true
   shell:
     cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} -e 'truncate table ssg.cluster_info'
@@ -39,23 +39,23 @@
 - name: Import otk source database
   when: otkdb_name is defined
   block:
-    - name: create otk user if not exists # noqa 305 - no alternative to shell command
+    - name: create otk user if not exists # noqa 305 must use shell
       no_log: true # don't log decrypted passwords in responses
       shell:
         cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} -e "{{ command_mysql_create_otkuser }}"
 
-    - name: grant otk user privileges # noqa 305 - no alternative to shell command
+    - name: grant otk user privileges # noqa 305 must use shell
       no_log: true # don't log decrypted passwords in responses
       shell:
         cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} -e "{{ command_mysql_grant_otkuser_privileges }}"
 
-    - name: delete otk database # noqa 305 - no alternative to shell command
+    - name: delete otk database # noqa 305 must use shell
       no_log: true # don't log decrypted passwords in responses
       shell:
         cmd: mysqladmin  -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} drop {{ otkdb_name }} -f
       failed_when: false
 
-    - name: create otk database
+    - name: create otk database # noqa 305 must use shell
       no_log: true # don't log decrypted passwords in responses
       shell:
         cmd: mysqladmin -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} create {{ otkdb_name }}

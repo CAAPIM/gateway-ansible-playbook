@@ -1,6 +1,6 @@
 #Cannot be created by fetch module below due to limitation of fetch module. Must be explicitly created.
 - name: Create database dump backup folder on controller.
-  local_action:
+  local_action: # noqa 504
     module: file
     path: "{{ controller_dir_db_backup_location }}"
     state: directory
@@ -13,14 +13,14 @@
     state: directory
 
 
-- name: Dump gateway source database # noqa 305 - no alternative to shell command
+- name: Dump gateway source database # noqa 305 must use shell
   no_log: true # don't log decrypted passwords in responses
   shell:
     cmd: mysqldump {{ ssgdb_name }} --routines -u{{ ssgdb_user }}  -p{{ ssgdb_userpwd }} > {{ remote_db_temp_dir }}/ssg.sql
   register: status
   changed_when: status.rc == 0
 
-- name: remove string from gateway DB dump to comply with MySQL8 # noqa 305 - no alternative to shell command
+- name: remove string from gateway DB dump to comply with MySQL8 # noqa 305 must use shell
   shell:
     cmd: sed -i 's/NO_AUTO_CREATE_USER,//g' {{ remote_db_temp_dir }}/ssg.sql
   args:
@@ -32,12 +32,12 @@
   when: otkdb_name is defined
   block:
 
-    - name: Dump otk source database # noqa 305 - no alternative to shell command
+    - name: Dump otk source database # noqa 305 must use shell
       no_log: true # don't log decrypted passwords in responses
       shell:
         cmd: mysqldump {{ otkdb_name }} --routines -u{{ ssgdb_adminuser }}  -p{{ ssgdb_adminpwd }} > {{ remote_db_temp_dir }}/otk.sql
 
-    - name: remove string from otk DB dump to comply with MySQL8 # noqa 305 - no alternative to shell command
+    - name: remove string from otk DB dump to comply with MySQL8 # noqa 305 must use shell
       shell:
         cmd: sed -i 's/NO_AUTO_CREATE_USER,//g' {{ remote_db_temp_dir }}/otk.sql
       args:

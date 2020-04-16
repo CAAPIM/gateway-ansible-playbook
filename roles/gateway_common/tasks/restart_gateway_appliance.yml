@@ -5,7 +5,7 @@
 # SSH (starting up), and finally that the Gateway is listening on the HTTP service request port (it
 # is back up and ready to accept requests).
 
-- name: Restart the Gateway appliance
+- name: Restart the Gateway appliance # noqa 305 must use shell
   shell:
     cmd: "sudo /sbin/reboot"
   async: 1
