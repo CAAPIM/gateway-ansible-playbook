@@ -16,7 +16,7 @@
 
 - name: copy over the license files to gateway server
   copy:
-    src: "{{item}}"
+    src: "{{ item }}"
     dest: "{{ gateway_license_install_dir }}"
-  with_fileglob: "{{controller_dir_license_location}}/*.xml"
+  with_fileglob: "{{ controller_dir_license_location }}/*.xml"
 

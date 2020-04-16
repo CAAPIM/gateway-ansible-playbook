@@ -1,8 +1,8 @@
 ---
 # tasks file for gateway_controller_cleanup
- 
+
  - name: Delete backup files on Ansible controller created by gateway_basic_backup role.
-   local_action: 
+   local_action:
      module: file
      path: "{{ controller_dir_backup_location }}"
      state: absent
@@ -12,7 +12,7 @@
      module: file
      path: "{{ controller_dir_papim_backup_location }}"
      state: absent
-   
+
  - name: Delete database backup files on Ansible controller created by gateway_export_database role.
    local_action:
      module: file

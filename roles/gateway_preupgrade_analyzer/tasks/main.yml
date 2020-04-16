@@ -10,21 +10,21 @@
 
 - name: Create temp directory for output report file
   file:
-    path: "{{remote_report_temp_dir}}"
+    path: "{{ remote_report_temp_dir }}"
     state: directory
 
 - name: Generate Pre-upgrade Analyzer Report
   template:
     src: pre_upgrade_analyzer_report.txt.j2
-    dest: "{{remote_report_temp_dir}}/pre_upgrade_analyzer_report.txt"
+    dest: "{{ remote_report_temp_dir }}/pre_upgrade_analyzer_report.txt"
 
 - name: Fetch report file for gateway
   fetch:
-    src: "{{remote_report_temp_dir}}/pre_upgrade_analyzer_report.txt"
+    src: "{{ remote_report_temp_dir }}/pre_upgrade_analyzer_report.txt"
     dest: "report/{{ inventory_hostname }}/"
     flat: true
 
 - name: Cleanup
   file:
-    path: "{{remote_report_temp_dir}}"
+    path: "{{ remote_report_temp_dir }}"
     state: absent

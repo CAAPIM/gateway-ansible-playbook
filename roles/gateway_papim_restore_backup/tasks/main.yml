@@ -123,9 +123,8 @@
   file:
     state: absent
     path: "/opt/{{ fact_backup_file }}"
-  
+
 - name: Delete /tmp/papimrestore folder.
   file:
     state: absent
     path: "{{ temp_folder }}"
-     

@@ -7,7 +7,7 @@
     module: stat
     path: "{{ controller_dir_papim_source_location }}/APIM-PM-GW.tar.gz"
   register: file_status
-  failed_when: file_status.stat.exists == False
+  failed_when: not file_status.stat.exists
 
 - name: Set the installation TAR file to a fact.
   set_fact:
@@ -83,11 +83,13 @@
     group: "{{ papim_user }}"
     owner: "{{ papim_user }}"
 
-- name: Configure agent ports(TCP and REST) and APM server details in IntroscopeEPAgent.properties (<papim_installation_dir>/epagent/IntroscopeEPAgent.properties).
+- name: >
+    Configure agent ports(TCP and REST) and APM server details in IntroscopeEPAgent.properties 
+    (<papim_installation_dir>/epagent/IntroscopeEPAgent.properties).
   lineinfile:
     path: "{{ papim_installation_dir }}/epagent/IntroscopeEPAgent.properties"
-    regexp: '{{item.From}}'
-    line: '{{item.To}}'
+    regexp: '{{ item.From }}'
+    line: '{{ item.To }}'
     state: present
   with_items:
     - { From: '^agentManager.url.1=localhost:5001', To: 'agentManager.url.1={{ apm_server_hostname }}'}
