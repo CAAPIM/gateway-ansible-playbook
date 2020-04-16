@@ -5,10 +5,11 @@
 # The batch size may be increased from 1 if desired, and should be no more than the number of Gateways in the cluster.
 
 - name: Add destination Gateways to group
-  hosts: gateway 
+  hosts: gateway
   gather_facts: no
   tasks:
-    - add_host:
+    - name: Add destination Gateways to group
+      add_host:
         hostname: "{{ hostvars[item].dest }}"
         groups: gateway_dest
       with_items: "{{ groups['gateway'] }}"
@@ -20,4 +21,4 @@
   tasks:
     - include_role:
         name: gateway_common
-        tasks_from: restart_gateway_appliance 
+        tasks_from: restart_gateway_appliance

@@ -35,6 +35,7 @@
     chdir: /home/ssgconfig/hsm/LunaClient_7.2.0-220_Linux/64
     cmd: (echo y) | sh install.sh -p sa -c jsp -c jcprov
   ignore_errors: yes
+  changed_when: luna.rc == 0
 
 - name: Check if luna client already installed
   fail:
@@ -62,6 +63,7 @@
     chdir: /usr/safenet/lunaclient/bin
     cmd: ./vtl addServer -n {{ hsm_hostname }} -c server.pem
   ignore_errors: yes
+  changed_when: regser.rc == 0
 
 - name: Check if the Luna server already registered
   fail:
@@ -72,6 +74,8 @@
   command:
     chdir: /usr/safenet/lunaclient/bin
     cmd: ./vtl createCert -n {{ inventory_hostname }}
+  register: status
+  changed_when: status.rc == 0
 
 - name: Copy the client certificate to the server
   expect:
@@ -82,8 +86,11 @@
 
 - name: Log in to the Luna HSM appliance and register the client
   register: clientreg
-  command: sshpass -p '{{ hsm_password }}' ssh {{ ansible_ssh_extra_args }} {{ hsm_usr }}@{{ hsm_hostname }} client register -client {{ inventory_hostname }} -hostname {{ inventory_hostname }}
+  command: >
+    sshpass -p '{{ hsm_password }}' ssh {{ ansible_ssh_extra_args }} {{ hsm_usr }}@{{ hsm_hostname }}
+    client register -client {{ inventory_hostname }} -hostname {{ inventory_hostname }}
   ignore_errors: yes
+  changed_when: clientreg.rc == 0
 
 - name: Check if client already been registered
   fail:
@@ -94,8 +101,11 @@
 
 - name: Assign the client to a server partition
   register: partexist
-  command: sshpass -p '{{ hsm_password }}' ssh {{ ansible_ssh_extra_args }} {{ hsm_usr }}@{{ hsm_hostname }} client assignPartition -client {{ inventory_hostname }} -partition {{ partition_nm }}
+  command: >
+    sshpass -p '{{ hsm_password }}' ssh {{ ansible_ssh_extra_args }} {{ hsm_usr }}@{{ hsm_hostname }}
+    client assignPartition -client {{ inventory_hostname }} -partition {{ partition_nm }}
   ignore_errors: yes
+  changed_when: partexist.rc == 0
 
 - name: Check if the input partition exists
   fail:
@@ -136,6 +146,8 @@
 - name: Set the file permissions for the Luna client
   command:
     cmd: chmod -R 655 /usr/safenet
+  register: status
+  changed_when: status.rc == 0
 
 - name: Copy the Luna* .JAR files over to the Gateway
   copy:
@@ -153,6 +165,8 @@
 
 - name: Set the file permissions for the JDK library as follows
   shell: chmod a+r /opt/SecureSpan/JDK/jre/lib/ext/*Luna*
+  register: status
+  changed_when: status.rc == 0
 
 - name: Modify the security file
   blockinfile:
@@ -165,14 +179,22 @@
 
 - name: Set the read permissions for the certificate files in the server cert directories
   shell: chmod a+r /usr/safenet/lunaclient/cert/server/*.pem
+  register: status
+  changed_when: status.rc == 0
 
 - name: Set the read permissions for the certificate files in the client cert directories
   shell: chmod a+r /usr/safenet/lunaclient/cert/client/*.pem
+  register: status
+  changed_when: status.rc == 0
 
 - name: Add the ‘Gateway’ user to the hsmusers group
   command: gpasswd --add gateway hsmusers
+  register: status
+  changed_when: status.rc == 0
 
 - name: Restart the Gateway
   command: service ssg restart
+  register: status
+  changed_when: status.rc == 0
 
 

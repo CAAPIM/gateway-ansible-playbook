@@ -3,3 +3,4 @@
 - name: list installed rpms
   shell: "rpm -qa"
   register: report_rpms
+  changed_when: False

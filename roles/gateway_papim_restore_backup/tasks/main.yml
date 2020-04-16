@@ -8,7 +8,7 @@
     module: stat
     path: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
   register: file_status
-  failed_when: file_status.stat.exists == False
+  failed_when: not file_status.stat.exists
 
 - name: Set the backup filename to a fact.
   set_fact:

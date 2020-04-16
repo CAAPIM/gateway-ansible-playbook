@@ -1,13 +1,13 @@
 ---
 # tasks file for gateway_basic_restore_backup
 
-# This task will restore Gateway and Linux configuration files and Gateway assertions archived 
+# This task will restore Gateway and Linux configuration files and Gateway assertions archived
 # by ssgbackup. No database files will be restored. The backup files used to restore from are located
 # on the controller and the path on the controller is specified by the group_vars variable "controller_dir_backup_location".
-# This task expects the backup file in which to restore from is in the format: ansible_basic_ssgbackup_<source_hostname>.zip. 
-# The source_hostname is the hostname where the backupfile was created.  
+# This task expects the backup file in which to restore from is in the format: ansible_basic_ssgbackup_<source_hostname>.zip.
+# The source_hostname is the hostname where the backupfile was created.
 #
-# The mapping used to determine which backup file is used for which destination host is stored in the inventory host file.  
+# The mapping used to determine which backup file is used for which destination host is stored in the inventory host file.
 # The destination and source are linked via a custom attribute called "upgrade_source" in the gateway group which
 # specifies the name of the hosts that are being upgraded to. This custom attribute must be specified for each
 # host in the group in order to run this task.
@@ -20,17 +20,17 @@
     module: stat
     path: "{{ controller_dir_backup_location }}/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
   register: file_status
-  failed_when: file_status.stat.exists == False
-  
+  failed_when: not file_status.stat.exists
+
 - name: Set the backup filename to a fact.
   set_fact:
     fact_backup_file: "ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
-  
+
 - name: Ensure the ssg service is not running.
   systemd:
     name: ssg
     state: stopped
-    
+
 - name: Copy backup file from controller to inventory_host.
   copy:
     src: "{{ controller_dir_backup_location }}/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
@@ -57,7 +57,9 @@
 
 - name: Execute ssgrestore of configuration and assertions.
   command: /opt/SecureSpan/Gateway/config/backup/ssgrestore.sh -image {{ fact_backup_file }} {{ ssgrestore_parameters }}
-  
+  register: status
+  changed_when: status.rc == 0
+
 - name: Ensure /tmp/ssgrestore exists to restore OS configuration.
   file:
     path: "{{ temp_folder }}"
@@ -68,63 +70,62 @@
     src: /opt/SecureSpan/Gateway/config/backup/{{ fact_backup_file }}
     dest: "{{ temp_folder }}"
     remote_src: yes
-    exclude:      
+    exclude:
       - ca/*
       - config/*
       - ext/*
       - ma/*
       - manifest.log
       - version
-      
+
 - name: Restore /etc/sysconfig folder.
   copy:
     src: "{{ temp_folder }}/os/etc/sysconfig"
     dest: /etc/
     remote_src: true
-  when: restore_os_config.sysconfig_folder == True
-      
+  when: restore_os_config.sysconfig_folder
+
 - name: Restore /etc/snmp folder.
   copy:
     src: "{{ temp_folder }}/os/etc/snmp"
     dest: /etc/
     remote_src: true
-  when: restore_os_config.snmp_folder == True
-  
+  when: restore_os_config.snmp_folder
+
 - name: Restore /etc/ntp folder.
   copy:
     src: "{{ temp_folder }}/os/etc/ntp"
     dest: /etc/
     remote_src: true
-  when: restore_os_config.ntp_folder == True
+  when: restore_os_config.ntp_folder
 
 - name: Restore /etc/hosts file.
   copy:
     src: "{{ temp_folder }}/os/etc/hosts"
     dest: /etc/
     remote_src: true
-  when: restore_os_config.hosts == True
-  
+  when: restore_os_config.hosts
+
 - name: Restore /etc/ntp.conf file.
   copy:
     src: "{{ temp_folder }}/os/etc/ntp.conf"
     dest: /etc/
     remote_src: true
-  when: restore_os_config.ntp_conf == True
-  
+  when: restore_os_config.ntp_conf
+
 - name: Restore /etc/resolv.conf file.
   copy:
     src: "{{ temp_folder }}/os/etc/resolv.conf"
     dest: /etc/
     remote_src: true
-  when: restore_os_config.resolv_conf == True
+  when: restore_os_config.resolv_conf
 
 - name: Delete backup file from /opt/SecureSpan/Gateway/config/backup/.
   file:
     state: absent
     path: /opt/SecureSpan/Gateway/config/backup/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip
-  
+
 - name: Delete /tmp/ssgrestore folder.
   file:
     state: absent
     path: /tmp/ssgrestore
-     

@@ -1,17 +1,17 @@
 ---
     ### Connection properties
     gateway_ssh_timeout: 20 # seconds
-    
+
     ### Authentication properties
-    ansible_user: ssgconfig 
+    ansible_user: ssgconfig
     ansible_password: "{{ vault_gateway_ssgconfig_password }}"
     gateway_default_password: "{{ vault_gateway_default_password }}"
     gateway_ssgconfig_password: "{{ vault_gateway_ssgconfig_password }}"
     gateway_root_password: "{{ vault_gateway_root_password }}"
-    
+
     ### Directory where node properties temp files are saved
     node_props_dir: "node_properties"
-    
+
     ### Node configurations, unused properties should be commented out
     #database_failover_host:  # Database Failover Hostname
     #database_failover_port: 3306  # Database Failover Port
@@ -30,8 +30,8 @@
     database_pass: "{{ vault_gateway_database_pass }}"  # Database Password
     database_admin_user: root  # Administrative Database Username (not required if joining an existing cluster)
     database_admin_pass: "{{ vault_gateway_database_admin_pass }}"  # Administrative Database Password (not required if joining an existing cluster)
-    
+
     ### License bootstrapping configurations
-    gateway_bootstrap_dir: "/opt/SecureSpan/Gateway/node/default/etc/bootstrap"  # Don't modify. Gateway server bootstrap location. 
+    gateway_bootstrap_dir: "/opt/SecureSpan/Gateway/node/default/etc/bootstrap"  # Don't modify. Gateway server bootstrap location.
     gateway_license_install_dir: "{{ gateway_bootstrap_dir }}/license"  # Don't modify. Gateway server license location.
     gateway_license_upload_dir: "/home/ssgconfig/license"  # Gateway server license upload location.

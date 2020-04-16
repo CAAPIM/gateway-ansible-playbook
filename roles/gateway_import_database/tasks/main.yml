@@ -12,21 +12,29 @@
   shell:
     cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} drop {{ ssgdb_name }} -f
   failed_when: false
+  register: status
+  changed_when: status.rc == 0
 
 - name: create gateway database # noqa 305 - no alternative to shell command
   no_log: true # don't log decrypted passwords in responses
   shell:
     cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} create {{ ssgdb_name }}
+  register: status
+  changed_when: status.rc == 0
 
 - name: import gateway database from source gateway # noqa 305 - no alternative to shell command
   no_log: true # don't log decrypted passwords in responses
   shell:
-    cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} {{ ssgdb_name }} < {{remote_db_temp_dir}}/ssg.sql
+    cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} {{ ssgdb_name }} < {{ remote_db_temp_dir }}/ssg.sql
+  register: status
+  changed_when: status.rc == 0
 
 - name: clean up cluster_info table # noqa 305 - no alternative to shell command
   no_log: true
   shell:
     cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} -e 'truncate table ssg.cluster_info'
+  register: status
+  changed_when: status.rc == 0
 
 - name: Import otk source database
   when: otkdb_name is defined
@@ -51,6 +59,8 @@
       no_log: true # don't log decrypted passwords in responses
       shell:
         cmd: mysqladmin -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} create {{ otkdb_name }}
+      register: status
+      changed_when: status.rc == 0
 
     - name: import otk database
       no_log: true # don't log decrypted passwords in responses

@@ -11,6 +11,8 @@
   async: 1
   poll: 0
   ignore_errors: true
+  register: status
+  changed_when: True
 
 - name: Check if Gateway is shutting down (by checking if SSH is unavailable)
   include: port_status.yml
@@ -26,7 +28,7 @@
   vars:
     - status_port: "{{ port_gateway_ssh }}"
     - host_to_check: "{{ inventory_hostname }}"
-    - wait_for_state: started 
+    - wait_for_state: started
     - timeout_status_check: "{{ gateway_startup_wait_timeout }}"
   delegate_to: localhost
 
@@ -35,6 +37,6 @@
   vars:
     - status_port: "{{ port_gateway_health_check }}"
     - host_to_check: "{{ inventory_hostname }}"
-    - wait_for_state: started 
+    - wait_for_state: started
     - timeout_status_check: "{{ gateway_startup_wait_timeout }}"
   delegate_to: localhost

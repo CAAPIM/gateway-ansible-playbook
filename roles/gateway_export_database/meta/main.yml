@@ -1,6 +1,6 @@
 galaxy_info:
   author: CA API Management
-  description: your description
+  description: This role is used to export the Gateway database contents. See the role README file for more details.
   company: CA API Management
 
   # If the issue tracker for your role is not on github, uncomment the

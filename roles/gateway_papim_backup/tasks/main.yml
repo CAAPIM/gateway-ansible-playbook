@@ -20,6 +20,7 @@
 
 - name: Check for PAPIM user.
   command: grep {{ papim_user }} -q /etc/passwd
+  changed_when: False
 
 - name: Create a zip archive of PAPIM configuration files.
   archive:

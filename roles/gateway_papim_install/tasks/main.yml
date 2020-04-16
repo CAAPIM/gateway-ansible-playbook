@@ -84,7 +84,7 @@
     owner: "{{ papim_user }}"
 
 - name: >
-    Configure agent ports(TCP and REST) and APM server details in IntroscopeEPAgent.properties 
+    Configure agent ports(TCP and REST) and APM server details in IntroscopeEPAgent.properties
     (<papim_installation_dir>/epagent/IntroscopeEPAgent.properties).
   lineinfile:
     path: "{{ papim_installation_dir }}/epagent/IntroscopeEPAgent.properties"

@@ -2,7 +2,7 @@
 - hosts: gateway_papim_install
   gather_facts: no
   become: true
-                            
+
   tasks:
   - include_role:
       name: gateway_papim_install
