@@ -1,6 +1,8 @@
 ---
 # This task report rpms installed on the gateway.
-- name: list installed rpms
+- name: list installed rpms # noqa 305 rpm command provides correct format out of box
   shell: "rpm -qa"
   register: report_rpms
   changed_when: False
+  args:
+    warn: no # need to use rpm command
