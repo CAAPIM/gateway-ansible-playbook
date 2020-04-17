@@ -10,16 +10,17 @@
   stat:
     path: /etc/init.d/epagent
   register: service_status
-  failed_when: service_status.stat.exists == False
+  failed_when: not service_status.stat.exists
 
 - name: Check if PAPIM installation dir <papim_installation_dir> exists.
   stat:
     path: "{{ papim_installation_dir }}"
   register: dir_status
-  failed_when: dir_status.stat.exists == False
+  failed_when: not dir_status.stat.exists
 
 - name: Check for PAPIM user.
   command: grep {{ papim_user }} -q /etc/passwd
+  changed_when: False
 
 - name: Create a zip archive of PAPIM configuration files.
   archive:

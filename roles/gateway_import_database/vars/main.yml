@@ -1,5 +1,5 @@
 ---
-# vars file for gateway_import_database 
+# vars file for gateway_import_database
 ## Role specific password can be added here
 #ssgdb_adminpwd:
 #ssgdb_userpwd:

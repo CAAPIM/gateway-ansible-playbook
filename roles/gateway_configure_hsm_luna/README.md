@@ -7,6 +7,11 @@ Please note Luna client is not provided in this repository. You can download Lun
 Requirements
 ------------
 
+Place the required files under the `files` directory:
+- LunaClient_7.2.0-220_Linux.zip
+- sshpass-1.06.tar.gz (if performing off-line setup)
+- [get-pip.py](https://pip.pypa.io/en/stable/installing/) (if performing off-line setup)
+
 * A configured gateway appliance and enable the root access.
 * Specify source gateway's hostname/IP in the hosts file [gateway_hsm] section.
 

@@ -9,10 +9,15 @@
   command:
     chdir: /etc
     cmd: python get-pip.py
+  register: status
+  changed_when: status.rc == 0
 
 - name: Install pexpect
   command: pip install pexpect
+  register: status
+  changed_when: status.rc == 0
 
 - name: Checking that pexpect is usable
   shell:
     cmd: (echo import pexpect;) | /usr/bin/python
+  changed_when: False

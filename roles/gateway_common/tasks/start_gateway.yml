@@ -1,6 +1,6 @@
 ---
 # This task starts up the gateway application.
-- name: checking to see if Gateway application has already started (checks the PID)
+- name: checking to see if Gateway application has already started (checks the PID) # noqa 305 must use shell
   shell: pgrep -f "Gateway.jar"
   register: gateway_pid
   failed_when: gateway_pid.rc >= 2
@@ -13,13 +13,13 @@
 - name: starting up the Gateway application (skips this step if Gateway application is already started)
   # sudo to allow ssgconfig user to call this command, use raw instead of command to suppress ansible warning of suggesting become
   raw: sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -lifecycle start
-  when: gateway_pid.stdout == ""
+  when: not gateway_pid.stdout
 
-- name: checking to see if gateway pid exists after starting
+- name: checking to see if gateway pid exists after starting # noqa 305 must use shell
   shell: pgrep -f "Gateway.jar"
   register: gateway_pid_after
   changed_when: no
-  until: gateway_pid_after.stdout != ""
+  until: gateway_pid_after.stdout
 
 - name: the gateway pid after starting
   debug:

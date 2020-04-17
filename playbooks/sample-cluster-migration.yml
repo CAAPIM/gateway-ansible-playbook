@@ -1,12 +1,12 @@
 # This sample playbook will perform an expedited upgrade on a source Gateway cluster (with
 # one primary database Gateway and the remainder as processing Gateways) to another cluster.
-#  
-# Setup: 
-# 1) Create source and destination clusters as defined above. 
-# 2) Setup hosts under [gateway_primary_db] and [gateway_processing_node] in inventories/demo/hosts 
+#
+# Setup:
+# 1) Create source and destination clusters as defined above.
+# 2) Setup hosts under [gateway_primary_db] and [gateway_processing_node] in inventories/demo/hosts
 # 3) Setup passwords in inventories/demo/group_vars/all.yml
-# 
-# Sample usage: 
+#
+# Sample usage:
 # - Run from the project root directory.
 # ansible-playbook playbooks/sample-cluster-migration.yml -i inventories/demo/hosts --vault-password-file vault-password-file.txt
 #
@@ -21,7 +21,7 @@
   roles:
     - gateway_common
 
-- name: Setup MySQL database on the destination (primary database node) Gateway. 
+- name: Setup MySQL database on the destination (primary database node) Gateway.
   hosts: gateway_primary_db
   connection: local
   vars:
@@ -37,7 +37,7 @@
     - gateway_export_database
 
 - name: Import the MySQL database dump into the destination (primary database node) Gateway.
-  hosts: gateway_mysql_dest 
+  hosts: gateway_mysql_dest
   serial: 1
   strategy: free
   pre_tasks:
@@ -48,7 +48,7 @@
   roles:
     - gateway_import_database
 
-- name: Upgrade Gateway version in the destination (primary database node) Gateway. 
+- name: Upgrade Gateway version in the destination (primary database node) Gateway.
   hosts: gateway_mysql_dest
   serial: 1
   tasks:
@@ -67,10 +67,11 @@
     - gateway_processing_node
 
 - name: Add destination Gateways to a group
-  hosts: gateway 
+  hosts: gateway
   gather_facts: no
   tasks:
-    - add_host:
+    - name: Add destination Gateways to a group
+      add_host:
         hostname: "{{ hostvars[item].dest }}"
         groups: gateway_dest
       with_items: "{{ groups['gateway'] }}"
@@ -81,4 +82,4 @@
   tasks:
     - include_role:
         name: gateway_common
-        tasks_from: restart_gateway_appliance 
+        tasks_from: restart_gateway_appliance

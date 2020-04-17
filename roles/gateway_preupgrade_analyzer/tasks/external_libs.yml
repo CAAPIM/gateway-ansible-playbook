@@ -1,8 +1,7 @@
 ---
 # This task report external libraries installed on the gateway.=
-- name:  List external libraries
-  shell: "ls -v"
-  args:
-    chdir: "{{ gateway_external_libs_dir }}"
+- name: List external libraries
+  find:
+    paths: "{{ gateway_external_libs_dir }}"
   register: report_external_libs
   ignore_errors: True

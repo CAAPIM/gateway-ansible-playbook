@@ -3,11 +3,11 @@
   become: true # Note: only set to false if the ansible_user is root or has root privileges.
                # Setting true will also cause poor performance with the module_fetch and cause
                # the gateway_basic_backup role to run out of memory and fail. To mitigate this issue,
-               # set the "serial" variable below to a maximum value of 2. If ansible_user is root, can 
+               # set the "serial" variable below to a maximum value of 2. If ansible_user is root, can
                # comment out the serial variable to improve performance.
   serial: 2 # If role fails when trying to copy backup files to controller, increase the memory on the
             # controller to at least 4GB and/or change serial value to 1.
   gather_facts: false
-  
+
   roles:
     - gateway_basic_backup

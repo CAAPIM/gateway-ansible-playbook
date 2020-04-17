@@ -2,7 +2,7 @@
 - hosts: gateway_dest
   gather_facts: no
   become: true
-                            
+
   tasks:
   - include_role:
       name: gateway_basic_restore_backup

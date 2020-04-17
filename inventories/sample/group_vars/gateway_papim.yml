@@ -13,7 +13,7 @@
     gateway_mysql_db_name: ssg
     gateway_mysql_user: gateway
     gateway_mysql_port: 3306
-    gateway_mysql_password: placeholder 
+    gateway_mysql_password: placeholder
 
     ### Additional PAPIM properties to support gateway_papim_install role
     apm_server_hostname: localhost:5001 # Enter Hostname:Port for APM Server

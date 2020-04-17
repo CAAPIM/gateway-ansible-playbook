@@ -5,12 +5,14 @@
 # SSH (starting up), and finally that the Gateway is listening on the HTTP service request port (it
 # is back up and ready to accept requests).
 
-- name: Restart the Gateway appliance
+- name: Restart the Gateway appliance # noqa 305 must use shell
   shell:
     cmd: "sudo /sbin/reboot"
   async: 1
   poll: 0
   ignore_errors: true
+  register: status
+  changed_when: True
 
 - name: Check if Gateway is shutting down (by checking if SSH is unavailable)
   include: port_status.yml
@@ -26,7 +28,7 @@
   vars:
     - status_port: "{{ port_gateway_ssh }}"
     - host_to_check: "{{ inventory_hostname }}"
-    - wait_for_state: started 
+    - wait_for_state: started
     - timeout_status_check: "{{ gateway_startup_wait_timeout }}"
   delegate_to: localhost
 
@@ -35,6 +37,6 @@
   vars:
     - status_port: "{{ port_gateway_health_check }}"
     - host_to_check: "{{ inventory_hostname }}"
-    - wait_for_state: started 
+    - wait_for_state: started
     - timeout_status_check: "{{ gateway_startup_wait_timeout }}"
   delegate_to: localhost

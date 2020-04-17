@@ -9,5 +9,5 @@
     port: "{{ status_port }}"
     host: "{{ host_to_check }}"
     delay: 10 # seconds to wait before starting to check status
-    state: "{{ wait_for_state }}" # valid values are specified in docs for Ansible wait_for module 
+    state: "{{ wait_for_state }}" # valid values are specified in docs for Ansible wait_for module
     timeout: "{{ timeout_status_check }}" # seconds
