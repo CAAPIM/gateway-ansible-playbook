@@ -85,12 +85,12 @@ ansible-vault encrypt_string --vault-password-file a_password_file 'foobar' --na
     Succeed example
     ```bash
     PLAY RECAP *************************************************************************************************************
-    rel94.dhcp.broadcom.net    : ok=8    changed=7    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+    rel94.placeholder.com    : ok=8    changed=7    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
     ```
     Failed example
     ```bash
     PLAY RECAP *************************************************************************************************************
-    rel94.dhcp.broadcom.net    : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+    rel94.placeholder.com    : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
     ```
 
 
