@@ -32,8 +32,8 @@
         regexp: '{{ item.from }}'
         line: '{{ item.to }}'
       with_items:
-        - { from: '^#admin.user', to: 'admin.user={{ admin_user }}' }
-        - { from: '^#admin.pass', to: 'admin.pass={{ admin_pass }}' }
+        - { from: '^#admin.user', to: 'admin.user={{ policy_manager_admin_user }}' }
+        - { from: '^#admin.pass', to: 'admin.pass={{ policy_manager_admin_pass }}' }
         - { from: '^cluster.host', to: 'cluster.host={{ cluster_host }}' }
         - { from: '^#cluster.pass', to: 'cluster.pass={{ cluster_pass }}' }
         - { from: '^configure.db', to: 'configure.db={{ configure_db|lower }}' }

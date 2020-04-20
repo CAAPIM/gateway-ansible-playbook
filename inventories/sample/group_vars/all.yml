@@ -12,7 +12,7 @@ vault_gateway_ssgconfig_password: placeholder
 vault_gateway_root_password: placeholder
 
 # CA API Gateway Policy Manager Password
-vault_gateway_admin_pass: placeholder
+vault_policy_manager_admin_pass: placeholder
 
 # Cluster Passphrase
 vault_gateway_cluster_pass: placeholder
