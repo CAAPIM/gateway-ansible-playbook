@@ -5,6 +5,9 @@ This role will import Gateway and OTK database dump from ansible controller to d
 
 Requirements
 ------------
+* gateway database has to be created before running import script. 
+To setup gateway database automatically, please run playbook gateway-autoprovision-nodes.yml.
+
 * ssh connect to remote destination gateway as user root using encrypted password. 
     Specify source gateway's hostname/IP in the hosts file [gateway_mysql_dest] section. source hostname/IP match [gateway_mysql_source]
     ```

@@ -5,6 +5,15 @@ This role will export Gateway and OTK database from source gateway and store in 
 
 Requirements
 ------------
+* Purge audit events manually from the source Gateway. For more information, see "Delete Audit Events" in View Gateway Audit Events in tech docs. 
+    ```
+    Main Steps:
+    1) Login to Policy Manager
+    2) From Policy Manager window, select [View] -> Gateway AuditEvents
+    3) From the Gateway Audit Events window, select [File] > Delete Old Audit Events
+    4) Click [Delete Events] when prompted to confirm
+  
+     ```  
 * ssh connect to remote source gateway as user ssgconfig using encrypted password. 
     Specify source gateway's hostname/ip in the hosts file [gateway_mysql_source] section.
     ```
@@ -53,12 +62,12 @@ There are no dependencies upon other roles.
 Example Playbook
 ------------
 file: playbooks/gateway-database-export.yml
-- name: Execute mysql dump and store
-  hosts: mysql_source 
-  serial: 1
-  strategy: free
-  roles:
-    - gateway_export_database 
+    - name: Execute mysql dump and store
+      hosts: mysql_source 
+      serial: 1
+      strategy: free
+      roles:
+        - gateway_export_database 
 
 run : ansible-playbook playbooks/gateway-database-export.yml -i inventories/test/hosts --vault-password-file vault-password-file.txt
 
