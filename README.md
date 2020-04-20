@@ -79,3 +79,35 @@ For example
 ```bash
 ansible-vault encrypt_string --vault-password-file a_password_file 'foobar' --name 'the_secret'
 ```
+## Troubleshooting
+* To tell a playbook run is succeed or failed, please check "PLAY RECAP" section at the end of the output. Column "unreachable" and  "failed" have the information of the failed hosts
+    
+    Succeed example
+    ```bash
+    PLAY RECAP *************************************************************************************************************
+    rel94.dhcp.broadcom.net    : ok=8    changed=7    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+    ```
+    Failed example
+    ```bash
+    PLAY RECAP *************************************************************************************************************
+    rel94.dhcp.broadcom.net    : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+    ```
+
+
+* Playbook level:
+Pass -v flag to the ansible-playbook command for verbose mode , Ansible will show the output on your terminal. 
+For example: -vvv for more, -vvvv to enable connection debugging.
+```bash
+ansible-playbook -i ./inventories/test gateway-autoprovision-nodes.yml -vvvv
+```
+* Role task level:
+To keep sensitive values such as decrypted password out of your logs, tasks that expose them are marked with the no_log: true attribute.
+For debugging purpose, you can change setting to "no_log: false " temporarily to enable Ansible output on your terminal. 
+Remember to set back to true when debugging is done.
+```
+- name: Dump gateway source database
+  no_log: true # don't log decrypted passwords in responses
+  shell: 
+    cmd: mysqldump {{ ssgdb_name }} --routines -u{{ ssgdb_user}}  -p{{ ssgdb_userpwd }} > {{remote_db_temp_dir}}/ssg.sql
+```
+* For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html)   
