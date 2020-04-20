@@ -1,0 +1,31 @@
+---
+# gateway default password
+vault_gateway_default_password: "placeholder"
+
+# dest gateway ssgconfig user password
+vault_gateway_ssgconfig_password: "placeholder"
+
+# dest gateway root password
+vault_gateway_root_password: "placeholder"
+
+# CA API Gateway Policy Manager Password
+vault_policy_manager_admin_pass: "placeholder"
+
+# Cluster Passphrase
+vault_gateway_cluster_pass: "placeholder"
+
+# Gateway Database Password
+vault_gateway_database_pass: "placeholder"
+
+# Administrative Database Password
+vault_gateway_database_admin_pass: "placeholder"
+
+# Replication User Password
+vault_gateway_database_repl_pass: "placeholder"
+
+# Luna7 server password
+vault_hsm_luna7_password: "placeholder"
+
+#qa-manual partition password
+vault_qa_manual_partition_password: "placeholder"
+
