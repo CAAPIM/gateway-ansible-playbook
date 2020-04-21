@@ -10,7 +10,7 @@ Requirements
 ------------
 
 Before running this role:
-- OTK should already be migrated to the destination database, which is the internal MySQL database running on a jGateway.
+- OTK should already be migrated to the destination database, which is the internal MySQL database running on a Gateway.
 - Ensure the Ansible controller can modify the OTK database
   - Note: otk variables correspond to the value of the otkdb_name, otkdb_user and otkdb_userpwd variables, respectively (see Group Variables section)
   - e.g. CREATE USER <otk user>@'localhost' IDENTIFIED BY '<otk user pass>';
