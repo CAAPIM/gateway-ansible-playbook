@@ -1,0 +1,17 @@
+---
+# New value for Gateway cluster.hostname cluster property. Only updated if set to non-empty string.
+new_cluster_hostname: "" 
+
+# Values for replacing all old OTK JDBC URLs' hostnames with the new one. URLs are only updated if both are set to non-empty strings.
+old_otk_jdbc_hostname: ""
+new_otk_jdbc_hostname: ""
+
+# Values for updating all old OTK callback URLs' hostnames with the new one. URLs are only updated if both are set to non-empty strings.
+old_callback_hostname: ""
+new_callback_hostname: ""
+
+# SQL commands used by this role.
+sql_retrieve_cluster_hostname: "SELECT propvalue FROM cluster_properties WHERE (propkey = 'cluster.hostname');"
+sql_update_cluster_hostname: "UPDATE cluster_properties SET propvalue = '{{ new_cluster_hostname }}' WHERE (propkey = 'cluster.hostname');"
+sql_update_jdbc_urls: "UPDATE jdbc_connection SET jdbc_url = REPLACE(jdbc_url, '{{ old_otk_jdbc_hostname }}', '{{ new_otk_jdbc_hostname }}') WHERE (jdbc_url like '%{{ otkdb_name }}%');"
+sql_update_callback_urls: "UPDATE oauth_client_key SET callback = REPLACE(callback, '{{ old_callback_hostname }}', '{{ new_callback_hostname }}');"

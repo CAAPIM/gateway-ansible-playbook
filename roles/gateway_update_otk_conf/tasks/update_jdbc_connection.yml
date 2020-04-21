@@ -1,0 +1,11 @@
+---
+# This task will update all OTK JDBC connection urls (containing the OTK db name) to use the configured new hostname.
+# URLs are only updated if both variables in the `when` clause below are set to non-empty strings.
+
+- name: Update hostnames in OTK JDBC connections
+  when: old_otk_jdbc_hostname and new_otk_jdbc_hostname
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e "{{ sql_update_jdbc_urls }}"
+  register: status
+  changed_when: status.rc == 0

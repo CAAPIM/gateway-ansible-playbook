@@ -1,0 +1,11 @@
+---
+# This task will update all OTK callback urls (containing the old hostname) to use the new hostname.
+# URLs are only updated if both variables in the `when` clause below are set to non-empty strings.
+
+- name: Update OTK callback urls containing [{{ old_callback_hostname }}] to [{{ new_callback_hostname }}]
+  when: old_callback_hostname and new_callback_hostname
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e "{{ sql_update_callback_urls }}"
+  register: status
+  changed_when: status.rc == 0
