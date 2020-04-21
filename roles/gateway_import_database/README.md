@@ -22,10 +22,10 @@ Requirements
 
 Role Variables
 --------------
-Under group_vars/all.yml
+Under group_vars/all/vars
 * controller_dir_db_backup_location - local directory to store the db dump zip file. The zip file is stored in a directory with name of the hostname/IP under local_db_dest
 
-Under group_vars/gateway_mysql.yml
+Under group_vars/all/vars
 * remote_db_temp_dir - remote directory to store DB dump files.
 * db_dump_zip_file - zipped db dump file without filename extension
 * ansible_connection - use "ssh" as default

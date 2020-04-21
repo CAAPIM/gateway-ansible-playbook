@@ -1,7 +1,7 @@
 ---
-# Important: This file is a plaintext example file and NOT a encrypted vault file
-# Please use this file as a reference and delete it afterward
-# Follow Ansible Vault documentation on how-tos and best practices
+# Important: This file is a example plaintext file and NOT encrypted
+# Please encrypt this file with "ansible-vault encrypt" and
+# follow Ansible Vault documentation on how-tos and best practices
 
 # Gateway Default ssh Password
 vault_gateway_default_password: "placeholder"

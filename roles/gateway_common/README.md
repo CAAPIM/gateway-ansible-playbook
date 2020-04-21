@@ -36,7 +36,7 @@ This role must be run from the Ansible control node.
 
 ### Setup Variables
 
-Set Gateway OS user passwords in the `group_vars/all.yml` file:
+Set Gateway OS user passwords in the `group_vars/all/vars` file:
 ```yaml
 - vault_gateway_default_password
 - vault_gateway_ssgconfig_password

@@ -3,7 +3,7 @@ Gateway PAPIM Backup Role
 
 This role will backup only the PAPIM configuration files, solution kit files will be backed up by using the **gateway_export_database** role
 
-The role will rename the backup file to a standardized format: **ansible_papim_ssgbackup_<hostname>.zip** and copy the file to the controller in a location specified by the group_vars variable **controller_dir_papim_backup_location**. The file can then be copied to a target server and restored using the **gateway_papim_restore_backup** role.
+The role will rename the backup file to a standardized format: **ansible_papim_ssgbackup_<hostname>.zip** and copy the file to the controller in a location specified by the variable **controller_dir_papim_backup_location**. The file can then be copied to a target server and restored using the **gateway_papim_restore_backup** role.
  
 
 Requirements

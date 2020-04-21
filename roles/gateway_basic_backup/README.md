@@ -2,7 +2,7 @@ Gateway Basic Backup Role
 =======
 
 This role will backup Gateway and Linux configuration files and Gateway assertions using ssgbackup. No database files will
-be backed up. The role will rename the backup file to a standardized format: **ansible_basic_ssgbackup_<hostname>.zip** and copy the file to the controller in a location specified by the group_vars variable **controller_dir_backup_location**. The file can then 
+be backed up. The role will rename the backup file to a standardized format: **ansible_basic_ssgbackup_<hostname>.zip** and copy the file to the controller in a location specified by the variable **controller_dir_backup_location**. The file can then 
 be copied to a target server and restored using the **gateway_basic_restore_backup** role.
  
  Note: This role must be executed with root privileges as ssgbackup requires root or layer7 privilege.  The backup file created is stored  using layer7 permissions.  Also, ssgbackup.sh will fail if the node.properties is missing. ssgbackup.sh assumes the Gateway was
