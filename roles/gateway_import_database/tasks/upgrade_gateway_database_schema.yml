@@ -9,8 +9,8 @@
       'sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -databaseUgrade'
     responses:
       "Perform upgrade?": "y"
-      "Enter Administrative Database Username": "{{ ssgdb_adminuser }}"
-      "Enter Administrative Database Password:": "{{ ssgdb_adminpwd }}"
+      "Enter Administrative Database Username": "{{ database_admin_user }}"
+      "Enter Administrative Database Password:": "{{ database_admin_pass }}"
   register: status
   changed_when: "'The database was successfully upgraded' in status.stdout"
   failed_when: "'The database was successfully upgraded' not in status.stdout"

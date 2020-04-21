@@ -2,7 +2,7 @@ Gateway PAPIM Restore of Backup
 =========
 
 This task will restore the PAPIM configuration files.
-The backup files used to restore from are located on the controller and the path on the controller is specified by the group_vars variable **controller_dir_papim_backup_location**.
+The backup files used to restore from are located on the controller and the path on the controller is specified by the variable **controller_dir_papim_backup_location**.
 
 This task expects the backup file in which to restore from is in the format: **ansible_papim_ssgbackup_<source_hostname>.zip**. 
 The source_hostname is the hostname where the backupfile was created.  

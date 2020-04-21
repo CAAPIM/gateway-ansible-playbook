@@ -1,0 +1,35 @@
+---
+# Important: This file is a example plaintext file and NOT encrypted
+# Please encrypt this file with "ansible-vault encrypt" and
+# follow Ansible Vault documentation on how-tos and best practices
+
+# Gateway Default ssh Password
+vault_gateway_default_password: "placeholder"
+
+# Gateway ssgconfig User Password
+vault_gateway_ssgconfig_password: "placeholder"
+
+# Gateway root User Password
+vault_gateway_root_password: "placeholder"
+
+# CA API Gateway Policy Manager Password
+vault_policy_manager_admin_pass: "placeholder"
+
+# Gateway Cluster Passphrase
+vault_gateway_cluster_pass: "placeholder"
+
+# Gateway Database Password
+vault_gateway_database_pass: "placeholder"
+
+# Database Administrative User Password
+vault_gateway_database_admin_pass: "placeholder"
+
+# Replication User Password
+vault_gateway_database_repl_pass: "placeholder"
+
+# Luna7 server password
+vault_hsm_luna7_password: "placeholder"
+
+#QA-manual partition password
+vault_qa_manual_partition_password: "placeholder"
+

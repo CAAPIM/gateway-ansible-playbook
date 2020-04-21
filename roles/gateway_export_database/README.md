@@ -16,20 +16,20 @@ Requirements
 
 Role Variables
 --------------
-Under group_vars/all.yml
+Under group_vars/all/vars
 * controller_dir_db_backup_location - local directory to store the db dump zip file. The zip file is stored in a directory with name of the hostname/IP under local_db_dest
 
-Under group_vars/gateway_mysql.yml
+Under group_vars/all/vars
 * remote_db_temp_dir - remote directory to store DB dump files.
-* db_dump_zip_file - zipped db dump file name
+* db_dump_zip_file - zipped db dump file without filename extension
 
 * ansible_connection - use "ssh" as default
 * ansible_user - use "ssgconfig" as default
 * ansible_password - encrypted password for 'ssgconfig'
 
-* ssgdb_name - gateway database name
-* ssgdb_adminuser - root as default
-* ssgdb_user - gateway as default
+* database_name - gateway database name
+* database_admin_user - root as default
+* database_user - gateway as default
 
 * otkdb_name - otk database name, It's commented out by default. Please uncomment out this variable if OTK installed in the gateway server. 
 
@@ -43,8 +43,8 @@ Under group_vars/gateway_mysql.yml
      ``` 
  
 Under role gatway_export_database/vars/main.yml
-* ssgdb_adminpwd - please use "steps to created vaulted db password" to encrypt mysql root user's password if using option 2 above
-* ssgdb_userpwd - please use "steps to created vaulted db password" to encrypt mysql gateway user's password
+* database_admin_pass - please use "steps to created vaulted db password" to encrypt mysql root user's password if using option 2 above
+* database_pass - please use "steps to created vaulted db password" to encrypt mysql gateway user's password
 
 Dependencies
 ------------

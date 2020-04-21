@@ -16,12 +16,12 @@ Requirements
 
 Role Variables
 --------------
-Under group_vars/gateway.yml
+Under group_vars/all/vars
 * gateway_bootstrap_dir - directory to store license files.
 * gateway_license_upload_dir - temp directory to store license files.
 * gateway_license_install_dir - final directory to store license files.
 
-Under group_vars/all.yml
+Under group_vars/all/vars
 * controller_dir_license_location - local directory to store the license file(s).
   * Default location: /tmp/license
 
