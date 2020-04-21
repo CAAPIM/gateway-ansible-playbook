@@ -4,7 +4,7 @@
 # Setup:
 # 1) Create source and destination clusters as defined above.
 # 2) Setup hosts under [gateway_primary_db] and [gateway_processing_node] in inventories/demo/hosts
-# 3) Setup passwords in inventories/demo/group_vars/all.yml
+# 3) Setup passwords in /group_vars/vars
 #
 # Sample usage:
 # - Run from the project root directory.

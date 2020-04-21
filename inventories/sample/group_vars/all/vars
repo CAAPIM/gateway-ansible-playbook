@@ -1,0 +1,78 @@
+---
+#### This is the site wide default
+
+### Authentication properties
+ansible_user: ssgconfig
+ansible_password: "{{ vault_gateway_ssgconfig_password }}"
+gateway_default_password: "{{ vault_gateway_default_password }}"
+gateway_ssgconfig_password: "{{ vault_gateway_ssgconfig_password }}"
+gateway_root_password: "{{ vault_gateway_root_password }}"
+policy_manager_admin_user: admin  # CA API Gateway Policy Manager Username (not required if joining an existing cluster)
+policy_manager_admin_pass: "{{ vault_policy_manager_admin_pass }}" # CA API Gateway Policy Manager Password (not required if joining an existing cluster)
+cluster_host: "{{ hostvars[groups['gateway_primary_db'][0]]['dest'] }}" # Cluster Host (not required if joining an existing cluster)
+cluster_pass: "{{ vault_gateway_cluster_pass }}" # Cluster Passphrase
+
+### Database configurations
+database_admin_user: root  # Administrative Database Username (not required if joining an existing cluster)
+database_admin_pass: "{{ vault_gateway_database_admin_pass }}"  # Administrative Database Password (not required if joining an existing cluster)
+database_user: gateway  # Database Username
+database_pass: "{{ vault_gateway_database_pass }}"  # Database Password
+database_host: "{{ cluster_host }}" # Database Hostname
+database_port: 3306  # Database Port
+database_name: ssg  # Database Name
+
+### Node configurations, unused properties should be commented out
+node_enable: true  # Node Enabled State
+configure_node: true  # Configure the node_properties
+configure_db: false  # Creates the database
+database_type: mysql  # The database type, either 'mysql' or 'embedded'
+
+### otk database export and import is disabled by default. If OTK database share the same sever as gateway database,
+# please uncomment following 3 line and fill with OTK database name, user name and password
+
+#otkdb_name: otk_db
+#otkdb_user: otk_user
+#otkdb_userpwd: "{{ vault_gateway_database_pass }}"
+
+
+### Connection Properties
+gateway_ssh_timeout: 20 # seconds
+ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
+# Timeout (seconds) for Gateway to start. After this time has elapsed, Gateway is considered to have failed to start.
+gateway_startup_wait_timeout: 600 # seconds
+
+# Timeout (seconds) for Gateway to shutdown. After this time has elapsed, Gateway is considered to have failed to shutdown.
+gateway_shutdown_wait_timeout: "{{ gateway_startup_wait_timeout }}"
+
+# Port used for checking if Gateway is running
+port_gateway_health_check: 8080 # default HTTP port is 8080
+
+# Port used for SSH on Gateways
+port_gateway_ssh: 22
+
+### File Locations
+# License bootstrapping configurations
+gateway_bootstrap_dir: "/opt/SecureSpan/Gateway/node/default/etc/bootstrap"  # Don't modify. Gateway server bootstrap location.
+gateway_license_install_dir: "{{ gateway_bootstrap_dir }}/license"  # Don't modify. Gateway server license location.
+gateway_license_upload_dir: "/home/ssgconfig/license"  # Gateway server license upload location.
+
+# Directory where node properties temp files are saved
+node_props_dir: "node_properties"
+
+# The location on the controller to store the configuration and assertion backups of each node.
+# The folder will be automatically created on the controller if it does not exist.
+controller_dir_backup_location: /var/local/ssgbackup/
+
+# The location on the controller to store the license files.
+# Create the folder and copy all license files to this folder if it does not exist.
+# User for running Ansible should have access to this directory and files within it.
+controller_dir_license_location: /tmp/license
+
+# The location on the controller to store the database dump for database export and import roles.
+# The folder will be automatically be created if it does not exist.
+controller_dir_db_backup_location: /tmp/db_dump
+# The location on the remote gateway to store the database dump for database export and import roles.
+remote_db_temp_dir: "{{ controller_dir_db_backup_location }}"
+#  zipped db dump file without filename extension
+db_dump_zip_file: "{{ remote_db_temp_dir }}/mysql_result"
+

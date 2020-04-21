@@ -3,7 +3,7 @@
 
 # This task will restore Gateway and Linux configuration files and Gateway assertions archived
 # by ssgbackup. No database files will be restored. The backup files used to restore from are located
-# on the controller and the path on the controller is specified by the group_vars variable "controller_dir_backup_location".
+# on the controller and the path on the controller is specified by the variable "controller_dir_backup_location".
 # This task expects the backup file in which to restore from is in the format: ansible_basic_ssgbackup_<source_hostname>.zip.
 # The source_hostname is the hostname where the backupfile was created.
 #
