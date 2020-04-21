@@ -1,5 +1,6 @@
 ---
 #### This is the site wide default
+
 ### Authentication properties
 ansible_user: ssgconfig
 ansible_password: "{{ vault_gateway_ssgconfig_password }}"
