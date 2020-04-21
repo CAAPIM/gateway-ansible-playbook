@@ -13,9 +13,9 @@ cluster_pass: "{{ vault_gateway_cluster_pass }}" # Cluster Passphrase
 
 ### Database configurations
 database_admin_user: root  # Administrative Database Username (not required if joining an existing cluster)
-database_admin_pass: "7layer"  # Administrative Database Password (not required if joining an existing cluster)
+database_admin_pass: "{{ vault_gateway_database_admin_pass }}"  # Administrative Database Password (not required if joining an existing cluster)
 database_user: gateway  # Database Username
-database_pass: "7layer"  # Database Password
+database_pass: "{{ vault_gateway_database_pass }}"  # Database Password
 database_host: "{{ cluster_host }}" # Database Hostname
 database_port: 3306  # Database Port
 database_name: ssg  # Database Name
