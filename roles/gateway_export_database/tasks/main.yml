@@ -14,7 +14,7 @@
 
 
 - name: Dump gateway source database # noqa 305 must use shell
-  no_log: true # don't log decrypted passwords in responses
+  no_log: false # don't log decrypted passwords in responses
   shell:
     cmd: mysqldump {{ database_name }} --routines -u{{ database_user }}  -p{{ database_pass }} > {{ remote_db_temp_dir }}/ssg.sql
   register: status
@@ -33,7 +33,7 @@
   block:
 
     - name: Dump otk source database # noqa 305 must use shell
-      no_log: true # don't log decrypted passwords in responses
+      no_log: false # don't log decrypted passwords in responses
       shell:
         cmd: mysqldump {{ otkdb_name }} --routines -u{{ database_admin_user }}  -p{{ database_admin_pass }} > {{ remote_db_temp_dir }}/otk.sql
 
