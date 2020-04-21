@@ -1,7 +1,7 @@
 Update Hostnames used by OTK
 ============================
 
-This role updates the hostnames used by OTK using the values configured under this roles `vars/main.yml`:
+This role updates the hostnames used by OTK using the values configured under this role's `vars/main.yml`:
 - Gateway cluster.hostname cluster property
 - OTK's JDBC connection URLs
 - Callback URLs
