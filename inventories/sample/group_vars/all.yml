@@ -1,11 +1,11 @@
 ---
 #### This is the site wide default
 ### Authentication properties
-ansible_user: root
-ansible_password: "!!PWab12a"
-gateway_default_password: "7layer"
-gateway_ssgconfig_password: "!!PWab12a"
-gateway_root_password: "!!PWab12a"
+ansible_user: ssgconfig
+ansible_password: "{{ vault_gateway_ssgconfig_password }}"
+gateway_default_password: "{{ vault_gateway_default_password }}"
+gateway_ssgconfig_password: "{{ vault_gateway_ssgconfig_password }}"
+gateway_root_password: "{{ vault_gateway_root_password }}"
 policy_manager_admin_user: admin  # CA API Gateway Policy Manager Username (not required if joining an existing cluster)
 policy_manager_admin_pass: "{{ vault_policy_manager_admin_pass }}" # CA API Gateway Policy Manager Password (not required if joining an existing cluster)
 cluster_host: "{{ hostvars[groups['gateway_primary_db'][0]]['dest'] }}" # Cluster Host (not required if joining an existing cluster)

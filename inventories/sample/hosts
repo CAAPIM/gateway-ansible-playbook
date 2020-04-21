@@ -7,7 +7,7 @@ gateway_hsm
 
 # when renaming this group, update cluster_host/database_host properties in group_vars
 [gateway_primary_db]
-david942.lvn.broadcom.net dest=davida1.lvn.broadcom.net
+sourcegateway.placeholder.com dest=targetgateway.placeholder.com
 
 [gateway_failover_db]
 
@@ -22,7 +22,7 @@ gateway_mysql_source
 gateway_mysql_dest
 
 [gateway_mysql_source]
-david942.lvn.broadcom.net dest=davida1.lvn.broadcom.net
+sourcegateway.placeholder.com dest=targetgateway.placeholder.com
 
 [gateway_mysql_dest]
 targetgateway.placeholder.com source=sourcegateway.placeholder.com
