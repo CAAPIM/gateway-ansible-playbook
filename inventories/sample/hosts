@@ -25,7 +25,7 @@ gateway_mysql_dest
 david942.lvn.broadcom.net dest=davida1.lvn.broadcom.net
 
 [gateway_mysql_dest]
-davida1.lvn.broadcom.net source=david942.lvn.broadcom.net
+targetgateway.placeholder.com source=sourcegateway.placeholder.com
 
 [hsm:children]
 hsm_luna7
