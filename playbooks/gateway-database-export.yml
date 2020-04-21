@@ -3,6 +3,6 @@
 - name: Execute mysql dump and store
   hosts: gateway_mysql_source
   serial: 1
-  strategy: free
+  strategy: debug
   roles:
     - gateway_export_database
