@@ -108,6 +108,6 @@ Remember to set back to true when debugging is done.
 - name: Dump gateway source database
   no_log: true # don't log decrypted passwords in responses
   shell: 
-    cmd: mysqldump {{ ssgdb_name }} --routines -u{{ ssgdb_user}}  -p{{ ssgdb_userpwd }} > {{remote_db_temp_dir}}/ssg.sql
+    cmd: mysqldump {{ database_name }} --routines -u{{ database_user}}  -p{{ database_pass }} > {{remote_db_temp_dir}}/ssg.sql
 ```
 * For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html)   
