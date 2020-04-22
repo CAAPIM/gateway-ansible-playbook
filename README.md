@@ -37,13 +37,13 @@ The following tools can be used to create/modify Ansible roles and playbooks.
 
 ## Inventories
 To use ansible, your inventories must be configured. 
-Inventories are defined [here](/inventories), and the [test inventory](/inventories/test) is a good starting point. Several Environment templates have been created.
+Inventories are defined [here](/inventories), and the [sample inventory](/inventories/sample) is a good starting point. Several Environment templates have been created.
 To add machine to the inventories, edit the `hosts` file under each directory.
 
 To view a inventory
 ```bash
-ansible-inventory -i ./inventories/test --list // list view
-ansible-inventory -i ./inventories/test --graph //graph view
+ansible-inventory -i ./inventories/sample --list // list view
+ansible-inventory -i ./inventories/sample --graph //graph view
 ```
 
 For detailed usage on how to use `ansible-inventory` command, please take a look at [here](https://docs.ansible.com/ansible/latest/cli/ansible-inventory.html)
