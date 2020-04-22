@@ -30,6 +30,7 @@ The following software must be installed on the Ansible Controller:
 > Mac: use [Homebrew](https://brew.sh/) to install, ie. `brew install http://git.io/sshpass.rb`
 
 ### Development Tools
+The following tools can be used to create/modify Ansible roles and playbooks.
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [VS Code Ansible Extension](https://marketplace.visualstudio.com/items?itemName=vscoss.vscode-ansible)
 
