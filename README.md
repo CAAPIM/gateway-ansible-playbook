@@ -48,7 +48,7 @@ ansible-inventory -i ./inventories/sample --graph //graph view
 
 For detailed usage on how to use `ansible-inventory` command, please take a look at [here](https://docs.ansible.com/ansible/latest/cli/ansible-inventory.html)
 
-## Credential Configuration
+## Gateway Credentials
 For Ansible to upgrade the Gateway, the Gateway credentials must be specified.  Please [see](/inventories/sample/group_vars/all)
  for the sample vars and vault files. 
 Remember: ** NEVER CHECK IN PASSWORD FILES **.
