@@ -6,6 +6,9 @@
   when: old_callback_hostname and new_callback_hostname
   no_log: true # don't log decrypted passwords in responses
   shell:
-    cmd: mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e "{{ sql_update_callback_urls }}"
+    cmd: >
+      mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e
+      "UPDATE oauth_client_key
+      SET callback = REPLACE(callback, '{{ old_callback_hostname }}', '{{ new_callback_hostname }}');"
   register: status
   changed_when: status.rc == 0

@@ -4,7 +4,9 @@
 - name: Read old cluster.hostname cluster property # noqa 305 must use shell
   no_log: true # don't log decrypted passwords in responses
   shell:
-    cmd: mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -s -N -e "{{ sql_retrieve_cluster_hostname }}"
+    cmd: >
+      mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -s -N -e
+      "SELECT propvalue FROM cluster_properties WHERE (propkey = 'cluster.hostname');"
   register: sql_query_result
   changed_when: false
 
@@ -16,6 +18,9 @@
   when: old_cluster_hostname and new_cluster_hostname
   no_log: true # don't log decrypted passwords in responses
   shell:
-    cmd: mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -e "{{ sql_update_cluster_hostname }}"
+    cmd: >
+      mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -e
+      "UPDATE cluster_properties
+      SET propvalue = '{{ new_cluster_hostname }}' WHERE (propkey = 'cluster.hostname');"
   register: status
   changed_when: status.rc == 0

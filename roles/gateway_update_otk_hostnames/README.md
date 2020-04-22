@@ -10,15 +10,23 @@ Requirements
 ------------
 
 Before running this role:
+- Back up the database.
+- Configure the Group & Role Variables in the following sections.
 - OTK should already be migrated to the destination database, which is the internal MySQL database running on a Gateway.
-- Ensure the Ansible controller can modify the OTK database
-  - Note: otk variables correspond to the value of the otkdb_name, otkdb_user and otkdb_userpwd variables, respectively (see Group Variables section)
-  - e.g. CREATE USER <otk user>@'localhost' IDENTIFIED BY '<otk user pass>';
-         GRANT SELECT, INSERT, DELETE, UPDATE ON <otk db name>.* TO <otk user>@'localhost';
+- Grant sufficient privileges to your Ansible controller for modifying the OTK database.
+  - *For example*
+    ```sql
+    CREATE USER [otk_user]@'localhost' IDENTIFIED BY '[otk_userpwd]';
+    GRANT SELECT, INSERT, DELETE, UPDATE ON [otkdb_name].* TO [otk_user]@'localhost';
+    ```
 
 After running this role:
-- **Clean up grants after this role is executed.**
-- Follow the steps for [Set a Default SSL or CA Private Key](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/security-configuration-in-policy-manager/tasks-menu-security-options/manage-private-keys/set-a-default-ssl-or-ca-private-key.html) for the updated hostname.
+- **Clean up OTK database privileges for the Ansible controller.**
+  - *For example*
+    ```sql
+    DROP USER [otk_user]@'localhost';
+    ```
+- Update the hostname for the Gateway default SSL certificate by following [Set a Default SSL or CA Private Key](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/security-configuration-in-policy-manager/tasks-menu-security-options/manage-private-keys/set-a-default-ssl-or-ca-private-key.html).
 
 Group Variables
 ---------------
