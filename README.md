@@ -29,6 +29,11 @@ The following software must be installed on the Ansible Controller:
 
 > Mac: use [Homebrew](https://brew.sh/) to install, ie. `brew install http://git.io/sshpass.rb`
 
+* MySQL shell
+> download from https://dev.mysql.com/downloads/shell/ select Operating System Linux/macOS based on the Ansible control node
+> Linux: ie. `rpm -ivh mysql-shell-8.0.19-1.el6.x86_64.rpm`
+
+
 ### Development Tools
 The following tools can be used to create/modify Ansible roles and playbooks.
 * [Visual Studio Code](https://code.visualstudio.com/)

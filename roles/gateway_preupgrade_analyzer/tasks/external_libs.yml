@@ -1,5 +1,5 @@
 ---
-# This task report external libraries installed on the gateway.=
+# This task report external libraries installed on the gateway.
 - name: List external libraries
   find:
     paths: "{{ gateway_external_libs_dir }}"
