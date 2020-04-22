@@ -24,7 +24,7 @@ This project serves as the starting point for automating upgrading to Gateway 10
 > `pip install pexpect`
 
 * sshpass
-> Linux: use preferred package manager to install sshpass, ie. `apt-get install sshpass`
+> Linux: use preferred package manager to install sshpass, ie. `yum install sshpass`
 
 > Mac: use [Homebrew](https://brew.sh/) to install, ie. `brew install http://git.io/sshpass.rb`
 
