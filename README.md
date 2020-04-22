@@ -48,7 +48,7 @@ To add machine to the inventories, edit the `hosts` file under each directory.
 To view a inventory
 ```bash
 ansible-inventory -i ./inventories/sample --list // list view
-ansible-inventory -i ./inventories/sample --graph / /graph view
+ansible-inventory -i ./inventories/sample --graph // graph view
 ```
 
 For detailed usage on how to use `ansible-inventory` command, please take a look at [here](https://docs.ansible.com/ansible/latest/cli/ansible-inventory.html)
