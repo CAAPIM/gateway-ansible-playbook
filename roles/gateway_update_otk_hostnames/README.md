@@ -15,15 +15,16 @@ Before running this role:
 - OTK should already be migrated to the destination database, which is the internal MySQL database running on a Gateway.
 - Grant sufficient privileges to your Ansible controller for modifying the OTK database.
   - *For example*
-    ```sql
-    CREATE USER 'otk_user'@'localhost' IDENTIFIED BY 'otk_userpwd';
-    GRANT SELECT, INSERT, DELETE, UPDATE ON 'otkdb_name'.* TO 'otk_user'@'localhost';
-    ```
+  ```
+  CREATE USER 'otk_user'@'localhost'; 
+  CREATE USER 'otk_user'@'localhost' IDENTIFIED BY 'otk_userpwd';
+  GRANT SELECT, INSERT, DELETE, UPDATE ON 'otkdb_name'.* TO 'otk_user'@'localhost';
+  ```
 
 After running this role:
 - **Clean up OTK database privileges for the Ansible controller.**
   - *For example*
-    ```sql
+    ```
     DROP USER 'otk_user'@'localhost';
     ```
 - Update the hostname for the Gateway default SSL certificate by following [Set a Default SSL or CA Private Key](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/security-configuration-in-policy-manager/tasks-menu-security-options/manage-private-keys/set-a-default-ssl-or-ca-private-key.html).
