@@ -22,7 +22,7 @@ gateway_mysql_source
 gateway_mysql_dest
 
 [gateway_mysql_source]
-sourcegateway.placeholder.com dest=targetgateway.placeholder.com
+sourcegateway.placeholder.com
 
 [gateway_mysql_dest]
 targetgateway.placeholder.com source=sourcegateway.placeholder.com
