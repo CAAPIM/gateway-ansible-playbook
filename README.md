@@ -36,7 +36,7 @@ The following tools can be used to create/modify Ansible roles and playbooks.
 
 
 ## Inventories
-To use ansible, your inventories must be configured. 
+To use Ansible, your inventories must be configured. 
 Inventories are defined [here](/inventories), and the [sample inventory](/inventories/sample) is a good starting point. Several Environment templates have been created.
 To add machine to the inventories, edit the `hosts` file under each directory.
 
@@ -47,6 +47,14 @@ ansible-inventory -i ./inventories/sample --graph //graph view
 ```
 
 For detailed usage on how to use `ansible-inventory` command, please take a look at [here](https://docs.ansible.com/ansible/latest/cli/ansible-inventory.html)
+
+## Credential Configuration
+For Ansible to upgrade the Gateway, the Gateway credentials must be specified.  Please [see](/inventories/sample/group_vars/all)
+ for the sample vars and vault files. 
+Remember: ** NEVER CHECK IN PASSWORD FILES **.
+
+Once the password vault file has been completed, secure it using Ansible Vault. Please see
+the Ansible Vault section below.
 
 ## Roles
 Following roles has been created as building block for automation
