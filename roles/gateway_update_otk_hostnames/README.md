@@ -48,5 +48,5 @@ Example Playbook
 - name: Update hostnames used by OTK after expedited upgrade involving hostname changes.
   hosts: gateway_primary_db
   roles:
-    - gateway_update_otk_conf
+    - gateway_update_otk_hostnames
 ```
