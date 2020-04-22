@@ -1,16 +1,15 @@
 Preupgrade Analyzer
 ======================
 
-This role will generate pre-upgrade analyzer report for all servers listed in hosts file under [gateway] section. 
+This role will generate pre-upgrade analyzer report for all servers listed in hosts file under [gateway] section. The report is stored on the Ansible controller.
 Please review the pre-upgrade analyzer report before upgrading the gateway.
 
 Requirements
 ------------
 * ssh connect to remote source gateway as user ssgconfig using encrypted password. 
-    Specify source gateway's hostname/ip in the inventories/<staging/production>/hosts file [gateway] section.
-    ei. inventories/sample/hosts
+    Specify source gateway's hostname/ip in the [gateway] section of the inventories/<xxx>/hosts file, e.g., inventories/sample/hosts.
     
-* In order to run MySQL 8 compatibility checker, login to source gateway manually (defined in hosts file [gateway_primary_db] and [gateway_failover_db] section) as database admin user and run the following command
+* In order to run MySQL 8 compatibility checker, login to source gateway manually (defined in hosts file [gateway_primary_db] and [gateway_failover_db] section) as database admin user and run the following command:
     ```
     GRANT ALL PRIVILEGES ON *.* TO 'gateway'@'%'; flush privileges;
     ```
@@ -18,7 +17,6 @@ Requirements
     ```
     REVOKE ALL PRIVILEGES ON *.* from 'gateway'@'%'; flush privileges;
     ```
-
 
 Role Variables
 --------------
@@ -46,7 +44,7 @@ file: playbooks/gateway-preupgrade-analyzer.yml
 
 run command: ansible-playbook playbooks/gateway-preupgrade-analyzer.yml -i inventories/sample/hosts --vault-password-file vault-password-file.txt
 
-The generated report file: playbooks/report/<hostname_as_directory>/pre_upgrade_analyzer_report.txt
+The generated report files are stored on the Ansible controller under directory playbooks, e.g., playbooks/report/<hostname_as_directory>/pre_upgrade_analyzer_report.txt.
 
 How to read the report
 -----------------------
