@@ -73,7 +73,7 @@ These playbook are created as reference implementation and can be used to upgrad
 
 To run each playbook, please run it under the *project root* directory
 ```bash
-ansible-playbook -i ./inventories/test gateway-autoprovision-nodes.yml
+ansible-playbook -i ./inventories/sample gateway-autoprovision-nodes.yml
 ```
 
 For detailed usage on how to use `ansible-playbook` command please take a look at [here](https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html)
@@ -108,7 +108,7 @@ ansible-vault encrypt_string --vault-password-file a_password_file 'foobar' --na
 Pass -v flag to the ansible-playbook command for verbose mode , Ansible will show the output on your terminal. 
 For example: -vvv for more, -vvvv to enable connection debugging.
 ```bash
-ansible-playbook -i ./inventories/test gateway-autoprovision-nodes.yml -vvvv
+ansible-playbook -i ./inventories/sample gateway-autoprovision-nodes.yml -vvvv
 ```
 * Role task level:
 To keep sensitive values such as decrypted password out of your logs, tasks that expose them are marked with the no_log: true attribute.
