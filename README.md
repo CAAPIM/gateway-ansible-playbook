@@ -6,6 +6,7 @@ This project serves as the starting point for automating upgrading to Gateway 10
 ## Get Started
 
 ### Prerequisites
+The following software must be installed on the Ansible Controller:
 * Python 2.7.+ or 3.3+
 * pip
 > For most linux distro please refer to [this guide](https://www.tecmint.com/install-pip-in-linux/)
