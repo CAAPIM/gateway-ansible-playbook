@@ -16,8 +16,8 @@ Before running this role:
 - Grant sufficient privileges to your Ansible controller for modifying the OTK database.
   - *For example*
     ```sql
-    CREATE USER [otk_user]@'localhost' IDENTIFIED BY '[otk_userpwd]';
-    GRANT SELECT, INSERT, DELETE, UPDATE ON [otkdb_name].* TO [otk_user]@'localhost';
+    CREATE USER '[otk_user]'@'localhost' IDENTIFIED BY '[otk_userpwd]';
+    GRANT SELECT, INSERT, DELETE, UPDATE ON '[otkdb_name]'.* TO '[otk_user]'@'localhost';
     ```
 
 After running this role:
