@@ -1,5 +1,5 @@
 ---
-# ansible-playbook gateway-pre-upgrade-analyser.yml
+# ansible-playbook gateway-preupgrade-analyzer.yml
 - name: run pre upgrade analyser on all gateway hosts
   hosts: gateway
   roles:
