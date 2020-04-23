@@ -8,3 +8,5 @@
 command_mysql_create_otkuser: "CREATE USER IF NOT EXISTS '{{ otkdb_user }}'@'{{ inventory_hostname}}' IDENTIFIED BY '{{ otkdb_userpwd }}';"
 # command to grant otk user privileges in destination gateway
 command_mysql_grant_otkuser_privileges: "GRANT SELECT, DELETE, UPDATE, INSERT on {{ otkdb_name }}.* to '{{ otkdb_user }}'@'{{ inventory_hostname}}'; flush privileges;"
+# script to upgrade Gateway database schema
+script_db_schema_upgrade: "sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -databaseUgrade"
