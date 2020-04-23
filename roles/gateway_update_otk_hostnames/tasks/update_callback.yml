@@ -1,0 +1,14 @@
+---
+# This task will update all OTK callback urls (containing the old hostname) to use the new hostname.
+# URLs are only updated if both variables in the `when` clause below are set to non-empty strings.
+
+- name: Update OTK callback urls containing [{{ old_callback_hostname }}] to [{{ new_callback_hostname }}] # noqa 305 must use shell
+  when: old_callback_hostname and new_callback_hostname
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: >
+      mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e
+      "UPDATE oauth_client_key
+      SET callback = REPLACE(callback, '{{ old_callback_hostname }}', '{{ new_callback_hostname }}');"
+  register: status
+  changed_when: status.rc == 0

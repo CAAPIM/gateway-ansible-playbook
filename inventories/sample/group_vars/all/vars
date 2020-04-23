@@ -27,13 +27,11 @@ configure_node: true  # Configure the node_properties
 configure_db: false  # Creates the database
 database_type: mysql  # The database type, either 'mysql' or 'embedded'
 
-### otk database export and import is disabled by default. If OTK database share the same sever as gateway database,
-# please uncomment following 3 line and fill with OTK database name, user name and password
-
+### OTK database export and import is disabled by default. If the OTK database is located in the Gateway MySQL database,
+# then uncomment the following lines and set the OTK database name and credentials.
 #otkdb_name: otk_db
 #otkdb_user: otk_user
 #otkdb_userpwd: "{{ vault_gateway_database_pass }}"
-
 
 ### Connection Properties
 gateway_ssh_timeout: 20 # seconds

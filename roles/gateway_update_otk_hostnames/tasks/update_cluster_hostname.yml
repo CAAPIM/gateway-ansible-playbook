@@ -1,0 +1,26 @@
+---
+# These tasks will update the Gateway cluster.hostname property with then new hostname.
+
+- name: Read old cluster.hostname cluster property # noqa 305 must use shell
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: >
+      mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -s -N -e
+      "SELECT propvalue FROM cluster_properties WHERE (propkey = 'cluster.hostname');"
+  register: sql_query_result
+  changed_when: false
+
+- name: Save old cluster.hostname to fact
+  set_fact:
+    old_cluster_hostname: "{{ sql_query_result.stdout_lines[-1] | trim }}"
+
+- name: Update Gateway cluster.hostname cluster property from [{{ old_cluster_hostname }}] to [{{ new_cluster_hostname }}] # noqa 305 must use shell
+  when: old_cluster_hostname and new_cluster_hostname
+  no_log: true # don't log decrypted passwords in responses
+  shell:
+    cmd: >
+      mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -e
+      "UPDATE cluster_properties
+      SET propvalue = '{{ new_cluster_hostname }}' WHERE (propkey = 'cluster.hostname');"
+  register: status
+  changed_when: status.rc == 0
