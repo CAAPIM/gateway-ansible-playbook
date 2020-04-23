@@ -8,7 +8,7 @@ Requirements
 * Gateway database has to be created before running import script. 
 To setup gateway database, please run playbook gateway-autoprovision-nodes.yml.
 
-* Must be able to ssh from the Ansible controller tothe  destination gateway as user root using encrypted password. 
+* Must be able to ssh from the Ansible controller to the  destination gateway as user root using encrypted password. 
     Specify source gateway's hostname/IP in the hosts file [gateway_mysql] section. source hostname/IP match [gateway_mysql_source]
     ```
     [gateway_mysql_dest]
