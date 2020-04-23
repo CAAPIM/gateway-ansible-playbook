@@ -10,19 +10,15 @@
 - name: Retrieve node properties template from source gateway, update properties, and use it to auto-provision destination Gateway.
   when: configured.rc != 0 # node is not configured yet
   block:
-    - name: Retrieve the Gateway node properties template file. # noqa 305 - no alternative to shell module
-      no_log: true # don't log decrypted passwords
-      shell:
-        cmd: sshpass -p '{{ gateway_ssgconfig_password }}' {{ command_ssh_source_gateway }} {{ command_retrieve_props }}
-      register: template_content
     - name: Create temporary directory to store node properties template files.
       tempfile:
         state: directory
         prefix: "{{ node_props_dir }}"
       register: temp_dir
     - name: Save template text to local file.
+      delegate_to: localhost
       copy:
-        content: "{{ '\r\n'.join(template_content.stdout_lines[2:]) }}" # Ignore first 2 lines of stdout
+        src: gateway_node.properties
         dest: "{{ temp_dir.path }}/{{ inventory_hostname }}.properties"
       register: template_file
     - name: Set values in node properties template file.
