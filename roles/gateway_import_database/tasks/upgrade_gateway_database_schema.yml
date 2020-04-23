@@ -1,10 +1,10 @@
 ---
 # This task upgrade the gateway database version.
 
-- name: Check if Gateway Database Schema needs update
+- name: Check if Gateway Database Schema needs update # noqa 305 - no alternative to shell
   no_log: true # don't log decrypted passwords in responses
   shell:
-    cmd: sshpass -p '{{ ansible_password }}' ssh ssgconfig@{{ inventory_hostname }} 'sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -databaseUgrade' 
+    cmd: sshpass -p '{{ ansible_password }}' ssh ssgconfig@{{ inventory_hostname }} '{{ script_db_schema_upgrade }}'
   register: update
   changed_when: false
   delegate_to: localhost
@@ -15,7 +15,7 @@
   expect:
     command: >
       sshpass -p '{{ ansible_password }}' ssh ssgconfig@{{ inventory_hostname }}
-      'sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -databaseUgrade'
+      '{{ script_db_schema_upgrade }}'
     responses:
       "Perform upgrade?": "y"
       "Enter Administrative Database Username": "{{ database_admin_user }}"
