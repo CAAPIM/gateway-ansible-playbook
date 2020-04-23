@@ -13,19 +13,19 @@ cluster_host: "{{ hostvars[groups['gateway_primary_db'][0]]['dest'] }}" # Cluste
 cluster_pass: "{{ vault_gateway_cluster_pass }}" # Cluster Passphrase
 
 ### Database configurations
+database_host: "{{ cluster_host }}" # Database Hostname
+database_type: mysql  # The database type, either 'mysql' or 'embedded'
+database_name: ssg  # Database Name
+database_port: 3306  # Database Port
 database_admin_user: root  # Administrative Database Username (not required if joining an existing cluster)
 database_admin_pass: "{{ vault_gateway_database_admin_pass }}"  # Administrative Database Password (not required if joining an existing cluster)
 database_user: gateway  # Database Username
 database_pass: "{{ vault_gateway_database_pass }}"  # Database Password
-database_host: "{{ cluster_host }}" # Database Hostname
-database_port: 3306  # Database Port
-database_name: ssg  # Database Name
 
 ### Node configurations, unused properties should be commented out
 node_enable: true  # Node Enabled State
 configure_node: true  # Configure the node_properties
 configure_db: false  # Creates the database
-database_type: mysql  # The database type, either 'mysql' or 'embedded'
 
 ### OTK database export and import is disabled by default. If the OTK database is located in the Gateway MySQL database,
 # then uncomment the following lines and set the OTK database name and credentials.
