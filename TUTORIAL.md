@@ -66,7 +66,7 @@ in `ansible.cfg`, so that the file location does not need supplied as a command-
 
 ## Run Pre-Upgrade Analyzer on Source Gateways
 
-Follow the setup steps in the [README](roles/gateway_preupgrade_analyzer/README.md).
+Follow the setup steps in the [README for gateway_preupgrade_analyzer role](roles/gateway_preupgrade_analyzer/README.md).
 
 Run `ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-preupgrade-analyzer.yml`
 
@@ -77,7 +77,7 @@ Note: If customized, the MySQL 5.7 `my.cnf` file will need to be manually backed
 
 ## Export Gateway Database
 
-Follow the setup steps in the [README](roles/gateway_export_database/README.md)
+Follow the setup steps in the [README for gateway_export_database role](roles/gateway_export_database/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-database-export.yml`
 
@@ -85,7 +85,7 @@ This takes a database dump of the source Gateway database.
 
 ## Backup Gateway Configurations
 
-Follow the setup steps in the [README](roles/gateway_basic_backup/README.md)
+Follow the setup steps in the [README for gateway_basic_backup role](roles/gateway_basic_backup/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-basic-backup.yml`
 
@@ -99,7 +99,7 @@ Follow TechDocs instructions for [Virtual Machine Re-image](https://techdocs.bro
 
 ## Configure Gateway Database Replication
 
-Follow the setup steps in the [README](roles/gateway_replicate_database/README.md).
+Follow the setup steps in the [README for gateway_replicate_database role](roles/gateway_replicate_database/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-database-replication.yml`
 
@@ -108,8 +108,8 @@ This playbook will setup replication on the Gateways listed in the inventory und
 ## Configure Database-Node Gateways
 
 Follow the setup steps in:
-- [README](roles/gateway_primary_db_node/README.md)
-- [README](roles/gateway_processing_node/README.md)
+- [README for gateway_primary_db_node role](roles/gateway_primary_db_node/README.md)
+- [README for gateway_processing_node role](roles/gateway_processing_node/README.md)
 
 `ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-autoprovision-nodes.yml`
 
@@ -142,7 +142,7 @@ This playbook will run a headless configuration of the Gateways.
 
 ## Import Gateway Database
 
-Follow the setup steps in the [README](roles/gateway_import_database/README.md).
+Follow the setup steps in the [README for gateway_import_database role](roles/gateway_import_database/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-database-import.yml`
 
@@ -150,8 +150,7 @@ This will import the database dump from the source Gateway into the new v10 Gate
 
 ## Configure Remaining Processing Gateways 
 
-Follow the setup steps in:
-- [README](roles/gateway_processing_node/README.md)
+Follow the setup steps in the [README for gateway_processing_node role](roles/gateway_processing_node/README.md).
 
 The sample [playbooks/gateway-autoprovision-nodes.yml](playbooks/gateway-autoprovision-nodes.yml) will configure all Gateways.
 However, only need to configure the remaining processing Gateways.
@@ -173,7 +172,7 @@ This playbook will run a headless configuration of the Gateways.
 
 ## Restore Gateway Configurations
 
-Follow the setup steps in the [README](roles/gateway_basic_restore_backup/README.md).
+Follow the setup steps in the [README for gateway_basic_restore_backup role](roles/gateway_basic_restore_backup/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-database-import.yml`
 
@@ -181,7 +180,7 @@ This will restore the backup Gateway configuration files from the earlier backup
 
 ## Update Destination Gateway Schema
 
-Follow the setup steps in the [README](roles/gateway_import_database/README.md).
+Follow the setup steps in the [README for gateway_import_database role](roles/gateway_import_database/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-database-upgrade.yml`
 
@@ -189,7 +188,7 @@ This will update the database schema for Gateway v10.
 
 ## Install License using Policy Manager
 
-Follow the setup steps in the [README](roles/gateway_install_license/README.md).
+Follow the setup steps in the [README for gateway_install_license role](roles/gateway_install_license/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-install-license.yml`
 
@@ -202,7 +201,7 @@ to manually remove it using Policy Manager.
 
 If Gateway hostnames were changed after re-imaging, then you would perform this step at this point in the upgrade. 
 
-Follow the setup steps in the [README](roles/gateway_update_otk_hostnames/README.md).
+Follow the setup steps in the [README for gateway_update_otk_hostnames role](roles/gateway_update_otk_hostnames/README.md).
 
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-update-otk-hostnames.yml`
 
