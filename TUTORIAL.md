@@ -181,7 +181,7 @@ Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-datab
 
 This will update the database schema for Gateway v10.
 
-## Install license using Policy Manager
+## Install License using Policy Manager
 
 Follow the setup steps in the [README](roles/gateway_install_license/README.md).
 
