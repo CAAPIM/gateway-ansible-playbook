@@ -50,7 +50,7 @@
         cmd: cat {{ template_file.dest }} | sshpass -p '{{ gateway_ssgconfig_password }}' {{ command_ssh_dest_gateway }} '{{ command_autoprovision_node }}'
       register: status
       failed_when: "'Configuration Successful' not in status.stdout"
-    - name: Clean temporary directory
+    - name: Clean node properties temporary directory
       file:
         state: absent
         path: "{{ temp_dir.path }}/"
