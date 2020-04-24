@@ -13,6 +13,10 @@ Review the expedited upgrade documentation on TechDocs:
 - [Automated Expedited Upgrade Procedure](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/install-configure-upgrade/upgrade-the-gateway/upgrade-an-appliance-gateway/automated-expedited-upgrade.html)
 - [Post Expedited Upgrade Tasks](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/install-configure-upgrade/upgrade-the-gateway/upgrade-an-appliance-gateway/post-upgrade-tasks.html)
 
+Outline of the upgrade steps to follow:
+
+![Steps for in-place upgrade](https://techdocs.broadcom.com/content/dam/broadcom/techdocs/us/en/assets/docops/gateway/ansibleAutoReimage.png/_jcr_content/renditions/original)
+
 ## Scenario
 
 For context, the upgrade scenario we will use is an expedited in-place upgrade for a Virtual Appliance Gateway cluster, which will re-use existing VM resources:
