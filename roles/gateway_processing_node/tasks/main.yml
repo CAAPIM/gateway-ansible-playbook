@@ -7,15 +7,15 @@
   changed_when: false
   failed_when: false
 
-- name: Retrieve node properties template from source gateway, update properties, and use it to auto-provision destination Gateway.
+- name: Populate node properties template and use it to auto-provision destination Gateway.
   when: configured.rc != 0 # node is not configured yet
   block:
-    - name: Create temporary directory to store node properties template files.
+    - name: Create temporary directory to store node properties template file.
       tempfile:
         state: directory
         prefix: "{{ node_props_dir }}"
       register: temp_dir
-    - name: Save template text to local file.
+    - name: Copy template file to temporary directory.
       delegate_to: localhost
       copy:
         src: gateway_node.properties
