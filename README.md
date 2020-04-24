@@ -126,3 +126,7 @@ Remember to set back to true when debugging is done.
     cmd: mysqldump {{ database_name }} --routines -u{{ database_user}}  -p{{ database_pass }} > {{remote_db_temp_dir}}/ssg.sql
 ```
 * For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html)   
+
+## Tutorial
+
+A walkthrough for how to configure and run playbooks for an in-place Gateway upgrade scenario is available in the [TUTORIAL.md](TUTORIAL.md).
