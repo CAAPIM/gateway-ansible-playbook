@@ -11,8 +11,8 @@ Group Variables
 ---------------
 file: `group_vars/all/vars`.
 
-Configure the variables under the "Node Configurations" section.
-Defaults are provided for most of them. Note: defaults assume that the `cluster_host` is the Gateway in the inventory group `gateway_primary_db_node`, and that the `database_host` is the same as the `cluster_host`.
+Configure the variables under the "Node Configurations" and "Database configurations" section.
+Defaults are provided for most of them. Note: defaults assume that the `cluster_host` is the Gateway in the inventory group `gateway_primary_db`, and that the `database_host` is the same as the `cluster_host`.
 
 Role Variables
 --------------
@@ -24,12 +24,4 @@ Dependencies
 
 Example Playbook
 ------------
-```yaml
-- name: Add processing nodes to the new cluster with the destination (primary database node) Gateway.
-  hosts: gateway_processing_node
-  connection: local
-  vars:
-    ansible_python_interpreter: "{{ ansible_playbook_python }}"
-  roles:
-    - gateway_processing_node
-```
+[gateway-autoprovision-nodes](/playbooks/gateway-autoprovision-nodes.yml)
