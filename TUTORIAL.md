@@ -119,6 +119,7 @@ Create a new playbook `playbooks/gateway-autoprovision-database-nodes.yml` conta
   hosts: gateway_primary_db
   vars:
     ansible_connection: local
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
     - gateway_primary_db_node
 
@@ -128,6 +129,7 @@ Create a new playbook `playbooks/gateway-autoprovision-database-nodes.yml` conta
     name: gateway_processing_node
   vars:
     ansible_connection: local
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
     configure_db: true
 ```
 
@@ -157,6 +159,7 @@ Create a new playbook `playbooks/gateway-autoprovision-processing-nodes.yml` con
   hosts: gateway_processing_node
   vars:
     ansible_connection: local
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
     - gateway_processing_node
 ```
