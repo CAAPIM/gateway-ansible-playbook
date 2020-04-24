@@ -112,7 +112,7 @@ Follow the setup steps in:
 - [README for gateway_processing_node role](roles/gateway_processing_node/README.md)
 
 The sample [playbooks/gateway-autoprovision-nodes.yml](playbooks/gateway-autoprovision-nodes.yml) will configure all Gateways.
-However, we can only configure the two re-images nodes right now.
+However, we can only configure the two re-imaged nodes right now.
 
 Create a new playbook `playbooks/gateway-autoprovision-database-nodes.yml` containing
 ```yml
