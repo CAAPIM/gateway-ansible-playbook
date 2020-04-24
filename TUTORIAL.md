@@ -199,7 +199,7 @@ to manually remove it using Policy Manager.
 
 ## Update Hostnames used by OAuth Toolkit
 
-** This step does not apply for this scenario! Gateway hostnames are not being changed. **
+**This step does not apply for this scenario! Gateway hostnames are not being changed.**
 
 If Gateway hostnames were changed after re-imaging, then you would perform this step at this point in the upgrade. 
 
@@ -214,6 +214,10 @@ This will update the Gateway hostnames used by OAuth Toolkit.
 Run `​ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-restart.yml`
 
 This will restart all of the Gateways in the upgraded cluster. 
+
+## Post-Upgrade Tasks
+
+Run any post-upgrade tasks that apply, based on the pre-upgrade analyzer report, documentation for the previous steps, and the TechDocs page for [Post Expedited Upgrade Tasks](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/install-configure-upgrade/upgrade-the-gateway/upgrade-an-appliance-gateway/post-upgrade-tasks.html).
 
 ## Verify the Upgraded Gateways
 
