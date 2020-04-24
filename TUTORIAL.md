@@ -19,7 +19,7 @@ Outline of the upgrade steps to follow:
 ## Scenario
 
 For context, the upgrade scenario we will use is an expedited in-place upgrade for a Virtual Appliance Gateway cluster, which will re-use existing VM resources:
-- Starting Point: a Gateway v9.4 cluster with 3 nodes, GW appliance's MySQL v5.7 is configured with failover, and OAuth Toolkit v4.3.1 is installed
+- Starting Point: a Gateway v9.4 cluster with 3 nodes, Gateway MySQL v5.7 database is configured with failover, and OAuth Toolkit v4.3.1 is installed
 
 - Upgraded Gateways: same as above but with v10.0 Gateways which run a MySQL v8 database.
 
