@@ -24,4 +24,4 @@ Dependencies
 
 Example Playbook
 ------------
-[gateway-autoprovision-nodes](/playbooks/gateway-autoprovision-nodes.yml)
+[sample-cluster-migration](/playbooks/sample-cluster-migration.yml)
