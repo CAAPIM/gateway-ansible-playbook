@@ -1,6 +1,5 @@
 # Tutorial
 
-
 This tutorial will walk through the basic workflow of using the Gateway Ansible playbooks and roles.
 
 The exact steps for your upgrade are likely to differ, so the process needs to be adapted to your environment.
