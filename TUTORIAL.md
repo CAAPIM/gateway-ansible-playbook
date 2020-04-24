@@ -73,7 +73,7 @@ Run `ansible-playbook -i inventories/tutorial/hosts ./playbooks/gateway-preupgra
 A report is generated, which shows output from a MySQL 8 upgrade checker utility, and lists items that you 
 may need to manually move over to the upgraded Gateways at the end of this process. Review this report before proceeding. 
 
-Note: If customized, the MySQL 5.7 `my.cnf` file will need to be manually backed up and migrated.
+Note: If customized, the MySQL 5.7 `my.cnf` file will need to be manually backed up and migrated after re-imaging the database node Gateways.
 
 ## Export Gateway Database
 
