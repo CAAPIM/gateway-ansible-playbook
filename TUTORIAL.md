@@ -57,7 +57,7 @@ all:
 
 ## Setup Passwords
 
-Enter Gateway passwords in the inventory's `/group_vars/vault` file. 
+Enter Gateway passwords in the inventory's `/group_vars/all/vault` file. 
 Refer to [Ansible Vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html).
 
 The commands in this guide assume you are using a vault password file to encrypt the vault file, 
