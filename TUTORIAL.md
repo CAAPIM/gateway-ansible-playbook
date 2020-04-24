@@ -27,7 +27,7 @@ For context, the upgrade scenario we will use is an expedited in-place upgrade f
 
 Copy the [inventories/sample](/inventories/sample) directory to `inventories/tutorial`.
 
-Update the `hosts` file in this new directory with your Gateway deployment information. Guidelines are [here](inventories/README.md).
+Update the `hosts.yml` file in this new directory with your Gateway deployment information. Guidelines are [here](inventories/README.md).
 
 Note: for this scenario, the upgraded and source Gateway hostnames are identical!
 
@@ -68,7 +68,7 @@ in `ansible.cfg`, so that the file location does not need supplied as a command-
 
 Follow the setup steps in the [README for gateway_preupgrade_analyzer role](roles/gateway_preupgrade_analyzer/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-preupgrade-analyzer.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-preupgrade-analyzer.yml`
 
 A report is generated, which shows output from a MySQL 8 upgrade checker utility, and lists items that you 
 may need to manually move over to the upgraded Gateways at the end of this process. Review this report before proceeding. 
@@ -79,7 +79,7 @@ Note: If customized, the MySQL 5.7 `my.cnf` file will need to be manually backed
 
 Follow the setup steps in the [README for gateway_export_database role](roles/gateway_export_database/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-database-export.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-export.yml`
 
 This takes a database dump of the source Gateway database.
 
@@ -87,7 +87,7 @@ This takes a database dump of the source Gateway database.
 
 Follow the setup steps in the [README for gateway_basic_backup role](roles/gateway_basic_backup/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-basic-backup.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-basic-backup.yml`
 
 This will backup Gateway configuration files on the file system for each source Gateway.
 
@@ -101,7 +101,7 @@ Follow TechDocs instructions for [Virtual Machine Re-image](https://techdocs.bro
 
 Follow the setup steps in the [README for gateway_replicate_database role](roles/gateway_replicate_database/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-database-replication.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-replication.yml`
 
 This playbook will setup replication on the Gateways listed in the inventory under groups `gateway_primary_db` and `gateway_failover_db`.
 
@@ -134,7 +134,7 @@ Create a new playbook `playbooks/gateway-autoprovision-database-nodes.yml` conta
     configure_db: true
 ```
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-autoprovision-database-nodes.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-autoprovision-database-nodes.yml`
 
 This playbook will run a headless configuration of the Gateways.
 
@@ -142,7 +142,7 @@ This playbook will run a headless configuration of the Gateways.
 
 Follow the setup steps in the [README for gateway_import_database role](roles/gateway_import_database/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-database-import.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-import.yml`
 
 This will import the database dump from the source Gateway into the new v10 Gateway listed under the `gateway_primary_db` inventory group.
 
@@ -164,7 +164,7 @@ Create a new playbook `playbooks/gateway-autoprovision-processing-nodes.yml` con
     - gateway_processing_node
 ```
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-autoprovision-processing-nodes.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-autoprovision-processing-nodes.yml`
 
 This playbook will run a headless configuration of the Gateways.
 
@@ -172,7 +172,7 @@ This playbook will run a headless configuration of the Gateways.
 
 Follow the setup steps in the [README for gateway_basic_restore_backup role](roles/gateway_basic_restore_backup/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-database-import.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-import.yml`
 
 This will restore the backup Gateway configuration files from the earlier backup step.
 
@@ -180,7 +180,7 @@ This will restore the backup Gateway configuration files from the earlier backup
 
 Follow the setup steps in the [README for gateway_import_database role](roles/gateway_import_database/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-database-upgrade.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-upgrade.yml`
 
 This will update the database schema for Gateway v10.
 
@@ -188,7 +188,7 @@ This will update the database schema for Gateway v10.
 
 Follow the setup steps in the [README for gateway_install_license role](roles/gateway_install_license/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-install-license.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-install-license.yml`
 
 This will install your license file onto the Gateway cluster. The existing v9 license is not removed, you will need
 to manually remove it using Policy Manager.
@@ -201,13 +201,13 @@ If Gateway hostnames were changed after re-imaging, then you would perform this 
 
 Follow the setup steps in the [README for gateway_update_otk_hostnames role](roles/gateway_update_otk_hostnames/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-update-otk-hostnames.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-update-otk-hostnames.yml`
 
 This will update the Gateway hostnames used by OAuth Toolkit.
 
 ## Restart Gateways 
 
-Run `ansible-playbook -i inventories/tutorial/hosts playbooks/gateway-restart.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-restart.yml`
 
 This will restart all of the Gateways in the upgraded cluster. 
 
