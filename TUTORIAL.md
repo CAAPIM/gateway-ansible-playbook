@@ -61,8 +61,8 @@ Enter Gateway passwords in the inventory's `/group_vars/vault` file.
 Refer to [Ansible Vault](https://docs.ansible.com/ansible/latest/user_guide/vault.html).
 
 The commands in this guide assume you are using a vault password file to encrypt the vault file, 
-and that you have [configured the path](https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html) 
-in `ansible.cfg` so it does not need supplied as a command-line argument in every step.
+and that you have [configured the path to the vault password file](https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html) 
+in `ansible.cfg`, so that the file location does not need supplied as a command-line argument in every step.
 
 ## Run Pre-Upgrade Analyzer on Source Gateways
 
