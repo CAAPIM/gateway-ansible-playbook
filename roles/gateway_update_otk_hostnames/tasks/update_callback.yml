@@ -4,7 +4,7 @@
 
 - name: Update OTK callback urls containing [{{ old_callback_hostname }}] to [{{ new_callback_hostname }}] # noqa 305 must use shell
   when: old_callback_hostname and new_callback_hostname
-  no_log: "{{ no_log }}" # don't log decrypted passwords in responses
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   shell:
     cmd: >
       mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e

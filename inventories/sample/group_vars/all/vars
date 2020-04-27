@@ -49,7 +49,7 @@ port_gateway_health_check: 8080 # default HTTP port is 8080
 port_gateway_ssh: 22
 
 # Default not to log sensitive information
-no_log: true
+no_log_flag: true
 
 ### File Locations
 # License bootstrapping configurations
