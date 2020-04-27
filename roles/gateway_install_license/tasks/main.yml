@@ -11,7 +11,7 @@
   with_fileglob: "{{ controller_dir_license_location }}/*.xml"
 
 - name: configure Gateway license
-  no_log: true # don't log decrypted passwords in responses
+  no_log: "{{ no_log }}" # don't log decrypted passwords in responses
   expect:
     command: sshpass -p '{{ gateway_ssgconfig_password }}' ssh {{ ansible_ssh_extra_args }} ssgconfig@{{ inventory_hostname }}
     timeout: "{{ gateway_ssh_timeout }}"

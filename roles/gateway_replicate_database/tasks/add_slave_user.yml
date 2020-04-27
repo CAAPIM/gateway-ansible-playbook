@@ -1,5 +1,5 @@
 - name: Run add_slave_user.sh on {{ master_node }}
-  no_log: true # don't log decrypted passwords in responses
+  no_log: "{{ no_log }}" # don't log decrypted passwords in responses
   expect:
     command: >
       sshpass -p '{{ hostvars[master_node].ansible_ssh_pass }}' ssh {{ ansible_ssh_extra_args }}

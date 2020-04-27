@@ -48,6 +48,9 @@ port_gateway_health_check: 8080 # default HTTP port is 8080
 # Port used for SSH on Gateways
 port_gateway_ssh: 22
 
+# Default not to log sensitive information
+no_log: true
+
 ### File Locations
 # License bootstrapping configurations
 gateway_bootstrap_dir: "/opt/SecureSpan/Gateway/node/default/etc/bootstrap"  # Don't modify. Gateway server bootstrap location.

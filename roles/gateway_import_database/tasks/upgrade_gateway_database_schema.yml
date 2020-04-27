@@ -2,7 +2,7 @@
 # This task upgrade the gateway database version.
 
 - name: upgrading Gateway Database Schema after import database
-  no_log: true # don't log decrypted passwords in responses
+  no_log: "{{ no_log }}" # don't log decrypted passwords in responses
   expect:
     command: >
       sshpass -p '{{ ansible_password }}' ssh ssgconfig@{{ inventory_hostname }}

@@ -4,7 +4,7 @@
 
 - name: Update hostnames in OTK JDBC connections # noqa 305 must use shell
   when: old_otk_jdbc_hostname and new_otk_jdbc_hostname
-  no_log: true # don't log decrypted passwords in responses
+  no_log: "{{ no_log }}" # don't log decrypted passwords in responses
   shell:
     cmd: >
       mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e

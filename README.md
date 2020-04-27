@@ -116,14 +116,10 @@ For example: -vvv for more, -vvvv to enable connection debugging.
 ansible-playbook -i ./inventories/sample gateway-autoprovision-nodes.yml -vvvv
 ```
 * Role task level:
-To keep sensitive values such as decrypted password out of your logs, tasks that expose them are marked with the no_log: true attribute.
-For debugging purpose, you can change setting to "no_log: false " temporarily to enable Ansible output on your terminal. 
-Remember to set back to true when debugging is done.
+To keep sensitive values such as decrypted password out of your logs, tasks that expose them are marked with the no_log attribute and set to true by default.
+For debugging purpose, you can override "no_log" default at the command line to enable Ansible output on your terminal temporarily. 
 ```
-- name: Dump gateway source database
-  no_log: true # don't log decrypted passwords in responses
-  shell: 
-    cmd: mysqldump {{ database_name }} --routines -u{{ database_user}}  -p{{ database_pass }} > {{remote_db_temp_dir}}/ssg.sql
+ansible-playbook playbooks/gateway-autoprovision-nodes.yml --extra-vars no_log=flase
 ```
 * For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html)   
 
