@@ -10,11 +10,11 @@
 
 - name: Set failover hostname
   set_fact:
-    failover_hostname: "{{ groups['gateway_failover_db'] | first }}"
+    failover_hostname: "{{ groups['gateway_failover_db'] | first }}.inventory_hostname"
 
 - name: Set master hostname
   set_fact:
-    master_hostname: "{{ groups['gateway_primary_db'] | first }}"
+    master_hostname: "{{ groups['gateway_primary_db'] | first }}.inventory_hostname"
 
 - name: Run add_slave_user.sh on master node
   include: add_slave_user.yml
