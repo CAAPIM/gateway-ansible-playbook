@@ -1,4 +1,7 @@
 ---
+# This playbook will cleanup temporary files from the gateway_basic_backup role on the Ansible controller.
+# See the readme under roles/gateway_controller_cleanup for setup instructions.
+
 - name: Delete temp files created by gateway-basic-backup role.
   hosts: localhost
   connection: local

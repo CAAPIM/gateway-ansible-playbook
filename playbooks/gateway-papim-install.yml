@@ -1,4 +1,7 @@
 ---
+# This playbook will install PAPIM on Gatways.
+# See the readme under roles/gateway_papim_install for setup instructions.
+
 - hosts: gateway_papim_install
   gather_facts: no
   become: true

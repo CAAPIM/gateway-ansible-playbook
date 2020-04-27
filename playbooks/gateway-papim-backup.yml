@@ -1,4 +1,7 @@
 ---
+# This playbook will backup PAPIM configurations.
+# See the readme under roles/gateway_papim_backup for setup instructions.
+
 - hosts: gateway_papim_source
   become: true # Note: only set to false if the ansible_user is root or has root privileges.
                # Setting true will also cause poor performance with the module_fetch and cause

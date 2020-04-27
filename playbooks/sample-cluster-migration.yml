@@ -1,3 +1,4 @@
+---
 # This sample playbook will perform an expedited upgrade on a source Gateway cluster (with
 # one primary database Gateway and the remainder as processing Gateways) to another cluster.
 #
@@ -10,8 +11,6 @@
 # - Run from the project root directory.
 # ansible-playbook playbooks/sample-cluster-migration.yml -i inventories/demo/hosts --vault-password-file vault-password-file.txt
 #
-
----
 
 - name: Update expired passwords on new Gateways.
   hosts: gateway

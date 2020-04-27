@@ -1,4 +1,7 @@
 ---
+# This playbook will restore Gateway configurations backed up by the gateway_basic_backup role.
+# See the readme under roles/gateway_restore_basic_backup for setup instructions.
+
 - name: Run gateway restore backup against provided list of gateways
   hosts: gateway
   gather_facts: no
