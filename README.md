@@ -119,7 +119,7 @@ ansible-playbook -i ./inventories/sample gateway-autoprovision-nodes.yml -vvvv
 To keep sensitive values such as decrypted password out of your logs, tasks that expose them are marked with the no_log attribute and set to true by default.
 For debugging purpose, you can override "no_log" default at the command line to enable Ansible output on your terminal temporarily. 
 ```
-ansible-playbook playbooks/gateway-autoprovision-nodes.yml --extra-vars no_log=flase
+ansible-playbook playbooks/gateway-autoprovision-nodes.yml --extra-vars no_log=false
 ```
 * For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html)   
 
