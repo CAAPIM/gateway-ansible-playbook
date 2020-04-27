@@ -4,13 +4,13 @@
 - name: Grant gateway all privileges to database
   shell:
    cmd: mysql -u{{ database_admin_user }}  -p{{ database_admin_pass }} -e "GRANT ALL PRIVILEGES ON *.* TO '{{ database_user }}'@'%'; flush privileges;"
-  no_log: true
+  no_log: "{{ no_log_flag }}"
   when: inventory_hostname in groups['gateway_mysql']
 
 - name: Run Mysql8 Compatibility Checker
   shell:
     cmd: mysqlsh {{ database_user }}:{{ database_pass }}@{{ inventory_hostname }}:{{ database_port }} -e "util.checkForServerUpgrade();"
-  no_log: true
+  no_log: "{{ no_log_flag }}"
   ignore_errors: True
   register: report_mysql8_compatibility_check
   delegate_to: localhost

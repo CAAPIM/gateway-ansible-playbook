@@ -2,7 +2,7 @@
 # These tasks will update the Gateway cluster.hostname property with then new hostname.
 
 - name: Read old cluster.hostname cluster property # noqa 305 must use shell
-  no_log: true # don't log decrypted passwords in responses
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   shell:
     cmd: >
       mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -s -N -e
@@ -16,7 +16,7 @@
 
 - name: Update Gateway cluster.hostname cluster property from [{{ old_cluster_hostname }}] to [{{ new_cluster_hostname }}] # noqa 305 must use shell
   when: old_cluster_hostname and new_cluster_hostname
-  no_log: true # don't log decrypted passwords in responses
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   shell:
     cmd: >
       mysql -u{{ db_user }}  -p{{ db_pass }} {{ db_name }} -e
