@@ -58,6 +58,10 @@ For more detailed view, use option `--list`
 ansible-inventory --list -i ./inventory/sample/hosts.yml
 ```
 Output:
+<details>
+<summary>Click here to show output</summary>
+<p>
+
 ```
 {
     "_meta": {
@@ -306,4 +310,5 @@ Output:
 }
 ```
 
-
+</p>
+</details>
