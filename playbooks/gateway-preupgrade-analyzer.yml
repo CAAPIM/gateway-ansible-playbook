@@ -1,4 +1,7 @@
 ---
+# This playbook will run the Gatweay pre-upgrade analayzer to generate a report on database compatibility and potential post-upgrade tasks.
+# See the readme under roles/gateway_preupgrade_analyzer for setup instructions.
+
 - name: Detect source gateways
   hosts: gateway
   gather_facts: no

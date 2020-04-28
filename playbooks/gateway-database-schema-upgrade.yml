@@ -1,3 +1,6 @@
+---
+# This playbook will upgrade the schema version of the Gateway database.
+# See the readme under roles/gateway_import_database for setup instructions.
 
 - name: Upgrade database schema in destination gateway
   hosts: gateway_primary_db

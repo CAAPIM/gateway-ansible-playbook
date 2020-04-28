@@ -1,3 +1,6 @@
+---
+# This playbook will update passwords, setup MySQL and configure a Gateway cluster without Gateway database replication. 
+# See the readme under roles/gateway_common, roles/gateway_gateway_primary_db_node, and roles/gateway_processing_node for setup instructions.
 
 - hosts: gateway
   vars:

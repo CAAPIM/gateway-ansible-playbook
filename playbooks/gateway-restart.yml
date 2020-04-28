@@ -1,8 +1,8 @@
 ---
-
 # This playbook will restart all destination Gateways at once.
 # For rolling restart, you can uncomment the line: `serial: 1` to restart one Gateway at a time.
 # The batch size may be increased from 1 if desired, and should be no more than the number of Gateways in the cluster.
+
 - name: Restart all destination Gateways
   hosts: gateway
   gather_facts: no

@@ -1,4 +1,7 @@
 ---
+# This playbook will backup Gateway configurations and store them on the Ansible controller. 
+# See the readme under roles/gateway_basic_backup for setup instructions.
+
 - name: run gateway backup against provided list of gateways
   hosts: gateway
   become:
