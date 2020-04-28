@@ -1,6 +1,30 @@
 ---
-# ansible-playbook gateway-preupgrade-analyzer.yml
-- name: run pre upgrade analyser on all gateway hosts
+- name: Detect source gateways
   hosts: gateway
+  gather_facts: no
+  tasks:
+    - name: collect src hosts
+      add_host:
+        hostname: "{{ hostvars[item].src }}"
+        ansible_connection: "ssh"
+        groups:
+          - gateway_src
+          - gateway
+      with_items: "{{ groups['gateway'] }}"
+
+- name: Detect source gateway mysql nodes
+  hosts: gateway_mysql
+  gather_facts: no
+  tasks:
+    - name: collect src hosts
+      add_host:
+        hostname: "{{ hostvars[item].src }}"
+        ansible_connection: "ssh"
+        groups:
+          - gateway_mysql
+      with_items: "{{ groups['gateway_mysql'] }}"
+
+- name: run pre upgrade analyser on all gateway hosts
+  hosts: gateway_src
   roles:
     - gateway_preupgrade_analyzer

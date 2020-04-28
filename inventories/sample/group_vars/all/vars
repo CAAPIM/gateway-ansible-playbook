@@ -9,23 +9,23 @@ gateway_ssgconfig_password: "{{ vault_gateway_ssgconfig_password }}"
 gateway_root_password: "{{ vault_gateway_root_password }}"
 policy_manager_admin_user: admin  # CA API Gateway Policy Manager Username (not required if joining an existing cluster)
 policy_manager_admin_pass: "{{ vault_policy_manager_admin_pass }}" # CA API Gateway Policy Manager Password (not required if joining an existing cluster)
-cluster_host: "{{ hostvars[groups['gateway_primary_db'][0]]['dest'] }}" # Cluster Host (not required if joining an existing cluster)
+cluster_host: "{{ hostvars[groups['gateway_primary_db'][0]].inventory_hostname }}" # Cluster Host (not required if joining an existing cluster)
 cluster_pass: "{{ vault_gateway_cluster_pass }}" # Cluster Passphrase
 
 ### Database configurations
+database_host: "{{ cluster_host }}" # Database Hostname
+database_type: mysql  # The database type, either 'mysql' or 'embedded'
+database_name: ssg  # Database Name
+database_port: 3306  # Database Port
 database_admin_user: root  # Administrative Database Username (not required if joining an existing cluster)
 database_admin_pass: "{{ vault_gateway_database_admin_pass }}"  # Administrative Database Password (not required if joining an existing cluster)
 database_user: gateway  # Database Username
 database_pass: "{{ vault_gateway_database_pass }}"  # Database Password
-database_host: "{{ cluster_host }}" # Database Hostname
-database_port: 3306  # Database Port
-database_name: ssg  # Database Name
 
 ### Node configurations, unused properties should be commented out
 node_enable: true  # Node Enabled State
 configure_node: true  # Configure the node_properties
 configure_db: false  # Creates the database
-database_type: mysql  # The database type, either 'mysql' or 'embedded'
 
 ### OTK database export and import is disabled by default. If the OTK database is located in the Gateway MySQL database,
 # then uncomment the following lines and set the OTK database name and credentials.
@@ -47,6 +47,9 @@ port_gateway_health_check: 8080 # default HTTP port is 8080
 
 # Port used for SSH on Gateways
 port_gateway_ssh: 22
+
+# Default not to log sensitive information
+no_log_flag: true
 
 ### File Locations
 # License bootstrapping configurations

@@ -10,13 +10,16 @@
 
 - name: Set failover hostname
   set_fact:
-    failover_hostname: "{{ groups['gateway_failover_db'] | first }}"
+    failover_hostname: "{{ groups['gateway_failover_db'] | first }}.inventory_hostname"
 
+- name: Set master hostname
+  set_fact:
+    master_hostname: "{{ groups['gateway_primary_db'] | first }}.inventory_hostname"
 
 - name: Run add_slave_user.sh on master node
   include: add_slave_user.yml
   vars:
-    - master_node: "{{ inventory_hostname }}"
+    - master_node: "{{ master_hostname }}"
     - slave_node: "{{ failover_hostname }}"
     - node_type: "1"
   delegate_to: localhost
@@ -25,15 +28,14 @@
   include: add_slave_user.yml
   vars:
     - master_node: "{{ failover_hostname }}"
-    - slave_node: "{{ inventory_hostname }}"
+    - slave_node: "{{ master_hostname  }}"
     - node_type: "2"
   delegate_to: localhost
-
 
 - name: Run create_slave.sh on master node
   include: create_slave.yml
   vars:
-    - master_node: "{{ inventory_hostname }}"
+    - master_node: "{{ master_hostname }}"
     - slave_node: "{{ failover_hostname }}"
   delegate_to: localhost
 
@@ -41,9 +43,8 @@
   include: create_slave.yml
   vars:
     - master_node: "{{ failover_hostname }}"
-    - slave_node: "{{ inventory_hostname }}"
+    - slave_node: "{{ master_hostname }}"
   delegate_to: localhost
-
 
 - name: Verify replication has started on master node
   include: verify_replication.yml

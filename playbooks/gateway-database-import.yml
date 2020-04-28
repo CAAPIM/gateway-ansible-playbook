@@ -1,7 +1,7 @@
 ---
 # Runs mysql to get gateway and OTK database import against all the hosts
 - name: Execute mysql import in destination gateway
-  hosts: gateway_mysql_dest
+  hosts: gateway_primary_db
   serial: 1
   strategy: free
   pre_tasks:
