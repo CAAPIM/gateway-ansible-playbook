@@ -44,13 +44,17 @@ Under group_vars/all/vars
 * otkdb_userpwd - new otk user password, please uncomment out this variable if OTK installed in the gateway server
 
     ```
-    # otk database export and import is disabled by default. If OTK database share the same sever as gateway database,
-    # please uncomment following 3 line and fill with OTK database name, user name and password
-    #*otkdb_name: otk_db
-    #otkdb_user: otk_user
-    #otkdb_userpwd: '{{ vault_gateway_database_pass }}'
-     
-     ``` 
+    #### OTK Database Configurations (if OTK database is in the Gateway MySQL database, uncomment & set these properties)
+    
+    # OTK Database Name
+    # otkdb_name: otk_db
+    
+    # OTK Database User
+    # otkdb_user: otk_user
+    
+    # Password for OTK Database User
+    # otkdb_userpwd: "{{ vault_otk_database_pass }}"
+    ```
  
 
 * command_mysql_create_otkuser - command to create new otk user

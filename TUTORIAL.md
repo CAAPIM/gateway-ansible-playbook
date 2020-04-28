@@ -64,6 +64,14 @@ The commands in this guide assume you are using a vault password file to encrypt
 and that you have [configured the path to the vault password file](https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html) 
 in `ansible.cfg`, so that the file location does not need supplied as a command-line argument in every step.
 
+## Setup Gateway Configurations
+
+Review and update property values in the inventory's `/group_vars/all/vars` file. In general, the property values of the source Gateway/cluster must be entered
+in this file. 
+
+After the expedited upgrade process is completed, post-upgrade alterations can be made on the Gateways (e.g. password rotations) manually or by
+extending this project.
+
 ## Run Pre-Upgrade Analyzer on Source Gateways
 
 Follow the setup steps in the [README for gateway_preupgrade_analyzer role](roles/gateway_preupgrade_analyzer/README.md).

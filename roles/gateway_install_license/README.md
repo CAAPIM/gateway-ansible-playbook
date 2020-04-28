@@ -6,6 +6,8 @@ This role installs licenses on a Gateway cluster. It needs to be run on only one
 Requirements
 ------------
 * Place license (*.xml) files on the control node in the directory (default /tmp/license) defined in `controller_dir_license_location` (see Role Variables section). 
+* Create this directory and copy all license files to this folder if it does not exist.
+* User for running Ansible should have access to this directory and files within it.
 
 * Specify gateway's hostname/IP in the hosts file [gateway_primary_db]] section.
     ```

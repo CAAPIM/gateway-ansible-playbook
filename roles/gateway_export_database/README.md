@@ -43,13 +43,17 @@ Under group_vars/all/vars
 * otkdb_name - otk database name, It's commented out by default. Please uncomment out this variable if OTK installed in the gateway server. 
 
     ```
-    # otk database export and import is disabled by default. If OTK database share the same sever as gateway database,
-    # please uncomment following 3 line and fill with OTK database name, user name and password
-    #*otkdb_name: otk_db
-    #otkdb_user: otk_user
-    #otkdb_userpwd: '{{ vault_gateway_database_pass }}'
-     
-     ``` 
+    #### OTK Database Configurations (if OTK database is in the Gateway MySQL database, uncomment & set these properties)
+    
+    # OTK Database Name
+    # otkdb_name: otk_db
+    
+    # OTK Database User
+    # otkdb_user: otk_user
+    
+    # Password for OTK Database User
+    # otkdb_userpwd: "{{ vault_otk_database_pass }}"
+    ```
  
 Under role gatway_export_database/vars/main.yml
 * database_admin_pass - please use "steps to created vaulted db password" to encrypt mysql root user's password if using option 2 above

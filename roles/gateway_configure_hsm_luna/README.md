@@ -50,7 +50,9 @@ Place the required files under the `files` directory:
 Variables
 ------------
 **Note**: These variables need to be set in the host_vars/luna*.placeholder.com.yml file. If your are using another version of luna client 
-, please create a new host_vars file under the folder host_vars, and use the same name as your hostname
+, please create a new host_vars file under the folder host_vars, and use the same name as your hostname.
+
+Utilize Ansible Vault for these configurations.
 
 * hsm_user: user name for SafeNet HSM server
 * hsm_pass: password for SafeNet HSM server
