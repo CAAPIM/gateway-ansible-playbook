@@ -16,12 +16,6 @@ Requirements
      ```  
 * Must be able to ssh from the Ansible controller to the source gateway as user ssgconfig. 
 * Specify source gateway's hostname/ip in the hosts.yml file [gateway_mysql] section.
-    ``` 
-    [gateway_mysql_source]
-    10.175.245.xxx
-    yyy.placeholder.com
-     
-     ```  
 
 Role Variables
 --------------

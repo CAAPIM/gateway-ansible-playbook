@@ -8,20 +8,7 @@ Requirements
 * Gateway database has to be created before running import script. 
 To setup gateway database, please run playbook gateway-autoprovision-nodes.yml.
 
-* Must be able to ssh from the Ansible controller to the  destination gateway as user root using encrypted password. 
-    Specify source gateway's hostname/IP in the hosts file [gateway_mysql] section. source hostname/IP match [gateway_mysql_source]
-    ```
-    [gateway_mysql_dest]
-    10.175.244.yyy  source=10.175.245.xxx
-    xxx.placeholder.com source=yyy.placeholder.com 
-  
-    
-    [gateway_mysql_source]
-    10.175.245.xxx
-    yyy.placeholder.com
-     ```   
-
-
+* ssh connect to remote destination gateway as user root using encrypted password. 
 
 Role Variables
 --------------
@@ -71,6 +58,10 @@ Dependencies
 It depends on role gateway_configure_processing_node to setup destination gateway and database,
 gateway_export_database to store db dump zip file in local directory and 
 gateway_common/stop_gateway to stop the gateway service
+
+**NOTICE**
+
+**ALL** gateways in the same cluster should be stopped before import database. This is to ensure data consistency while import is running.
 
 Example Playbook
 ------------
