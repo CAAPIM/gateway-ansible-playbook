@@ -19,7 +19,7 @@ gateway_ssgconfig_password: "{{ vault_gateway_ssgconfig_password }}"
 gateway_root_password: "{{ vault_gateway_root_password }}"
 
 # Password for Gateway Policy Manager Admin User
-policy_manager_admin_user: admin  # CA API Gateway Policy Manager Username (not required if joining an existing cluster)
+policy_manager_admin_user: admin
 
 # Password for Gateway Policy Manager admin account
 policy_manager_admin_pass: "{{ vault_policy_manager_admin_pass }}"
