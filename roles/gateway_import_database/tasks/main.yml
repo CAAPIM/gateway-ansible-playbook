@@ -42,7 +42,7 @@
     - name: create otk user if not exists # noqa 305 must use shell
       no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
       shell:
-        cmd: mysql -u {{ database_admin_user }} -p{{ database_admin_passpwd }} -e "{{ command_mysql_create_otkuser }}"
+        cmd: mysql -u {{ database_admin_user }} -p{{ database_admin_pass }} -e "{{ command_mysql_create_otkuser }}"
 
     - name: grant otk user privileges # noqa 305 must use shell
       no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
