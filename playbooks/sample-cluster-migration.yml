@@ -27,7 +27,7 @@
   vars:
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
-    - gateway_primary_db_node
+    - gateway_configure_primary_node
 
 - name: Obtain a MySQL database dump from source Gateway cluster and store it on the Ansible control node.
   hosts: gateway_mysql_source
@@ -64,7 +64,7 @@
   vars:
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
-    - gateway_processing_node
+    - gateway_configure_processing_node
 
 - name: Add destination Gateways to a group
   hosts: gateway

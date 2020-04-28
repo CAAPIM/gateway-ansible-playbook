@@ -1,4 +1,4 @@
-Gateway Processing Node
+Configure Gateway Processing Node
 ======================
 
 This role runs Gateway's auto-provision functionality using values configured under `group_vars/all/vars`. It adds processing (non-database) Gateways to an existing cluster. 
@@ -20,7 +20,7 @@ n/a
 
 Dependencies
 ------------
-- `gateway_primary_db_node` role has been run to setup a Gateway with database
+- `gateway_configure_primary_node` role has been run to setup a Gateway with database
 
 Example Playbook
 ------------

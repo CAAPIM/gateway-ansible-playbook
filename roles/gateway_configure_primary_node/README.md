@@ -1,4 +1,4 @@
-Gateway Primary Database Node
+Configure Gateway Primary Database Node
 ======================
 
 This role runs Gateway's auto-provision functionality using values configured under `group_vars/all/vars`. This sets up the onboard Gateway database.
@@ -12,7 +12,7 @@ Group Variables
 file: `group_vars/all/vars`.
 
 Configure the variables under the "Node Configurations" section.
-Defaults are provided for most of them. Note: defaults assume that the `cluster_host` is the Gateway in the inventory group `gateway_primary_db_node`, and that the `database_host` is the same as the `cluster_host`.
+Defaults are provided for most of them. Note: defaults assume that the `cluster_host` is the Gateway in the inventory group `gateway_primary_db`, and that the `database_host` is the same as the `cluster_host`.
 
 Role Variables
 --------------
@@ -31,5 +31,5 @@ Example Playbook
   vars:
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
-    - gateway_primary_db_node
+    - gateway_configure_primary_node
 ```
