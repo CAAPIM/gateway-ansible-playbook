@@ -22,3 +22,10 @@
     #plugins are executed periodicially by EPAgent based on a delay
     epagent_delay_os_resource: 60
     epagent_delay_operating_status: 900
+
+    # The location on the controller to store the PAPIM configurations of each node.
+    # The folder will be automatically be created on the controller if it does not exist.
+        controller_dir_papim_backup_location: /var/local/papimbackup/
+    # The location on the controller to store the PAPIM installation files.
+    # The folder will be automatically be created on the controller if it does not exist.
+        controller_dir_papim_source_location: /var/local/papimsource/
