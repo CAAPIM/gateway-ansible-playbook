@@ -14,9 +14,9 @@ Requirements
     4) Click [Delete Events] when prompted to confirm
   
      ```  
-* ssh connect to remote source gateway as user ssgconfig using encrypted password. 
-    Specify source gateway's hostname/ip in the hosts file [gateway_mysql_source] section.
-    ```
+* Must be able to ssh from the Ansible controller to the source gateway as user ssgconfig. 
+* Specify source gateway's hostname/ip in the hosts.yml file [gateway_mysql] section.
+    ``` 
     [gateway_mysql_source]
     10.175.245.xxx
     yyy.placeholder.com
@@ -73,31 +73,4 @@ file: playbooks/gateway-database-export.yml
       roles:
         - gateway_export_database 
 
-run : ansible-playbook playbooks/gateway-database-export.yml -i inventories/test/hosts --vault-password-file vault-password-file.txt
-
-Steps to create vaulted db password
---------------------------------
-
-1. run following command and enter vault password key first, then actual password (eg: dbpasswod) as plaintext input and ctrl-d twice
-    ```
-    > ansible-vault encrypt_string
-    
-    New Vault password:
-    Confirm New Vault password:
-    Reading plaintext input from stdin. (ctrl-d to end input) 
-    dbpasswd!vault |
-              $ANSIBLE_VAULT;1.1;AES256
-              38306433306465626632343561306363346233313239306562316561363639393461373562636533
-              6264666237666130643264303939316634663037643965340a363736643131363865396637313735
-              63646431366439386239303064303936303164336630313963386234353530663235326531666566
-              3939653836613938620a343466643861323663346534656466303830383133356363383735643432
-              3966
-    Encryption successful 
-
-    ```
-
-
-2. copy from !vault till "Encryption successful" as encrypted password and assign it to db_password: in roles/gateway-database-export/vars/main.yml
-Note: be careful about the end of line and indentation.
-
-3. store vault password key in file vault-password.txt and do not check in for safety reason
+run : ansible-playbook playbooks/gateway-database-export.yml -i inventories/sample/hosts --vault-password-file vault-password-file.txt
