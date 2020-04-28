@@ -1,28 +1,36 @@
 # Gateway Ansible Playbooks
 
-## For Upgrading to Gateway 10
-This project serves as the starting point for automating upgrading to Gateway 10 with Ansible roles.
+## Background
+
+Before start, it is important to have some basic knowledge on Ansible and how it works and how to setup Ansible control node. 
+
+[How Ansible Works](https://www.ansible.com/overview/how-ansible-works)
+
+[How to Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+
+We recommend to use `pip` to install ansible.
+
+To use `pip` if not installed on your machine. For most linux distro please refer to [this guide](https://www.tecmint.com/install-pip-in-linux/)
+
+You can also use the following command.
+
+```shell
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+
+python get-pip.py --user
+```
+After `pip` is installed, simply run the following command to install Ansible.
+
+`pip install ansible --upgrade`
 
 ## Get Started
 
 ### Prerequisites
-The following software must be installed on the Ansible Controller:
-* Python 2.7.+ or 3.3+
-* pip
-> For most linux distro please refer to [this guide](https://www.tecmint.com/install-pip-in-linux/)
+After setup the Ansible control node, the following software must be installed on the Ansible control node to work with the playbooks in this repository.
 
-> You can also use the following command.
-
-> `curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py` 
-
-> `python get-pip.py --user`
-
-* ansible
-> `pip install ansible --upgrade`
-* pyvmomi
-> `pip install pyvmomi --upgrade`
 * pexpect
-> `pip install pexpect`
+
+>`pip install pexpect`
 
 * sshpass
 > Linux: use preferred package manager to install sshpass, ie. `yum install sshpass`
@@ -31,45 +39,33 @@ The following software must be installed on the Ansible Controller:
 
 * MySQL shell
 > download from https://dev.mysql.com/downloads/shell/ select Operating System Linux/macOS based on the Ansible control node
+
 > Linux: ie. `rpm -ivh mysql-shell-8.0.19-1.el6.x86_64.rpm`
 
-
 ### Development Tools
-The following tools can be used to create/modify Ansible roles and playbooks.
+The following tools are recommended to use with Ansible development.
+
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [VS Code Ansible Extension](https://marketplace.visualstudio.com/items?itemName=vscoss.vscode-ansible)
 
 
-## Inventories
+## Inventory
 To use Ansible, your inventories must be configured. 
-Inventories are defined [here](/inventories), and the [sample inventory](/inventories/sample) is a good starting point. Several Environment templates have been created.
-To add machine to the inventories, edit the `hosts` file under each directory.
+Inventories are defined [here](/inventories), feel free to use [sample inventory](/inventories/sample) as a base line to create your own environments.
 
-To view a inventory
-```bash
-ansible-inventory -i ./inventories/sample --list // list view
-ansible-inventory -i ./inventories/sample --graph // graph view
-```
+To add machine to the inventories, edit the `hosts.yml` file under each directory.
 
 For detailed usage on how to use `ansible-inventory` command, please take a look at [here](https://docs.ansible.com/ansible/latest/cli/ansible-inventory.html)
 
 ## Gateway Credentials
-For Ansible to upgrade the Gateway, the Gateway credentials must be specified.  Please [see](/inventories/sample/group_vars/all)
- for the sample vars and vault files. 
-Remember: ** NEVER CHECK IN PASSWORD FILES **.
+For Ansible to upgrade the Gateway, the Gateway credentials must be specified.  Please [see](/inventories/sample/group_vars/all) for the sample vars and vault files. 
 
-Once the password vault file has been completed, secure it using Ansible Vault. Please see
-the Ansible Vault section below.
+**NEVER CHECK IN PASSWORD FILES**.
+
+Once the password vault file has been completed, secure it using Ansible Vault. Please see the [Ansible Vault](#ansible-vault) section below for more info.
 
 ## Roles
-Following roles has been created as building block for automation
-* [Gateway Common](/roles/gateway_common)
-* [Gateway Basic Backup](/roles/gateway_basic_backup)
-* [Gateway Export Database](/roles/gateway_export_database)
-* [Gateway Import Database](/roles/gateway_import_database)
-* [Gateway Pre-upgrade Analyzer](/roles/gateway_preupgrade_analyzer)
-* [Gateway Primary Database Node](/roles/gateway_configure_primary_node)
-* [Gateway Processing Node](/roles/gateway_configure_processing_node)
+Roles are the key to create resuable playbooks and they can be found [here](/roles).
 
 ## Playbooks
 Playbooks can be found [here](/playbooks).
