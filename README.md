@@ -70,6 +70,8 @@ For Ansible to upgrade the Gateway, the Gateway credentials must be specified.  
 Once the password vault file has been completed, secure it using Ansible Vault. Please see the [Ansible Vault](#ansible-vault) section below for more info.
 
 #### Password Rules
+[Tech Doc Reference](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/9-3/reference/troubleshoot/troubleshooting-password-issues.html#concept.dita_2883f3fbcd8d265ee830c858df47b242a9a158a0_PasswordRules)
+
 By default, gateway password must adhere to the following rules:
 - Minimum 9 characters in length
 - Contains at least two upper and two lowercase characters
