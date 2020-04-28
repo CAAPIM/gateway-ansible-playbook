@@ -42,6 +42,9 @@ After setup the Ansible control node, the following software must be installed o
 
 > Linux: ie. `rpm -ivh mysql-shell-8.0.19-1.el6.x86_64.rpm`
 
+* SSH connection to gateway nodes.
+> By default, it is set to use `StrictHostKeyChecking=no`, so it will automatically accept new nodes. For more strict security, [this flag](/inventories/sample/group_vars/all/vars#L38) can be removed. 
+
 ### Development Tools
 The following tools are recommended to use with Ansible development.
 
@@ -55,14 +58,26 @@ Inventories are defined [here](/inventories), feel free to use [sample inventory
 
 To add machine to the inventories, edit the `hosts.yml` file under each directory.
 
+It is recommend to add **all** your nodes in a cluster to the inventory before running any playbooks.
+
 For detailed usage on how to use `ansible-inventory` command, please take a look at [here](https://docs.ansible.com/ansible/latest/cli/ansible-inventory.html)
 
 ## Gateway Credentials
-For Ansible to upgrade the Gateway, the Gateway credentials must be specified.  Please [see](/inventories/sample/group_vars/all) for the sample vars and vault files. 
-
 **NEVER CHECK IN PASSWORD FILES**.
 
+For Ansible to upgrade the Gateway, the Gateway credentials must be specified.  Please [see](/inventories/sample/group_vars/all) for the sample vars and vault files. 
+
 Once the password vault file has been completed, secure it using Ansible Vault. Please see the [Ansible Vault](#ansible-vault) section below for more info.
+
+#### Password Rules
+By default, gateway password must adhere to the following rules:
+- Minimum 9 characters in length
+- Contains at least two upper and two lowercase characters
+- Contains at least two digits
+- Contains at least two special characters
+- The new password must not be a repeat of any of the five most recent passwords and at least 24 hours must have elapsed since the last password change.
+
+_If password rule failed, any new node cannot be provisioned._
 
 ## Roles
 Roles are the key to create resuable playbooks and they can be found [here](/roles).
@@ -117,7 +132,11 @@ For debugging purpose, you can override "no_log" default at the command line to 
 ```
 ansible-playbook playbooks/gateway-autoprovision-nodes.yml --extra-vars no_log_flag=false
 ```
-* For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html) 
+* For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html)
+
+* Ansible permission problem. 
+In case there is ansible permission problem, you can execute the following commands to resolve the issue.
+`chmod 755 /user/bin/ansible*`
 
 ## Tutorial
 
