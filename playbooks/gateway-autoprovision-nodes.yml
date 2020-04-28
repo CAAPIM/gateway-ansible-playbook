@@ -13,10 +13,10 @@
     ansible_connection: local
   serial: 1
   roles:
-    - gateway_primary_db_node
+    - gateway_configure_primary_node
 
 - hosts: gateway_processing_node
   vars:
     ansible_connection: local
   roles:
-    - gateway_processing_node
+    - gateway_configure_processing_node

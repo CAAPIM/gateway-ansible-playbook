@@ -116,8 +116,8 @@ This playbook will setup replication on the Gateways listed in the inventory und
 ## Configure Database-Node Gateways
 
 Follow the setup steps in:
-- [README for gateway_primary_db_node role](roles/gateway_primary_db_node/README.md)
-- [README for gateway_processing_node role](roles/gateway_processing_node/README.md)
+- [README for gateway_configure_primary_node role](roles/gateway_configure_primary_node/README.md)
+- [README for gateway_configure_processing_node role](roles/gateway_configure_processing_node/README.md)
 
 The sample [playbooks/gateway-autoprovision-nodes.yml](playbooks/gateway-autoprovision-nodes.yml) will configure all Gateways.
 However, we can only configure the two re-imaged nodes right now.
@@ -130,12 +130,12 @@ Create a new playbook `playbooks/gateway-autoprovision-database-nodes.yml` conta
     ansible_connection: local
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
-    - gateway_primary_db_node
+    - gateway_configure_primary_node
 
 - name: Autoprovision failover database Gateway node.
   hosts: gateway_failover_db
   import_role:
-    name: gateway_processing_node
+    name: gateway_configure_processing_node
   vars:
     ansible_connection: local
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
@@ -156,7 +156,7 @@ This will import the database dump from the source Gateway into the new v10 Gate
 
 ## Configure Remaining Processing Gateways 
 
-Follow the setup steps in the [README for gateway_processing_node role](roles/gateway_processing_node/README.md).
+Follow the setup steps in the [README for gateway_configure_processing_node role](roles/gateway_configure_processing_node/README.md).
 
 The sample [playbooks/gateway-autoprovision-nodes.yml](playbooks/gateway-autoprovision-nodes.yml) will configure all Gateways.
 However, only need to configure the remaining processing Gateways.
@@ -169,7 +169,7 @@ Create a new playbook `playbooks/gateway-autoprovision-processing-nodes.yml` con
     ansible_connection: local
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
-    - gateway_processing_node
+    - gateway_configure_processing_node
 ```
 
 Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-autoprovision-processing-nodes.yml`

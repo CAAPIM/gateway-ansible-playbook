@@ -69,7 +69,7 @@ Under role gateway_import_database/vars/main.yml
 Dependencies
 ------------
 
-It depends on role gateway_processing_node to setup destination gateway and database,
+It depends on role gateway_configure_processing_node to setup destination gateway and database,
 gateway_export_database to store db dump zip file in local directory and 
 gateway_common/stop_gateway to stop the gateway service
 

@@ -68,8 +68,8 @@ Following roles has been created as building block for automation
 * [Gateway Export Database](/roles/gateway_export_database)
 * [Gateway Import Database](/roles/gateway_import_database)
 * [Gateway Pre-upgrade Analyzer](/roles/gateway_preupgrade_analyzer)
-* [Gateway Primary Database Node](/roles/gateway_primary_db_node)
-* [Gateway Processing Node](/roles/gateway_processing_node)
+* [Gateway Primary Database Node](/roles/gateway_configure_primary_node)
+* [Gateway Processing Node](/roles/gateway_configure_processing_node)
 
 ## Playbooks
 Playbooks can be found [here](/playbooks).

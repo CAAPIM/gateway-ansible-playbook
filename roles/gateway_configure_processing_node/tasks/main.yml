@@ -1,0 +1,6 @@
+---
+- name: Autoprovision processing gateway node.
+  import_role:
+    name: gateway_configure_node
+  vars:
+    configure_db: false
