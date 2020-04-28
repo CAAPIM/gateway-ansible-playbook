@@ -82,7 +82,7 @@ By default, gateway password must adhere to the following rules:
 _If password rule failed, any new node cannot be provisioned._
 
 ## Roles
-Roles are the key to create resuable playbooks and they can be found [here](/roles).
+Roles are the key to create reusable playbooks and they can be found [here](/roles).
 
 ## Playbooks
 Playbooks can be found [here](/playbooks).
