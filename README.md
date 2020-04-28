@@ -121,8 +121,37 @@ For debugging purpose, you can override "no_log" default at the command line to 
 ```
 ansible-playbook playbooks/gateway-autoprovision-nodes.yml --extra-vars no_log_flag=false
 ```
-* For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html)   
+* For Playbook Debugger please refer to [this guide](https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html) 
 
 ## Tutorial
 
 A walkthrough for how to configure and run playbooks for an in-place Gateway upgrade scenario is available in the [TUTORIAL.md](TUTORIAL.md).
+
+## Writing Your Own Playbooks & Roles
+
+Writing custom playbooks and roles comes down to following the Ansible conventions followed by this project. To that end, 
+the [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/index.html) combined with the sample code in the [playbooks](playbooks/) and 
+[roles](roles/) included in this project are the best references.
+
+There are 3 major components to consider.
+
+### 1. Inventory and Group Variables
+Gateway configuration and passwords are specified for each environment under `inventories`. Existing properties and any custom
+properties added under `group_vars/all/` apply to all hosts listed in the inventory (`hosts.yml` file). Ansible provides several 
+mechanisms for overriding properties on individual or groups of hosts. 
+  - [Controlling how Ansible behaves: precedence rules](https://docs.ansible.com/ansible/latest/reference_appendices/general_precedence.html#controlling-how-ansible-behaves-precedence-rules)
+  - [Variable precedence: Where should I put a variable?](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable)
+
+### 2. Roles
+
+Roles are placed under the `roles` directory. Custom roles can be placed in this directory, or modify existing roles if required for your
+Gateway environment. Roles can have role-level configuration, and can also consume Gateway configurations under `inventories/.../group_vars`, 
+host variables, etc.
+  - [Creating Roles](https://galaxy.ansible.com/docs/contributing/creating_role.html)
+  - [Reusable Roles](https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html)
+
+### 3. Playbooks
+
+Playbooks are placed under the `playbooks` directory. Custom playbooks can be placed in this directory.
+  - [Working With Playbooks](https://docs.ansible.com/ansible/latest/user_guide/playbooks.html)
+
