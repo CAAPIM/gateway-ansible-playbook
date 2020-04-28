@@ -1,7 +1,8 @@
 Import Gateway and OTK Database
 ======================
 
-This role will import Gateway and OTK database dump from ansible controller to destination (remote gateway primary node).
+This role will import Gateway and OTK database dump from ansible controller to destination (remote gateway primary node). 
+It also contains task to upgrade gateway database schema. Once the database schema has been upgraded, it cannot be upgraded again.
 
 Requirements
 ------------
