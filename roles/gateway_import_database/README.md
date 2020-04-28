@@ -1,16 +1,15 @@
 Import Gateway and OTK Database
 ======================
 
-This role will import Gateway and OTK database dump from ansible controller to destination (remote gateway primary node). 
-It also contains task to upgrade gateway database schema. Once the database schema has been upgraded, it cannot be upgraded again.
+This role will import Gateway and OTK database dump from the Ansible controller to destination (gateway primary db). The mapping between the source and destination Gateway database is specified in the inventories/.../hosts.yml. This role also contains a task to automatically upgrade the Gateway database schema. Once the database schema has been upgraded, it cannot be upgraded again.
 
 Requirements
 ------------
 * Gateway database has to be created before running import script. 
-To setup gateway database automatically, please run playbook gateway-autoprovision-nodes.yml.
+To setup gateway database, please run playbook gateway-autoprovision-nodes.yml.
 
-* ssh connect to remote destination gateway as user root using encrypted password. 
-    Specify source gateway's hostname/IP in the hosts file [gateway_mysql_dest] section. source hostname/IP match [gateway_mysql_source]
+* Must be able to ssh from the Ansible controller to the  destination gateway as user root using encrypted password. 
+    Specify source gateway's hostname/IP in the hosts file [gateway_mysql] section. source hostname/IP match [gateway_mysql_source]
     ```
     [gateway_mysql_dest]
     10.175.244.yyy  source=10.175.245.xxx
