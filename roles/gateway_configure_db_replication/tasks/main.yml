@@ -40,11 +40,11 @@
   include: verify_replication.yml
   vars:
     ansible_user: root
-    ansible_ssh_password: "{{ gateway_root_password }}" 
+    ansible_ssh_password: "{{ gateway_root_password }}"
 
 - name: Verify replication has started on gateway_failover_db node
   include: verify_replication.yml
   vars:
    ansible_user: root
-   ansible_ssh_password: "{{ gateway_root_password }}" 
+   ansible_ssh_password: "{{ gateway_root_password }}"
   delegate_to: "{{ failover_db }}"
