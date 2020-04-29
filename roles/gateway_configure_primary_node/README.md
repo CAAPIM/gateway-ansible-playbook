@@ -25,7 +25,7 @@ n/a
 Example Playbook
 ------------
 ```yaml
-- name: Setup MySQL database on the destination (primary database node) Gateway. 
+- name: Configure primary MySQL database user accounts and import gateway database schema
   hosts: gateway_primary_db
   connection: local
   vars:

@@ -13,7 +13,7 @@
         groups:
           - gateway_mysql
           - gateway_src
-      with_items: "{{ groups['gateway_mysql'] }}"
+      with_items: "{{ groups['gateway_primary_db'] }}"
 
 - name: Execute mysql dump and store
   hosts: gateway_src

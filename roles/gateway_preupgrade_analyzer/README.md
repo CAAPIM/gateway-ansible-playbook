@@ -7,6 +7,8 @@ This role will generate pre-upgrade analyzer reports for each `src` Gateway in t
 
 Please review the pre-upgrade analyzer reports before upgrading Gateways.
 
+It is highly recommended to keep the same `cluster.hostname` when performing upgrades or migrations. This greatly reduces the complexity of upgrade or migration. If load balancer is used, `cluster.hostname` should also be FQDN of external hostname for the cluster (most likely load balancer FQDN).
+
 Requirements
 ------------
 * ssh connect to remote source gateway as user ssgconfig using encrypted password. 
