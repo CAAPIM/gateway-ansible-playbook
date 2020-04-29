@@ -1,54 +1,50 @@
 ---
-# This task will configure replication for the primary gateway MySQL 8 database.
-# root access to run /opt/SecureSpan/Appliance/bin/add_slave_user.sh and create_user.sh
-# root access to update /etc/my.cnf
+# These tasks will configure replication for the Gateway MySQL database.
 
-- name: Check the failover host is defined.
-  fail:
-    msg: "failover host is undefined under 'gateway_failover_db' group in your hosts file"
-  when: (groups['gateway_failover_db'] | first)  is not defined
-
-- name: Set failover hostname
+- name: Setup variables
   set_fact:
-    failover_hostname: "{{ groups['gateway_failover_db'] | first }}.inventory_hostname"
+    primary_db: "{{ hostvars[groups['gateway_primary_db'][0]].inventory_hostname }}"
+    failover_db: "{{ hostvars[groups['gateway_failover_db'][0]].inventory_hostname }}"
 
-- name: Set master hostname
-  set_fact:
-    master_hostname: "{{ groups['gateway_primary_db'] | first }}.inventory_hostname"
-
-- name: Run add_slave_user.sh on master node
+- name: Create slave user on gateway_primary_db node
   include: add_slave_user.yml
   vars:
-    - master_node: "{{ master_hostname }}"
-    - slave_node: "{{ failover_hostname }}"
+    - master_node: "{{ primary_db }}"
+    - slave_node: "{{ failover_db }}"
     - node_type: "1"
   delegate_to: localhost
 
-- name: Run add_slave_user.sh on slave node
+- name: Create slave user on gateway_failover_db node
   include: add_slave_user.yml
   vars:
-    - master_node: "{{ failover_hostname }}"
-    - slave_node: "{{ master_hostname  }}"
+    - master_node: "{{ failover_db }}"
+    - slave_node: "{{ primary_db  }}"
     - node_type: "2"
   delegate_to: localhost
 
-- name: Run create_slave.sh on master node
+- name: Setup replication on gateway_primary_db node
   include: create_slave.yml
   vars:
-    - master_node: "{{ master_hostname }}"
-    - slave_node: "{{ failover_hostname }}"
+    - master_node: "{{ primary_db }}"
+    - slave_node: "{{ failover_db }}"
   delegate_to: localhost
 
-- name: Run create_slave.sh on slave node
+- name: Setup replication on gateway_failover_db node
   include: create_slave.yml
   vars:
-    - master_node: "{{ failover_hostname }}"
-    - slave_node: "{{ master_hostname }}"
+    - master_node: "{{ failover_db }}"
+    - slave_node: "{{ primary_db }}"
   delegate_to: localhost
 
-- name: Verify replication has started on master node
+- name: Verify replication has started on gateway_primary_db node
   include: verify_replication.yml
+  vars:
+    ansible_user: root
+    ansible_ssh_password: "{{ gateway_root_password }}" 
 
-- name: Verify replication has started on slave node
+- name: Verify replication has started on gateway_failover_db node
   include: verify_replication.yml
-  delegate_to: "{{ failover_hostname }}"
+  vars:
+   ansible_user: root
+   ansible_ssh_password: "{{ gateway_root_password }}" 
+  delegate_to: "{{ failover_db }}"

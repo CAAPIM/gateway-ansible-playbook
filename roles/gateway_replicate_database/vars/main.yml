@@ -1,4 +1,0 @@
----
-# vars file for replicate database
-command_add_slave_user: "/opt/SecureSpan/Appliance/bin/add_slave_user.sh"
-command_create_slave: "/opt/SecureSpan/Appliance/bin/create_slave.sh"

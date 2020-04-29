@@ -27,5 +27,5 @@ vault_otk_database_pass: "placeholder"
 # Password for Administrative Database User
 vault_gateway_database_admin_pass: "placeholder"
 
-# Replication User Password
+# Password for Gateway MySQL Replication User
 vault_gateway_database_repl_pass: "placeholder"

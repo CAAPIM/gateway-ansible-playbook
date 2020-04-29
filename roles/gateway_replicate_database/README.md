@@ -1,20 +1,38 @@
 # Description
-This role will configure replication for the primary gateway MySQL 8 database to provide failover.
-This role requires root access to call add_slave_user.sh and create_user.sh which come with gateway version 10 default image.
+This role will configure Gateway's MySQL database replication.
 
 ### Requirements
-- The role must be executed with the Ansible user having root privilege.
-   root access to run /opt/SecureSpan/Appliance/bin/add_slave_user.sh and create_user.sh
-   root access to update /etc/my.cnf
--  The network of the target gateways must be pre-configured.
--  The MySQL 8 server must be started
 
-### Dependencies:
-There are no dependencies upon other roles.
+This role requires Gateways to have SSH enabled for the root user with password login.
+Pre-configuration of Gateway network and hostnames is recommended.
+MySQL should be running on the Gateways under inventory groups `gateway_primary_db` and `gateway_failover_db`.
 
-### Sample Usage
-Modify the hosts file under `gateway`
-  - define a primary gateway in gateway_primary_db group
-  - define a failover gateway in gateway_failover_db group
-  
-`ansible-playbook gateway-database-replication.yml -i hosts --vault-password-file vault-password.txt`
+Group Variables
+---------------
+
+Configure the following group variables:
+- gateway_root_password
+- database_repl_user
+- database_repl_pass
+- database_admin_user
+- database_admin_pass
+
+Role Variables
+--------------
+
+n/a
+
+Dependencies
+------------
+
+n/a
+
+Example Playbook
+----------------
+
+```yml
+- name: Configure Gateway MySQL Database Replication
+  hosts: gateway_primary_db
+  roles:
+    - gateway_replicate_database
+```
