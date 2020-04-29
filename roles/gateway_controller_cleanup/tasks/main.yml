@@ -1,8 +1,7 @@
 ---
 # tasks file for gateway_controller_cleanup
- 
  - name: Setting facts
-   set_fact:    
+   set_fact:
      papim_var_file_path: "{{ ansible_inventory_sources | first }}/group_vars/gateway_papim.yml"
 
  - name: Include vars
