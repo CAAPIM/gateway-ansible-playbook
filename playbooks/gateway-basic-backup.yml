@@ -2,7 +2,7 @@
 # This playbook will backup Gateway configurations and store them on the Ansible controller. 
 # See the readme under roles/gateway_basic_backup for setup instructions.
 - name: Detect source gateway mysql nodes
-  hosts: gateway_mysql
+  hosts: "gateway_mysql,gateway_processing_node"
   gather_facts: no
   tasks:
     - name: collect src hosts
@@ -12,7 +12,9 @@
         groups:
           - gateway_mysql
           - gateway_src
-      with_items: "{{ groups['gateway_primary_db'] }}"
+      with_items:
+        - "{{ groups['gateway_primary_db'] }}"
+        - "{{ groups['gateway_processing_node'] }}"
 - name: run gateway backup against provided list of gateways
   hosts: gateway_src
   become:
