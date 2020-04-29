@@ -1,31 +1,34 @@
 ---
-    ### PAPIM properties
-    # Override below variables in host_vars for a specific host.
-    ansible_user: root
-    ansible_password: "{{ vault_gateway_root_password }}"
-    papim_user: apmusr
-    papim_user_dir: "/home/{{ papim_user }}"
-    papim_installation_dir: "/opt/apm105"
-    # PAPIM mysql properties will enable papim to read mysql stats (if gateway node contains mysql).
-    # PAPIM keep these values in /home/<papim_user>/.my.cnf
-    papim_read_mysql_stats: false
-    gateway_mysql_host: localhost
-    gateway_mysql_db_name: ssg
-    gateway_mysql_user: gateway
-    gateway_mysql_port: 3306
-    gateway_mysql_password: placeholder
+### PAPIM properties
+# Override below variables in host_vars for a specific host.
+ansible_user: root
+ansible_password: "{{ vault_gateway_root_password }}"
+papim_user: apmusr
+papim_user_dir: "/home/{{ papim_user }}"
+papim_installation_dir: "/opt/apm105"
 
-    ### Additional PAPIM properties to support gateway_papim_install role
-    apm_server_hostname: localhost:5001 # Enter Hostname:Port for APM Server
-    epagent_tcp_port: 9090
-    epagent_rest_port: 9080
-    #plugins are executed periodicially by EPAgent based on a delay
-    epagent_delay_os_resource: 60
-    epagent_delay_operating_status: 900
+# PAPIM mysql properties will enable papim to read mysql stats (if gateway node contains mysql).
+# PAPIM keep these values in /home/<papim_user>/.my.cnf
+papim_read_mysql_stats: false
+gateway_mysql_host: localhost
+gateway_mysql_db_name: ssg
+gateway_mysql_user: gateway
+gateway_mysql_port: 3306
+gateway_mysql_password: placeholder
 
-    # The location on the controller to store the PAPIM configurations of each node.
-    # The folder will be automatically be created on the controller if it does not exist.
-        controller_dir_papim_backup_location: /var/local/papimbackup/
-    # The location on the controller to store the PAPIM installation files.
-    # The folder will be automatically be created on the controller if it does not exist.
-        controller_dir_papim_source_location: /var/local/papimsource/
+### Additional PAPIM properties to support gateway_papim_install role
+apm_server_hostname: localhost:5001 # Enter Hostname:Port for APM Server
+epagent_tcp_port: 9090
+epagent_rest_port: 9080
+
+#plugins are executed periodicially by EPAgent based on a delay
+epagent_delay_os_resource: 60
+epagent_delay_operating_status: 900
+
+# The location on the controller to store the PAPIM configurations of each node.
+# The folder will be automatically be created on the controller if it does not exist.
+controller_dir_papim_backup_location: /var/local/papimbackup/
+
+# The location on the controller to store the PAPIM installation files.
+# The folder will be automatically be created on the controller if it does not exist.
+controller_dir_papim_source_location: /var/local/papimsource/
