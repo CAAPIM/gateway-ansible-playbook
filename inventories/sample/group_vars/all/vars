@@ -87,7 +87,7 @@ configure_db: false  # Creates the database
 #### Connection Properties
 
 # Default SSH connection timeout when Ansible connects to Gateways (seconds)
-ansible_ssh_timeout: 20
+gateway_ssh_timeout: 20
 
 # SSH arguments when Ansible connects to Gateways
 ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
