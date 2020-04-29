@@ -4,6 +4,8 @@ Preupgrade Analyzer
 This role will generate pre-upgrade analyzer report for all servers listed in hosts file under [gateway] section. The report is stored on the Ansible controller.
 Please review the pre-upgrade analyzer report before upgrading the gateway.
 
+It is highly recommended to keep the same `cluster.hostname` when perform upgrade or migration. This greatly reduced the complexity of upgrade or migration. If load balancer is used, `cluster.hostname` should also be FQDN of external hostname for the cluster (most likely load balancer FQDN).
+
 Requirements
 ------------
 * ssh connect to remote source gateway as user ssgconfig using encrypted password. 
