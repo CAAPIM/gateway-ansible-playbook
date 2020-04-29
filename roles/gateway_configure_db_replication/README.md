@@ -34,5 +34,5 @@ Example Playbook
 - name: Configure Gateway MySQL Database Replication
   hosts: gateway_primary_db
   roles:
-    - gateway_replicate_database
+    - gateway_configure_db_replication
 ```
