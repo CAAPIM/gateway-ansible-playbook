@@ -1,18 +1,29 @@
 ---
 # This playbook will backup Gateway configurations and store them on the Ansible controller. 
 # See the readme under roles/gateway_basic_backup for setup instructions.
-
+- name: Detect source gateway mysql nodes
+  hosts: gateway_mysql
+  gather_facts: no
+  tasks:
+    - name: collect src hosts
+      add_host:
+        hostname: "{{ hostvars[item].src }}"
+        ansible_connection: "ssh"
+        groups:
+          - gateway_mysql
+          - gateway_src
+      with_items: "{{ groups['gateway_primary_db'] }}"
 - name: run gateway backup against provided list of gateways
-  hosts: gateway
+  hosts: gateway_src
   become:
     true # Note: only set to false if the ansible_user is root or has root privileges.
     # Setting true will also cause poor performance with the module_fetch and cause
     # the gateway_basic_backup role to run out of memory and fail. To mitigate this issue,
     # set the "serial" variable below to a maximum value of 2. If ansible_user is root, can
-    # comment out the serial variable to improve performance.
+  # comment out the serial variable to improve performance.
   serial:
     2 # If role fails when trying to copy backup files to controller, increase the memory on the
-    # controller to at least 4GB and/or change serial value to 1.
+  # controller to at least 4GB and/or change serial value to 1.
   gather_facts: false
 
   roles:
