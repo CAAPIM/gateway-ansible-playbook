@@ -11,6 +11,7 @@ Group Variables
 ---------------
 
 Configure the following group variables:
+- gateway_replication_timeout
 - gateway_root_password
 - database_repl_user
 - database_repl_pass

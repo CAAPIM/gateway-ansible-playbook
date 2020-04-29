@@ -5,7 +5,7 @@
   no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   expect:
     command: sshpass -p '{{ gateway_root_password }}' ssh {{ ansible_ssh_extra_args }} root@{{ master_node }} /opt/SecureSpan/Appliance/bin/create_slave.sh
-    timeout: 600
+    timeout: "{{ gateway_replication_timeout }}"
     responses:
       "Enter hostname or IP for the MASTER:": "{{ slave_node }}"
       "Enter replication user:": "{{ database_repl_user }}"
