@@ -21,7 +21,7 @@
 - name: Fetch report file for gateway
   fetch:
     src: "{{ remote_report_temp_dir }}/pre_upgrade_analyzer_report.txt"
-    dest: "report/{{ inventory_hostname }}/"
+    dest: "../preupgrade-analyzer-reports/{{ inventory_hostname }}/"
     flat: true
 
 - name: Cleanup

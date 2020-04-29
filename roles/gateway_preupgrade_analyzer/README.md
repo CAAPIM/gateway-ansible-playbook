@@ -1,8 +1,11 @@
 Preupgrade Analyzer
 ======================
 
-This role will generate pre-upgrade analyzer report for all servers listed in hosts file under [gateway] section. The report is stored on the Ansible controller.
-Please review the pre-upgrade analyzer report before upgrading the gateway.
+This role will generate pre-upgrade analyzer reports for each `src` Gateway in the inventory `gateway` group. The reports are stored in `[project root]/preupgrade-analyzer-reports` directory (1 report per source Gateway).
+
+*Note: re-running this role will overwrite existing reports so back them up as needed.*
+
+Please review the pre-upgrade analyzer reports before upgrading Gateways.
 
 Requirements
 ------------
@@ -36,7 +39,6 @@ Under roles/gateway_preupgrade_analyzer/vars/main.yml
 Dependencies
 ------------
 There are no dependencies upon other roles.
-
 
 Example Playbook
 ------------------
