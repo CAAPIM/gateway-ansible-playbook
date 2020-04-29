@@ -1,7 +1,7 @@
 Preupgrade Analyzer
 ======================
 
-This role will generate pre-upgrade analyzer reports for each `src` Gateway in the inventory `gateway` group. The reports are stored in `[project root]/preupgrade-analyzer-reports` directory (1 report per source Gateway).
+This role will generate pre-upgrade analyzer reports for each `src` Gateway in the inventory `gateway` group. The reports are stored in `[project root]/preupgrade-analyzer-reports/[hostname]` directories (1 report per source Gateway).
 
 *Note: re-running this role will overwrite existing reports so back them up as needed.*
 
@@ -45,8 +45,6 @@ Example Playbook
 file: playbooks/gateway-preupgrade-analyzer.yml
 
 run command: ansible-playbook playbooks/gateway-preupgrade-analyzer.yml -i inventories/sample/hosts --vault-password-file vault-password-file.txt
-
-The generated report files are stored on the Ansible controller under directory playbooks, e.g., playbooks/report/<hostname_as_directory>/pre_upgrade_analyzer_report.txt.
 
 How to read the report
 -----------------------
