@@ -1,8 +1,8 @@
 ---
 # This playbook will setup the Gateway's MySQL database replication.
-# See the readme under roles/gateway_replicate_database for setup instructions.
+# See the readme under roles/gateway_configure_db_replication for setup instructions.
 
-- name: Replicate Gateway MySQL 8 Database
-  hosts: gateway_mysql
+- name: Configure Gateway MySQL Database Replication
+  hosts: gateway_primary_db
   roles:
-    - gateway_replicate_database
+    - gateway_configure_db_replication

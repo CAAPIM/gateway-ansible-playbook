@@ -107,7 +107,7 @@ Follow TechDocs instructions for [Virtual Machine Re-image](https://techdocs.bro
 
 ## Configure Gateway Database Replication
 
-Follow the setup steps in the [README for gateway_replicate_database role](roles/gateway_replicate_database/README.md).
+Follow the setup steps in the [README for gateway_configure_db_replication role](roles/gateway_configure_db_replication/README.md).
 
 Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-replication.yml`
 

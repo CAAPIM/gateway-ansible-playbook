@@ -1,0 +1,21 @@
+---
+# This task creates a MySQL slave user on a Gateway.
+
+- name: Add slave user for {{ slave_node }} to MySQL on {{ master_node }} (may take several minutes)
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
+  expect:
+    command: sshpass -p '{{ gateway_root_password }}' ssh {{ ansible_ssh_extra_args }} root@{{ master_node }} /opt/SecureSpan/Appliance/bin/add_slave_user.sh
+    timeout: "{{ gateway_replication_timeout }}"
+    responses:
+      "Enter hostname or IP for the SLAVE:": "{{ slave_node }}"
+      "Enter replication user:": "{{ database_repl_user }}"
+      "Enter replication password:": "{{ database_repl_pass }}"
+      "Enter MySQL root user:": "{{ database_admin_user }}"
+      "Enter MySQL root password:": "{{ database_admin_pass }}"
+      Is this the Primary \(1\) or Secondary \(2\) database node? : "{{ node_type }}"
+      "Do you want to continue?" : "y"
+  register: status
+  changed_when:
+    - status.rc == 0
+    - '"Granting slave permissions" in status.stdout'
+  failed_when: (status.rc != 0) or ("Granting slave permissions" not in status.stdout)
