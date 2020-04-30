@@ -180,7 +180,7 @@ This playbook will run a headless configuration of the Gateways.
 
 Follow the setup steps in the [README for gateway_basic_restore_backup role](roles/gateway_basic_restore_backup/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-import.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-restore-basic-backup.yml`
 
 This will restore the backup Gateway configuration files from the earlier backup step.
 
