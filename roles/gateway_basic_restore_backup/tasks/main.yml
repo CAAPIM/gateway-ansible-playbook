@@ -8,7 +8,7 @@
 # The source_hostname is the hostname where the backupfile was created.
 #
 # The mapping used to determine which backup file is used for which destination host is stored in the inventory host file.
-# The destination and source are linked via a custom attribute called "upgrade_source" in the gateway group which
+# The destination and source are linked via a custom attribute called "src" in the gateway group which
 # specifies the name of the hosts that are being upgraded to. This custom attribute must be specified for each
 # host in the group in order to run this task.
 
@@ -18,13 +18,13 @@
 - name: Check requirement that the backup file exists on the controller.
   local_action: # noqa 504
     module: stat
-    path: "{{ controller_dir_backup_location }}/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+    path: "{{ controller_dir_backup_location }}/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].src }}.zip"
   register: file_status
   failed_when: not file_status.stat.exists
 
 - name: Set the backup filename to a fact.
   set_fact:
-    fact_backup_file: "ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+    fact_backup_file: "ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].src }}.zip"
 
 - name: Ensure the ssg service is not running.
   systemd:
@@ -33,7 +33,7 @@
 
 - name: Copy backup file from controller to inventory_host.
   copy:
-    src: "{{ controller_dir_backup_location }}/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+    src: "{{ controller_dir_backup_location }}/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].src }}.zip"
     dest: /opt/SecureSpan/Gateway/config/backup/
 
 - name: Ensure node.properties exists so ssgrestore will succeed on new appliances with no node.properties.
@@ -123,7 +123,7 @@
 - name: Delete backup file from /opt/SecureSpan/Gateway/config/backup/.
   file:
     state: absent
-    path: /opt/SecureSpan/Gateway/config/backup/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip
+    path: /opt/SecureSpan/Gateway/config/backup/ansible_basic_ssgbackup_{{ hostvars[inventory_hostname].src }}.zip
 
 - name: Delete /tmp/ssgrestore folder.
   file:
