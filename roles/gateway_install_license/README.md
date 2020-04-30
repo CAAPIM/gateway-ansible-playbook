@@ -38,7 +38,7 @@ Example Playbook
 ------------
 file: playbooks/getway-license-install.yml using ssgconfig as ansible_user
    
-    > ansible-playbook playbooks/gateway-configure-license.yml -i inventories/test/hosts --vault-password-file vault-password-file.txt
+    > ansible-playbook playbooks/gateway-install-license.yml -i inventories/test/hosts --vault-password-file vault-password-file.txt
 
 alternative playbook to install license using root as ansible_user using roles/gateway_install_license/tasks/install_license_as_root.yml
     
