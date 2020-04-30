@@ -1,7 +1,7 @@
-Configure gateway license
+Install gateway license
 ======================
 
-This role installs licenses on a Gateway cluster. It needs to be run on only one Gateway node (see Requirements).
+This role puts gateway licenses in bootstrap directory to be loaded at gateway startup. It needs to be run on only one Gateway node (see Requirements).
 
 Requirements
 ------------
@@ -36,7 +36,7 @@ gateway is not running ( gateway process controller is running )
 
 Example Playbook
 ------------
-file: playbooks/getway-license-install.yml using ssgconfig as ansible_user
+file: playbooks/gateway-install-license.yml using ssgconfig as ansible_user
    
     > ansible-playbook playbooks/gateway-install-license.yml -i inventories/test/hosts --vault-password-file vault-password-file.txt
 
