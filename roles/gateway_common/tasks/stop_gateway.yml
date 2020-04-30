@@ -4,6 +4,8 @@
   # sudo to allow ssgconfig user to call this command, use raw instead of command to suppress ansible warning of suggesting become
   raw: sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -lifecycle ensureStopped
   register: status
+# ignore rc=79 which happens if the service has already been stopped.
+  failed_when: status.rc != 79 and status.rc != 0
   changed_when: status.rc == 0
 
 - name: checking to see if gateway pid does not exist anymore after stopping Gateway application # noqa 305 must use shell
