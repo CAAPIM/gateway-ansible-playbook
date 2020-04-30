@@ -17,7 +17,7 @@ These tasks will update the expired password using the passwords provided in vau
 
 #### Stop and Start Gateway
 - stop_gateway.yml (*Note: this uses an internal script to stop the Gateway. It will not stop the Process Controller.* 
-                    *Must use start_gateway.yml to start and not service ssg start*)
+                    *Must use start_gateway.yml to start and not* `service ssg start`)
 - start_gateway.yml
 - start_process_controller.yml
 - restart_gateway_appliance.yml
