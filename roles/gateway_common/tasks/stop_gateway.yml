@@ -1,10 +1,17 @@
 ---
 # This task stops the gateway application.
-- name: stopping Gateway application, leave process controller on
+- name: checking to see if gateway pid exists. # noqa 305 must use shell
+  shell: pgrep -f "Gateway.jar"
+  register: gateway_pid
+  ignore_errors: yes
+  changed_when: no
+
+- name: stopping Gateway application if the gateway pid exists, leave process controller on.
   # sudo to allow ssgconfig user to call this command, use raw instead of command to suppress ansible warning of suggesting become
   raw: sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -lifecycle ensureStopped
   register: status
   changed_when: status.rc == 0
+  when: gateway_pid.stdout
 
 - name: checking to see if gateway pid does not exist anymore after stopping Gateway application # noqa 305 must use shell
   shell: pgrep -f "Gateway.jar"
