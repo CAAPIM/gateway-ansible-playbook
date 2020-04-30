@@ -1,5 +1,10 @@
 # Gateway Ansible Playbooks
 
+## Upgrading the Gateway
+The Gateway Ansible playbooks can upgrade Gateways from 9.4 to 10.  It provides an upgrade path for virtual appliances and hardware appliances. The main requirement for the in-place or expedited upgrades is that the new GW OVA or ISO must be installed on the target computer before the Ansible upgrade process takes place. It handles database cluters. Any data in the SSG database will be migrated.  This includes Solution Kits (MAG & OTK) and server module files (modular and custom assertions).  The components that were migrated along with the database may require further upgrade to work with Gateway 10.
+	
+Please note, the upgrades playbooks do not covered: Software Gateways, Docker, AMI, Azure Gateways. It also does not cover OTK installed on external databases.
+
 ## Background
 
 Before start, it is important to have some basic knowledge on Ansible and how it works and how to setup Ansible control node. 
