@@ -1,4 +1,4 @@
-Install gateway license
+Provision gateway license
 ======================
 
 This role puts gateway licenses in bootstrap directory to be loaded at gateway startup. It needs to be run on only one Gateway node (see Requirements).
