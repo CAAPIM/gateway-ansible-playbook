@@ -200,7 +200,7 @@ Follow the setup steps in the [README for gateway_install_license role](roles/ga
 
 Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-install-license.yml`
 
-This will put your license files onto the Gateway cluster. But all existing gateways licenses need
+This will put your license files onto the Gateway cluster. Note all existing gateways licenses need
 to be removed manually using Policy Manager before gateway can bootstrap new licenses.
 
 ## Update Hostnames used by OAuth Toolkit
