@@ -184,6 +184,8 @@ Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-restor
 
 This will restore the backup Gateway configuration files from the earlier backup step.
 
+After running the playbook, login [gateway main menu](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/install-configure-upgrade/configure-the-appliance-gateway/gateway-main-menu-appliance.html) and verify database and network settings on new gateway nodes.
+
 ## Update Destination Gateway Schema
 
 Follow the setup steps in the [README for gateway_import_database role](roles/gateway_import_database/README.md).
@@ -213,7 +215,7 @@ Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-update
 
 This will update the Gateway hostnames used by OAuth Toolkit.
 
-## Restart Gateways 
+## Restart Gateways
 
 Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-restart.yml`
 
