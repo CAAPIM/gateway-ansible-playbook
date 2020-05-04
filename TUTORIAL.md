@@ -184,22 +184,25 @@ Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-restor
 
 This will restore the backup Gateway configuration files from the earlier backup step.
 
+After running the playbook, login [gateway main menu](https://techdocs.broadcom.com/content/broadcom/techdocs/us/en/ca-enterprise-software/layer7-api-management/api-gateway/10-0/install-configure-upgrade/configure-the-appliance-gateway/gateway-main-menu-appliance.html) and verify database and network settings on new gateway nodes.
+
 ## Update Destination Gateway Schema
 
 Follow the setup steps in the [README for gateway_import_database role](roles/gateway_import_database/README.md).
 
-Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-upgrade.yml`
+Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-database-schema-upgrade.yml`
 
 This will update the database schema for Gateway v10.
 
-## Install License using Policy Manager
+## Provision Gateway Licenses 
 
 Follow the setup steps in the [README for gateway_install_license role](roles/gateway_install_license/README.md).
 
 Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-install-license.yml`
 
-This will install your license file onto the Gateway cluster. The existing v9 license is not removed, you will need
-to manually remove it using Policy Manager.
+This will put your license files onto the Gateway cluster. 
+
+Note: All existing gateways licenses need to be removed manually using Policy Manager before gateway can bootstrap new licenses.
 
 ## Update Hostnames used by OAuth Toolkit
 
@@ -213,7 +216,7 @@ Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-update
 
 This will update the Gateway hostnames used by OAuth Toolkit.
 
-## Restart Gateways 
+## Restart Gateways
 
 Run `ansible-playbook -i inventories/tutorial/hosts.yml playbooks/gateway-restart.yml`
 
