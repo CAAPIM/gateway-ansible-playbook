@@ -1,0 +1,23 @@
+---
+# These tasks will update hostnames used by OTK after expedited upgrade involving hostname changes. 
+
+- name: Update cluster.hostname cluster property in Gateway Database
+  include: update_cluster_hostname.yml
+  vars:
+    - db_name: "{{ database_name }}"
+    - db_user: "{{ database_user }}"
+    - db_pass: "{{ database_pass }}"
+
+- name: Update OTK JDBC connection
+  include: update_jdbc_connection.yml
+  vars:
+    - db_name: "{{ database_name }}"
+    - db_user: "{{ database_user }}"
+    - db_pass: "{{ database_pass }}"
+
+- name: Update OTK callback URLs
+  include: update_callback.yml
+  vars:
+    - db_name: "{{ otkdb_name }}"
+    - db_user: "{{ otkdb_user }}"
+    - db_pass: "{{ otkdb_userpwd }}"

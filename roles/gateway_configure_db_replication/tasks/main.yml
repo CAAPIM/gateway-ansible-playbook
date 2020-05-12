@@ -1,0 +1,50 @@
+---
+# These tasks will configure replication for the Gateway MySQL database.
+
+- name: Setup variables
+  set_fact:
+    primary_db: "{{ hostvars[groups['gateway_primary_db'][0]].inventory_hostname }}"
+    failover_db: "{{ hostvars[groups['gateway_failover_db'][0]].inventory_hostname }}"
+
+- name: Create slave user on gateway_primary_db node
+  include: add_slave_user.yml
+  vars:
+    - master_node: "{{ primary_db }}"
+    - slave_node: "{{ failover_db }}"
+    - node_type: "1"
+  delegate_to: localhost
+
+- name: Create slave user on gateway_failover_db node
+  include: add_slave_user.yml
+  vars:
+    - master_node: "{{ failover_db }}"
+    - slave_node: "{{ primary_db  }}"
+    - node_type: "2"
+  delegate_to: localhost
+
+- name: Setup replication on gateway_primary_db node
+  include: create_slave.yml
+  vars:
+    - master_node: "{{ primary_db }}"
+    - slave_node: "{{ failover_db }}"
+  delegate_to: localhost
+
+- name: Setup replication on gateway_failover_db node
+  include: create_slave.yml
+  vars:
+    - master_node: "{{ failover_db }}"
+    - slave_node: "{{ primary_db }}"
+  delegate_to: localhost
+
+- name: Verify replication has started on gateway_primary_db node
+  include: verify_replication.yml
+  vars:
+    ansible_user: root
+    ansible_ssh_password: "{{ gateway_root_password }}"
+
+- name: Verify replication has started on gateway_failover_db node
+  include: verify_replication.yml
+  vars:
+   ansible_user: root
+   ansible_ssh_password: "{{ gateway_root_password }}"
+  delegate_to: "{{ failover_db }}"

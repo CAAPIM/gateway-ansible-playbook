@@ -1,11 +1,13 @@
-Configure gateway license
+Provision gateway license
 ======================
 
-This role installs licenses on a Gateway cluster. It needs to be run on only one Gateway node (see Requirements).
+This role puts gateway licenses in bootstrap directory to be loaded at gateway startup. It needs to be run on only one Gateway node (see Requirements).
 
 Requirements
 ------------
 * Place license (*.xml) files on the control node in the directory (default /tmp/license) defined in `controller_dir_license_location` (see Role Variables section). 
+* Create this directory and copy all license files to this folder if it does not exist.
+* User for running Ansible should have access to this directory and files within it.
 
 * Specify gateway's hostname/IP in the hosts file [gateway_primary_db]] section.
     ```
@@ -16,12 +18,12 @@ Requirements
 
 Role Variables
 --------------
-Under group_vars/gateway.yml
+Under group_vars/all/vars
 * gateway_bootstrap_dir - directory to store license files.
 * gateway_license_upload_dir - temp directory to store license files.
 * gateway_license_install_dir - final directory to store license files.
 
-Under group_vars/all.yml
+Under group_vars/all/vars
 * controller_dir_license_location - local directory to store the license file(s).
   * Default location: /tmp/license
 
@@ -34,9 +36,9 @@ gateway is not running ( gateway process controller is running )
 
 Example Playbook
 ------------
-file: playbooks/getway-license-install.yml using ssgconfig as ansible_user
+file: playbooks/gateway-install-license.yml using ssgconfig as ansible_user
    
-    > ansible-playbook playbooks/gateway-configure-license.yml -i inventories/test/hosts --vault-password-file vault-password-file.txt
+    > ansible-playbook playbooks/gateway-install-license.yml -i inventories/test/hosts --vault-password-file vault-password-file.txt
 
 alternative playbook to install license using root as ansible_user using roles/gateway_install_license/tasks/install_license_as_root.yml
     

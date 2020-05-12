@@ -3,12 +3,12 @@ Gateway Basic Restore of Backup
 
 This task will restore Gateway and Linux configuration files and Gateway assertions archived 
 by ssgbackup. No database files will be restored. The backup files used to restore from are located
-on the controller and the path on the controller is specified by the group_vars variable **backup_location_on_controller**.
+on the controller and the path on the controller is specified by the variable **backup_location_on_controller**.
 This task expects the backup file in which to restore from is in the format: **ansible_basic_ssgbackup_<source_hostname>.zip**. 
 The source_hostname is the hostname where the backupfile was created.  
 
 The mapping used to determine which backup file is used for which destination host is stored in the inventory host file.  
-The destination and source are linked via a custom attribute called **upgrade_source** in the gateway group which
+The destination and source are linked via a custom attribute called **src** in the gateway group which
 specifies the name of the hosts that are being upgraded to. This custom attribute must be specified for each host 
 in the group in order to run this task.
 
@@ -19,7 +19,7 @@ Requirements
 ------------
 
 It is assumed that the **gateway_basic_backup** role was used previously to backup the files from the source Gateway.
-The **upgrade_source** custom attribute must be specified for each host in the target gateway group of the inventory host file.
+The **src** custom attribute must be specified for each host in the target gateway group of the inventory host file.
 The task requires an Ansible user with root priviledges in order to execute.  The task executes ssgrestore and
 handles files which requires root or layer7 priviledges.
 

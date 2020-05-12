@@ -7,6 +7,11 @@ Please note Luna client is not provided in this repository. You can download Lun
 Requirements
 ------------
 
+Place the required files under the `files` directory:
+- LunaClient_7.2.0-220_Linux.zip
+- sshpass-1.06.tar.gz (if performing off-line setup)
+- [get-pip.py](https://pip.pypa.io/en/stable/installing/) (if performing off-line setup)
+
 * A configured gateway appliance and enable the root access.
 * Specify source gateway's hostname/IP in the hosts file [gateway_hsm] section.
 
@@ -45,7 +50,9 @@ Requirements
 Variables
 ------------
 **Note**: These variables need to be set in the host_vars/luna*.placeholder.com.yml file. If your are using another version of luna client 
-, please create a new host_vars file under the folder host_vars, and use the same name as your hostname
+, please create a new host_vars file under the folder host_vars, and use the same name as your hostname.
+
+Utilize Ansible Vault for these configurations.
 
 * hsm_user: user name for SafeNet HSM server
 * hsm_pass: password for SafeNet HSM server

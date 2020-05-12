@@ -4,15 +4,15 @@
 # This task will restore PAPIM configuration files
 
 - name: Check requirement that the PAPIM backup file exists on the controller.
-  local_action:
+  local_action: # noqa 504
     module: stat
-    path: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+    path: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].src }}.zip"
   register: file_status
-  failed_when: file_status.stat.exists == False
+  failed_when: not file_status.stat.exists
 
 - name: Set the backup filename to a fact.
   set_fact:
-    fact_backup_file: "ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+    fact_backup_file: "ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].src }}.zip"
 
 - name: Check if epagent service exists.
   stat:
@@ -27,7 +27,7 @@
 
 - name: Copy backup file from controller to inventory_host.
   copy:
-    src: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].upgrade_source }}.zip"
+    src: "{{ controller_dir_papim_backup_location }}/ansible_papim_ssgbackup_{{ hostvars[inventory_hostname].src }}.zip"
     dest: /opt/
 
 - name: Ensure /tmp/papimrestore exists to restore PAPIM configuration.
@@ -123,9 +123,8 @@
   file:
     state: absent
     path: "/opt/{{ fact_backup_file }}"
-  
+
 - name: Delete /tmp/papimrestore folder.
   file:
     state: absent
     path: "{{ temp_folder }}"
-     

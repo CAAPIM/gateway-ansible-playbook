@@ -1,6 +1,0 @@
----
-- name: Autoprovision primary database gateway node.
-  import_role: 
-    name: gateway_processing_node
-  vars:
-    configure_db: true

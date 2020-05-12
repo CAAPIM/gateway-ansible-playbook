@@ -4,60 +4,70 @@
     state: directory
 - name: unzip mysql output to remote server
   unarchive:
-    src: '{{ controller_dir_db_backup_location }}/{{ source }}{{ db_dump_zip_file }}.zip'
+    src: '{{ controller_dir_db_backup_location }}/{{ src }}{{ db_dump_zip_file }}.zip'
     dest: '{{ remote_db_temp_dir }}'
 
-- name: Delete gateway database 
-  no_log: true # don't log decrypted passwords in responses
+- name: Delete gateway database # noqa 305 must use shell
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   shell:
-    cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} drop {{ ssgdb_name }} -f
+    cmd: mysqladmin -u {{ database_user }} -p{{ database_pass }} drop {{ database_name }} -f
   failed_when: false
+  register: status
+  changed_when: status.rc == 0
 
-- name: create gateway database
-  no_log: true # don't log decrypted passwords in responses
+- name: create gateway database # noqa 305 must use shell
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   shell:
-    cmd: mysqladmin -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} create {{ ssgdb_name }}
+    cmd: mysqladmin -u {{ database_user }} -p{{ database_pass }} create {{ database_name }}
+  register: status
+  changed_when: status.rc == 0
 
-- name: import gateway database from source gateway 
-  no_log: true # don't log decrypted passwords in responses
+- name: import gateway database from source gateway # noqa 305 must use shell
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   shell:
-    cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} {{ ssgdb_name }} < {{remote_db_temp_dir}}/ssg.sql
+    cmd: mysql  -u {{ database_user }} -p{{ database_pass }} {{ database_name }} < {{ remote_db_temp_dir }}/ssg.sql
+  register: status
+  changed_when: status.rc == 0
 
-- name: clean up cluster_info table
-  no_log: true
+- name: clean up cluster_info table # noqa 305 must use shell
+  no_log: "{{ no_log_flag }}"
   shell:
-    cmd: mysql  -u {{ ssgdb_user }} -p{{ ssgdb_userpwd }} -e 'truncate table ssg.cluster_info'
+    cmd: mysql  -u {{ database_user }} -p{{ database_pass }} -e 'truncate table ssg.cluster_info'
+  register: status
+  changed_when: status.rc == 0
 
 - name: Import otk source database
   when: otkdb_name is defined
   block:
-    - name: create otk user if not exists
-      no_log: true # don't log decrypted passwords in responses
+    - name: create otk user if not exists # noqa 305 must use shell
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
       shell:
-        cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} -e "{{ command_mysql_create_otkuser }}"
+        cmd: mysql -u {{ database_admin_user }} -p{{ database_admin_pass }} -e "{{ command_mysql_create_otkuser }}"
 
-    - name: grant otk user privileges
-      no_log: true # don't log decrypted passwords in responses
+    - name: grant otk user privileges # noqa 305 must use shell
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
       shell:
-        cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} -e "{{ command_mysql_grant_otkuser_privileges }}"
+        cmd: mysql -u {{ database_admin_user }} -p{{ database_admin_pass }} -e "{{ command_mysql_grant_otkuser_privileges }}"
 
-    - name: delete otk database
-      no_log: true # don't log decrypted passwords in responses
-      shell: 
-        cmd: mysqladmin  -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} drop {{otkdb_name}} -f
+    - name: delete otk database # noqa 305 must use shell
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
+      shell:
+        cmd: mysqladmin  -u {{ database_admin_user }} -p{{ database_admin_pass }} drop {{ otkdb_name }} -f
       failed_when: false
 
-    - name: create otk database 
-      no_log: true # don't log decrypted passwords in responses
+    - name: create otk database # noqa 305 must use shell
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
       shell:
-        cmd: mysqladmin -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} create {{otkdb_name}}
+        cmd: mysqladmin -u {{ database_admin_user }} -p{{ database_admin_pass }} create {{ otkdb_name }}
+      register: status
+      changed_when: status.rc == 0
 
-    - name: import otk database 
-      no_log: true # don't log decrypted passwords in responses
+    - name: import otk database
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
       shell:
-        cmd: mysql -u {{ ssgdb_adminuser }} -p{{ ssgdb_adminpwd }} {{otkdb_name}} < {{remote_db_temp_dir}}/otk.sql
+        cmd: mysql -u {{ database_admin_user }} -p{{ database_admin_pass }} {{ otkdb_name }} < {{ remote_db_temp_dir }}/otk.sql
 
 - name: clean up remote temp directory
   file:
-    path: "{{remote_db_temp_dir}}"
+    path: "{{ remote_db_temp_dir }}"
     state: absent

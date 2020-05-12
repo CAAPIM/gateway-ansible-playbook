@@ -2,8 +2,8 @@
 # tasks file for ssg-basic-backup role.
 #
 # This task will backup Gateway and Linux configuration files and Gateway assertions using ssgbackup. No database files will
-# be backed up. It will rename the backup file to a standardized format: ansible_basic_ssgbackup_<hostname>.zip and copy the file to 
-# the controller in a location specified by the group_vars variable "controller_dir_backup_location". The file can then be copied 
+# be backed up. It will rename the backup file to a standardized format: ansible_basic_ssgbackup_<hostname>.zip and copy the file to
+# the controller in a location specified by the variable "controller_dir_backup_location". The file can then be copied
 # to a target server and restored using a different role.
 
 
@@ -11,16 +11,15 @@
   stat:
     path: /opt/SecureSpan/Gateway/node/default/etc/conf/node.properties
   register: file_status
-  failed_when: file_status.stat.exists == False
-  
-- name: Create backup folder on controller. #Cannot be created by fetch module below due to limitation of fetch module. Must be explicitly created.
-  local_action:
+  failed_when: not file_status.stat.exists
+
+#Cannot be created by fetch module below due to limitation of fetch module. Must be explicitly created.
+- name: Create backup folder on controller.
+  local_action: # noqa 504
     module: file
     path: "{{ controller_dir_backup_location }}"
     state: directory
-    mode: '0700'  
-    owner: "{{ ansible_user }}"
-  
+    mode: '0700'
 
 - name: Find old backup files created by this Playbook.
   find:
@@ -28,15 +27,17 @@
     patterns: ".*_ansible_basic_ssgbackup*.zip"
     use_regex: true
   register: wildcard_files_to_delete
-    
+
 - name: Delete old backup files created by this Playbook.
   file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ wildcard_files_to_delete.files }}"
-        
+
 - name: Executing ssgbackup of configuration and assertions.
-  command: /opt/SecureSpan/Gateway/config/backup/ssgbackup.sh -image ansible_basic_ssgbackup.zip {{ ssgbackup_parameters }}  
+  command: /opt/SecureSpan/Gateway/config/backup/ssgbackup.sh -image ansible_basic_ssgbackup.zip {{ ssgbackup_parameters }}
+  register: status
+  changed_when: status.rc == 0
 
 - name: Find new backup file created.
   find:
@@ -45,14 +46,16 @@
     use_regex: yes
     patterns: ".*_ansible_basic_ssgbackup.zip"
   register: files_to_delete
-- 
+
 - name: Rename backup file for easier storage.
-  copy: remote_src=True src={{ files_to_delete.files[0].path }} dest=/opt/SecureSpan/Gateway/config/backup/images/ansible_basic_ssgbackup_{{ inventory_hostname }}.zip   
-      
+  copy: >
+    remote_src=True src={{ files_to_delete.files[0].path }}
+    dest=/opt/SecureSpan/Gateway/config/backup/images/ansible_basic_ssgbackup_{{ inventory_hostname }}.zip
+
 - name: Copy backup file to controller.
   fetch:
     src: /opt/SecureSpan/Gateway/config/backup/images/ansible_basic_ssgbackup_{{ inventory_hostname }}.zip
     dest: "{{ controller_dir_backup_location }}"
     flat: yes
-    validate_checksum: false  # Set to false, otherwise fetch will run into performance issue and freeze controller. 
+    validate_checksum: false  # Set to false, otherwise fetch will run into performance issue and freeze controller.
                               # See notes section in fetch_module documentation for more info.

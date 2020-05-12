@@ -8,19 +8,19 @@
   copy:
     src: "{{ item }}"
     dest: "{{ gateway_license_upload_dir }}"
-  with_fileglob: "{{controller_dir_license_location}}/*.xml"
+  with_fileglob: "{{ controller_dir_license_location }}/*.xml"
 
 - name: configure Gateway license
-  no_log: true # don't log decrypted passwords in responses
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
   expect:
-    command: sshpass -p '{{ gateway_ssgconfig_password }}' ssh {{ ansible_ssh_extra_args }} ssgconfig@{{inventory_hostname}}
+    command: sshpass -p '{{ gateway_ssgconfig_password }}' ssh {{ ansible_ssh_extra_args }} ssgconfig@{{ inventory_hostname }}
     timeout: "{{ gateway_ssh_timeout }}"
     responses:
       "Please make a selection:": "3"
       "Password:": "{{ gateway_root_password }}"
-      "(?i)#": "{{command_root_auto_provision_license}}"
+      "(?i)#": "{{ command_root_auto_provision_license }}"
   register: status
-  changed_when: "'mv: overwrite' in status.stdout" 
+  changed_when: "'mv: overwrite' in status.stdout"
   failed_when: "'mv: overwrite' not in status.stdout"
   delegate_to: localhost
 

@@ -1,0 +1,20 @@
+---
+# This task will setup MySQL replication on a Gateway.
+
+- name: Setup MySQL slave on {{ master_node }} (may take several minutes)
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
+  expect:
+    command: sshpass -p '{{ gateway_root_password }}' ssh {{ ansible_ssh_extra_args }} root@{{ master_node }} /opt/SecureSpan/Appliance/bin/create_slave.sh
+    timeout: "{{ gateway_replication_timeout }}"
+    responses:
+      "Enter hostname or IP for the MASTER:": "{{ slave_node }}"
+      "Enter replication user:": "{{ database_repl_user }}"
+      "Enter replication password:": "{{ database_repl_pass }}"
+      "Enter MySQL root user:": "{{ database_admin_user }}"
+      "Enter MySQL root password:": "{{ database_admin_pass }}"
+      "Do you want to clone a database" : "no"
+  register: status
+  changed_when:
+    - status.rc == 0
+    - '"Slave successfully created" in status.stdout'
+  failed_when: (status.rc != 0) or ("Slave successfully created" not in status.stdout)

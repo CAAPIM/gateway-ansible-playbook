@@ -1,6 +1,6 @@
 ---
-# vars file for gateway_export_database 
+# vars file for gateway_export_database
 notes: "Run by Ansible!"
 ## Role specific password can be added here
-#ssgdb_adminpwd:
-#ssgdb_userpwd:
+#database_admin_pass:
+#database_pass:

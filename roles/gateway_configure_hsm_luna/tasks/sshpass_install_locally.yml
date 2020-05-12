@@ -7,7 +7,7 @@
        dest: /etc/sshpass-1.06.tar.gz
        mode: '0755'
 
-   - name: Uncompress the sshpass package
+   - name: Uncompress the sshpass package # noqa 303
      command:
        chdir: /etc
        cmd: tar -xvf sshpass-1.06.tar.gz

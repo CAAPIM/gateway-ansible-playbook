@@ -1,7 +1,22 @@
 ---
-# Runs mysql to get gateway and OTK database dump against all the hosts and uploads the results into downloads folder (set by default)
+# This playbook will take a database dump from the Gateway's MySQL database, and store it on the Ansible controller.
+# See the readme under roles/gateway_export_database for setup instructions.
+
+- name: Detect source gateway mysql nodes
+  hosts: gateway_mysql
+  gather_facts: no
+  tasks:
+    - name: collect src hosts
+      add_host:
+        hostname: "{{ hostvars[item].src }}"
+        ansible_connection: "ssh"
+        groups:
+          - gateway_mysql
+          - gateway_src
+      with_items: "{{ groups['gateway_primary_db'] }}"
+
 - name: Execute mysql dump and store
-  hosts: gateway_mysql_source
+  hosts: gateway_src
   serial: 1
   strategy: free
   roles:

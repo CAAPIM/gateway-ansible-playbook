@@ -1,0 +1,8 @@
+---
+# This playbook updates hostnames used by OTK, for upgrade scenarios where hostnames are changed.
+# See the readme under roles/gateway_update_otk_hostnames for setup instructions.
+
+- name: Update hostnames used by OTK after expedited upgrade involving hostname changes.
+  hosts: gateway_primary_db
+  roles:
+    - gateway_update_otk_hostnames

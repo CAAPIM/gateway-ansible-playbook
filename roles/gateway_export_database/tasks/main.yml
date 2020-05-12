@@ -1,53 +1,55 @@
-- name: Create database dump backup folder on controller. #Cannot be created by fetch module below due to limitation of fetch module. Must be explicitly created.
-  local_action:
+#Cannot be created by fetch module below due to limitation of fetch module. Must be explicitly created.
+- name: Create database dump backup folder on controller.
+  local_action: # noqa 504
     module: file
     path: "{{ controller_dir_db_backup_location }}"
     state: directory
-    mode: '0700'
-    owner: "{{ ansible_user }}"
+    mode: "0700"
 
 - name: create remote temp directory for output files
   file:
-    path: "{{remote_db_temp_dir}}"
+    path: "{{ remote_db_temp_dir }}"
     state: directory
 
+- name: Dump gateway source database # noqa 305 must use shell
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
+  shell:
+    cmd: mysqldump {{ database_name }} --routines -u{{ database_user }}  -p{{ database_pass }} > {{ remote_db_temp_dir }}/ssg.sql
+  register: status
+  changed_when: status.rc == 0
 
-- name: Dump gateway source database
-  no_log: true # don't log decrypted passwords in responses
-  shell: 
-    cmd: mysqldump {{ ssgdb_name }} --routines -u{{ ssgdb_user}}  -p{{ ssgdb_userpwd }} > {{remote_db_temp_dir}}/ssg.sql
-
-- name: remove string from gateway DB dump to comply with MySQL8
-  shell: 
-    cmd: sed -i 's/NO_AUTO_CREATE_USER,//g' {{remote_db_temp_dir}}/ssg.sql
+- name: remove string from gateway DB dump to comply with MySQL8 # noqa 305 must use shell
+  shell:
+    cmd: sed -i 's/NO_AUTO_CREATE_USER,//g' {{ remote_db_temp_dir }}/ssg.sql
   args:
     warn: no
+  register: status
+  changed_when: status.rc == 0
 
 - name: Dump otk source database
   when: otkdb_name is defined
   block:
+    - name: Dump otk source database # noqa 305 must use shell
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
+      shell:
+        cmd: mysqldump {{ otkdb_name }} --routines -u{{ database_admin_user }}  -p{{ database_admin_pass }} > {{ remote_db_temp_dir }}/otk.sql
 
-    - name: Dump otk source database
-      no_log: true # don't log decrypted passwords in responses
-      shell: 
-        cmd: mysqldump {{otkdb_name}} --routines -u{{ ssgdb_adminuser}}  -p{{ ssgdb_adminpwd }} > {{remote_db_temp_dir}}/otk.sql
-
-    - name: remove string from otk DB dump to comply with MySQL8
-      shell: 
-        cmd: sed -i 's/NO_AUTO_CREATE_USER,//g' {{remote_db_temp_dir}}/otk.sql 
+    - name: remove string from otk DB dump to comply with MySQL8 # noqa 305 must use shell
+      shell:
+        cmd: sed -i 's/NO_AUTO_CREATE_USER,//g' {{ remote_db_temp_dir }}/otk.sql
       args:
         warn: no
 
 - name: zip mysql output
   archive:
-    path: '{{ remote_db_temp_dir }}/*'
-    dest: '{{ db_dump_zip_file }}.zip'
+    path: "{{ remote_db_temp_dir }}/*"
+    dest: "{{ db_dump_zip_file }}.zip"
     format: zip
 
-- name: copy over the zip file to controller 
+- name: copy over the zip file to controller
   fetch:
-    src: '{{ db_dump_zip_file }}.zip'
-    dest: '{{ controller_dir_db_backup_location }}'
+    src: "{{ db_dump_zip_file }}.zip"
+    dest: "{{ controller_dir_db_backup_location }}"
 
 - name: cleanup
   file:

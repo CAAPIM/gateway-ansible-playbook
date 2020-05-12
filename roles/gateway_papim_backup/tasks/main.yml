@@ -3,23 +3,24 @@
 #
 # This task will backup the PAPIM configuration files.
 # It will rename the backup file to a standardized format: ansible_papim_ssgbackup_<hostname>.zip and copy the file to
-# the controller in a location specified by the group_vars variable "controller_dir_papim_backup_location". The file can then be copied
+# the controller in a location specified by the variable "controller_dir_papim_backup_location". The file can then be copied
 # to a target server and restored using a different role.
 
 - name: Check if PAPIM service exists.
   stat:
     path: /etc/init.d/epagent
   register: service_status
-  failed_when: service_status.stat.exists == False
+  failed_when: not service_status.stat.exists
 
 - name: Check if PAPIM installation dir <papim_installation_dir> exists.
   stat:
     path: "{{ papim_installation_dir }}"
   register: dir_status
-  failed_when: dir_status.stat.exists == False
+  failed_when: not dir_status.stat.exists
 
 - name: Check for PAPIM user.
   command: grep {{ papim_user }} -q /etc/passwd
+  changed_when: False
 
 - name: Create a zip archive of PAPIM configuration files.
   archive:

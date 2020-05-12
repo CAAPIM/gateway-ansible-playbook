@@ -1,26 +1,32 @@
 ---
 # tasks file for gateway_controller_cleanup
- 
+ - name: Setting facts
+   set_fact:
+     papim_var_file_path: "{{ ansible_inventory_sources | first }}/group_vars/gateway_papim.yml"
+
+ - name: Include vars
+   include_vars: "{{ papim_var_file_path }}"
+
  - name: Delete backup files on Ansible controller created by gateway_basic_backup role.
-   local_action: 
+   local_action: # noqa 504
      module: file
      path: "{{ controller_dir_backup_location }}"
      state: absent
 
-  - name: Delete backup files on Ansible controller created by gateway_papim_backup role.
-   local_action:
+ - name: Delete backup files on Ansible controller created by gateway_papim_backup role.
+   local_action: # noqa 504
      module: file
      path: "{{ controller_dir_papim_backup_location }}"
      state: absent
-   
+
  - name: Delete database backup files on Ansible controller created by gateway_export_database role.
-   local_action:
+   local_action: # noqa 504
      module: file
      path: "{{ controller_dir_db_backup_location }}"
      state: absent
 
  - name: Delete license files on Ansible controller used by gateway_configure_license role.
-   local_action:
+   local_action: # noqa 504
      module: file
      path: "{{ controller_dir_license_location }}"
      state: absent

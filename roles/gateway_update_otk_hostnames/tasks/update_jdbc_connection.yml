@@ -1,0 +1,15 @@
+---
+# This task will update all OTK JDBC connection urls (containing the OTK db name) to use the configured new hostname.
+# URLs are only updated if both variables in the `when` clause below are set to non-empty strings.
+
+- name: Update hostnames in OTK JDBC connections # noqa 305 must use shell
+  when: old_otk_jdbc_hostname and new_otk_jdbc_hostname
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords in responses
+  shell:
+    cmd: >
+      mysql -u{{ db_user }} -p{{ db_pass }} {{ db_name }} -e
+      "UPDATE jdbc_connection
+      SET jdbc_url = REPLACE(jdbc_url, '{{ old_otk_jdbc_hostname }}', '{{ new_otk_jdbc_hostname }}')
+      WHERE (jdbc_url like '%{{ otkdb_name }}%');"
+  register: status
+  changed_when: status.rc == 0

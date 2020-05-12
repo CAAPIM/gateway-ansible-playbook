@@ -1,0 +1,56 @@
+---
+- name: Check if destination Gateway node is already configured. # noqa 305 - no alternative to shell module
+  no_log: "{{ no_log_flag }}" # don't log decrypted passwords
+  shell:
+    cmd: sshpass -p '{{ gateway_ssgconfig_password }}' {{ command_ssh_dest_gateway }} '{{ command_check_node_configured }}'
+  register: configured
+  changed_when: false
+  failed_when: false
+
+- name: Populate node properties template and use it to auto-provision destination Gateway.
+  when: configured.rc != 0 # node is not configured yet
+  block:
+    - name: Create temporary directory to store node properties template file.
+      tempfile:
+        state: directory
+        prefix: "{{ node_props_dir }}"
+      register: temp_dir
+    - name: Copy template file to temporary directory.
+      delegate_to: localhost
+      copy:
+        src: gateway_node.properties
+        dest: "{{ temp_dir.path }}/{{ inventory_hostname }}.properties"
+      register: template_file
+    - name: Set values in node properties template file.
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords
+      lineinfile:
+        path: "{{ template_file.dest }}"
+        regexp: '{{ item.from }}'
+        line: '{{ item.to }}'
+      with_items:
+        - { from: '^#admin.user', to: 'admin.user={{ policy_manager_admin_user }}' }
+        - { from: '^#admin.pass', to: 'admin.pass={{ policy_manager_admin_pass }}' }
+        - { from: '^cluster.host', to: 'cluster.host={{ cluster_host }}' }
+        - { from: '^#cluster.pass', to: 'cluster.pass={{ cluster_pass }}' }
+        - { from: '^configure.db', to: 'configure.db={{ configure_db|lower }}' }
+        - { from: '^database.type', to: 'database.type={{ database_type }}' }
+        - { from: '^database.host', to: 'database.host={{ database_host }}' }
+        - { from: '^database.name', to: 'database.name={{ database_name }}' }
+        - { from: '^database.port', to: 'database.port={{ database_port }}' }
+        - { from: '^database.user', to: 'database.user={{ database_user }}' }
+        - { from: '^#database.pass', to: 'database.pass={{ database_pass }}' }
+        - { from: '^database.admin.user', to: 'database.admin.user={{ database_admin_user }}' }
+        - { from: '^#database.admin.pass', to: 'database.admin.pass={{ database_admin_pass }}' }
+        - { from: '^node.enable', to: 'node.enable={{ node_enable }}' }
+        - { from: '^configure.node', to: 'configure.node={{ configure_node }}' }
+      register: updated_node_properties
+    - name: Auto-provision the new Gateway node.
+      no_log: "{{ no_log_flag }}" # don't log decrypted passwords
+      shell:
+        cmd: cat {{ template_file.dest }} | sshpass -p '{{ gateway_ssgconfig_password }}' {{ command_ssh_dest_gateway }} '{{ command_autoprovision_node }}'
+      register: status
+      failed_when: "'Configuration Successful' not in status.stdout"
+    - name: Clean node properties temporary directory
+      file:
+        state: absent
+        path: "{{ temp_dir.path }}/"

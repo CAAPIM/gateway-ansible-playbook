@@ -42,18 +42,18 @@ Server Module Files
 
 External Libraries
 --------------------------------
-{% if report_external_libs is defined and report_external_libs.stdout_lines is defined %}
-    {% for item in report_external_libs.stdout_lines %}
-      {{ item }}
+{% if report_external_libs is defined and report_external_libs.files is defined %}
+    {% for item in report_external_libs.files %}
+      {{ item.path | regex_replace('/opt/SecureSpan/Gateway/runtime/lib/ext/', '') }}
     {% endfor %}
 {% endif %}
 
 RPM Results
 --------------------------------
-{% if report_modular_assertions is defined and report_rpms.stdout_lines is defined %}
-    {% for item in report_rpms.stdout_lines %}
+{% if report_rpms is defined and report_rpms.stdout_lines is defined %}
+    {% for item in report_rpms.stdout_lines|sort %}
       {{ item }}
-    {% endfor %}
+    {% endfor %}}
 {% endif %}
 
 

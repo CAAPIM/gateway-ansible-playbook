@@ -1,4 +1,7 @@
 ---
+# This playbook will configure a Luna 7 client on all inventory Gateways. 
+# See the readme under roles/gateway_configure_hsm_luna for setup instructions.
+
 - hosts: gateway
   roles:
     - { role: gateway_configure_hsm_luna, hsm_hostname: 'luna7.placeholder.com'}

@@ -1,3 +1,6 @@
+---
+# This playbook will install Gateway license files.
+# See the readme under roles/gateway_install_license for setup instructions.
 
 - name: configure license in gateway primary node
   hosts: gateway_primary_db

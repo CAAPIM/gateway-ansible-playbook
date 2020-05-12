@@ -1,7 +1,9 @@
 ---
-# Runs mysql to get gateway and OTK database import against all the hosts 
-- name: Execute mysql import in destination gateway 
-  hosts: gateway_mysql_dest 
+# This playbook will import the database dump from gateway_export_database role and import it into Gateway's MySQL database.
+# See the readme under roles/gateway_import_database for setup instructions.
+
+- name: Execute mysql import in destination gateway
+  hosts: gateway_primary_db
   serial: 1
   strategy: free
   pre_tasks:

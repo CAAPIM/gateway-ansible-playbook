@@ -16,7 +16,8 @@ These tasks will update the expired password using the passwords provided in vau
 ## Other Tasks
 
 #### Stop and Start Gateway
-- stop_gateway.yml
+- stop_gateway.yml (*Note: this uses an internal script to stop the Gateway. It will not stop the Process Controller.* 
+                    *Must use start_gateway.yml to start and not* `service ssg start`)
 - start_gateway.yml
 - start_process_controller.yml
 - restart_gateway_appliance.yml
@@ -36,7 +37,7 @@ This role must be run from the Ansible control node.
 
 ### Setup Variables
 
-Set Gateway OS user passwords in the `group_vars/all.yml` file:
+Set Gateway OS user passwords in the `group_vars/all/vars` file:
 ```yaml
 - vault_gateway_default_password
 - vault_gateway_ssgconfig_password

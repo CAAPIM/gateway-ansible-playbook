@@ -1,10 +1,10 @@
 ---
 - name: Install sshpass
   block:
-    - name: Download sshpass module
+    - name: Download sshpass module # noqa 303
       command: wget http://sourceforge.net/projects/sshpass/files/latest/download -O sshpass.tar.gz
 
-    - name: Uncompress the sshpass package
+    - name: Uncompress the sshpass package # noqa 303
       command: tar -xvf sshpass.tar.gz
 
     - name: Execute configuration file
