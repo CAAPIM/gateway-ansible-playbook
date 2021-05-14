@@ -12,21 +12,21 @@
 # ansible-playbook playbooks/sample-cluster-migration.yml -i inventories/demo/hosts --vault-password-file vault-password-file.txt
 #
 
-- name: Update expired passwords on new Gateways.
-  hosts: gateway
-  connection: local
-  vars:
-    ansible_python_interpreter: "{{ ansible_playbook_python }}"
-  roles:
-    - gateway_common
+# - name: Update expired passwords on new Gateways.
+#   hosts: gateway
+#   connection: local
+#   vars:
+#     ansible_python_interpreter: "{{ ansible_playbook_python }}"
+#   roles:
+#     - gateway_common
 
-- name: Setup MySQL database on the destination (primary database node) Gateway.
-  hosts: gateway_primary_db
-  connection: local
-  vars:
-    ansible_python_interpreter: "{{ ansible_playbook_python }}"
-  roles:
-    - gateway_configure_primary_node
+# - name: Setup MySQL database on the destination (primary database node) Gateway.
+#   hosts: gateway_primary_db
+#   connection: local
+#   vars:
+#     ansible_python_interpreter: "{{ ansible_playbook_python }}"
+#   roles:
+#     - gateway_configure_primary_node
 
 - name: Detect source gateway mysql nodes
   hosts: gateway_mysql
@@ -70,13 +70,13 @@
         name: gateway_import_database
         tasks_from: upgrade_gateway_database_schema
 
-- name: Add processing nodes to the new cluster with the destination (primary database node) Gateway.
-  hosts: gateway_processing_node
-  connection: local
-  vars:
-    ansible_python_interpreter: "{{ ansible_playbook_python }}"
-  roles:
-    - gateway_configure_processing_node
+# - name: Add processing nodes to the new cluster with the destination (primary database node) Gateway.
+#   hosts: gateway_processing_node
+#   connection: local
+#   vars:
+#     ansible_python_interpreter: "{{ ansible_playbook_python }}"
+#   roles:
+#     - gateway_configure_processing_node
 
 - name: Add destination Gateways to a group
   hosts: gateway
