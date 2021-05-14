@@ -47,7 +47,7 @@
     mode: 0664
 
 - name: Ensure Gateway pid does not exist anymore after stopping Gateway service.
-  shell: pgrep -f "Gateway.jar" # noqa 305 - no alternative to shell
+  shell: pgrep -u gateway -f "/opt/SecureSpan/JDK/bin/java" # noqa 305 - no alternative to shell
   register: gateway_pid
   failed_when: 'gateway_pid.rc >= 2 or gateway_pid.stdout'
   changed_when: no

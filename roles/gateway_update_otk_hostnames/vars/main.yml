@@ -3,9 +3,9 @@
 new_cluster_hostname: ""
 
 # Values for replacing all old OTK JDBC URLs' hostnames with the new one. URLs are only updated if both are set to non-empty strings.
-old_otk_jdbc_hostname: ""
-new_otk_jdbc_hostname: ""
+old_otk_jdbc_hostname: "pre-upgrade-gw"
+new_otk_jdbc_hostname: "post-upgrade-gw"
 
 # Values for updating all old OTK callback URLs' hostnames with the new one. URLs are only updated if both are set to non-empty strings.
-old_callback_hostname: ""
-new_callback_hostname: ""
+old_callback_hostname: "pre-upgrade-gw"
+new_callback_hostname: "post-upgrade-gw"

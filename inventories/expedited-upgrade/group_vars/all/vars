@@ -1,0 +1,140 @@
+---
+#### This is the site wide default.
+
+#### Authentication Properties
+
+# Default Gateway SSH user used by Ansible
+ansible_user: root
+
+# Password used by Ansible when connecting via Gateway Default SSH user
+ansible_password: "{{ vault_gateway_ssgconfig_password }}"
+
+# Default Gateway OS password (e.g. when a new Gateway is started the firt time. It is identical for "ssgconfig" and "root" users)
+gateway_default_password: "{{ vault_gateway_default_password }}"
+
+# Password for Gateway "ssgconfig" user
+gateway_ssgconfig_password: "{{ vault_gateway_ssgconfig_password }}"
+
+# Password for Gateway "root" user
+gateway_root_password: "{{ vault_gateway_root_password }}"
+
+# Password for Gateway Policy Manager Admin User
+policy_manager_admin_user: admin
+
+# Password for Gateway Policy Manager admin account
+policy_manager_admin_pass: "{{ vault_policy_manager_admin_pass }}"
+
+# Gateway Cluster Hostname (default value: hostname of Gateway under inventory group "gateway_primary_db")
+cluster_host: "{{ hostvars[groups['gateway_primary_db'][0]].inventory_hostname }}"
+
+# Gateway Cluster Passphrase
+cluster_pass: "{{ vault_gateway_cluster_pass }}"
+
+#### Database Configurations
+
+# Gateway Primary Database Hostname (default value: hostname of Gateway under inventory group "gateway_primary_db")
+database_host: "{{ hostvars[groups['gateway_primary_db'][0]].inventory_hostname }}" 
+
+# Gateway Primary Database Type. Values: 'mysql' or 'embedded'
+database_type: mysql
+
+# Gateway Database Name
+database_name: ssg
+
+# Gateway Database Port
+database_port: 3306
+
+# Administrative Database User
+database_admin_user: root
+
+# Password for Administrative Database User
+database_admin_pass: "{{ vault_gateway_database_admin_pass }}"
+
+# Gateway Database User
+database_user: gateway
+
+# Password for Gateway Database User
+database_pass: "{{ vault_gateway_database_pass }}"
+
+# Gateway MySQL Replication User
+database_repl_user: repluser
+
+# Password for Gateway MySQL Replication User
+database_repl_pass: "{{ vault_gateway_database_repl_pass }}"
+
+#### Gateway Node Configurations
+
+# Enable the Gateway Node
+node_enable: true
+
+# Configure the Gateway node.properties file
+configure_node: true
+
+# Create a new Gateway database on each node
+configure_db: false  # Creates the database
+
+#### OTK Database Configurations (if OTK database is in the Gateway MySQL database, uncomment & set these properties)
+
+# OTK Database Name
+otkdb_name: auto_otk_mag_db
+
+# OTK Database User
+otkdb_user: gateway
+
+# Password for OTK Database User
+otkdb_userpwd: "{{ vault_otk_database_pass }}"
+
+#### Connection Properties
+
+# Default SSH connection timeout when Ansible connects to Gateways (seconds)
+gateway_ssh_timeout: 20
+
+# Timeout (seconds) for Gateway database replication setup. Range may vary from seconds to several minutes. 
+gateway_replication_timeout: 60
+
+# SSH arguments when Ansible connects to Gateways
+ansible_ssh_extra_args: "-o StrictHostKeyChecking=no"
+
+# Timeout (seconds) for Gateway to start. After this time has elapsed, Gateway is considered to have failed to start.
+gateway_startup_wait_timeout: 600 # seconds
+
+# Timeout (seconds) for Gateway to shutdown. After this time has elapsed, Gateway is considered to have failed to shutdown.
+gateway_shutdown_wait_timeout: "{{ gateway_startup_wait_timeout }}"
+
+# Port used for checking if Gateway is running
+port_gateway_health_check: 8080 # default HTTP port is 8080
+
+# Port used for SSH on Gateways
+port_gateway_ssh: 22
+
+# Default not to log sensitive information
+no_log_flag: false
+
+#### File Locations
+
+# Gateway bootstrap directory. Do not modify
+gateway_bootstrap_dir: "/opt/SecureSpan/Gateway/node/default/etc/bootstrap"
+
+# Gateway license bootrap file path. Do not modify
+gateway_license_install_dir: "{{ gateway_bootstrap_dir }}/license"
+
+# Directory path to upload license files to Gateway
+gateway_license_upload_dir: "/home/ssgconfig/license"
+
+# Directory name where node properties temporary files are saved
+node_props_dir: "node_properties"
+
+# Directory on Ansible controller to store node configuration & assertion backups. Will be created if it does not exist.
+controller_dir_backup_location: /var/local/ssgbackup/
+
+# Directory on Ansible controller containing license files for use by gateway_install_license role.
+controller_dir_license_location: /tmp/license
+
+# Directory on Ansible controller to store database dump for gateway_export_database & gateway_import_database roles. Will be created if it does not exist.
+controller_dir_db_backup_location: /tmp/db_dump
+
+# Directory on Gateways to upload database dump file for gateway_export_database & gateway_import_database roles. Will be created if it does not exist.
+remote_db_temp_dir: "/home/ssgconfig/db_dump"
+
+# File name for compressed database dump file for gateway_export_database & gateway_import_database roles.
+db_dump_zip_file: "{{ remote_db_temp_dir }}/mysql_result"
