@@ -1,7 +1,7 @@
 ---
 # This task starts up the gateway application.
 - name: checking to see if Gateway application has already started (checks the PID) # noqa 305 must use shell
-  shell: pgrep -u gateway -f "/opt/SecureSpan/JDK/bin/java"
+  shell: pgrep -f "Gateway.jar"
   register: gateway_pid
   failed_when: gateway_pid.rc >= 2
   changed_when: no
@@ -16,7 +16,7 @@
   when: not gateway_pid.stdout
 
 - name: checking to see if gateway pid exists after starting # noqa 305 must use shell
-  shell: pgrep -u gateway -f "/opt/SecureSpan/JDK/bin/java"
+  shell: pgrep -f "Gateway.jar"
   register: gateway_pid_after
   changed_when: no
   until: gateway_pid_after.stdout
