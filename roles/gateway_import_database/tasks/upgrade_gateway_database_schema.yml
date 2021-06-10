@@ -19,6 +19,8 @@
       "Perform upgrade?": "y"
       "Enter Administrative Database Username": "{{ database_admin_user }}"
       "Enter Administrative Database Password:": "{{ database_admin_pass }}"
+    timeout:
+      "{{ update_db_schema_timeout }}"
   register: status
   changed_when: "'The database was successfully upgraded' in status.stdout"
   failed_when: "'The database was successfully upgraded' not in status.stdout"
