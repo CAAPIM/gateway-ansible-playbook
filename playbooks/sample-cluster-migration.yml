@@ -12,6 +12,16 @@
 # ansible-playbook playbooks/sample-cluster-migration.yml -i inventories/demo/hosts --vault-password-file vault-password-file.txt
 #
 
+- name: Add destination Gateways to gateway_dest
+  hosts: gateway
+  gather_facts: no
+  tasks:
+    - name: Add destination Gateways to a group
+      add_host:
+        hostname: "{{ hostvars[item].inventory_hostname }}"
+        groups: gateway_dest
+      with_items: "{{ groups['gateway'] }}"
+
 - name: Update expired passwords on new Gateways.
   hosts: gateway
   connection: local
@@ -77,16 +87,6 @@
     ansible_python_interpreter: "{{ ansible_playbook_python }}"
   roles:
     - gateway_configure_processing_node
-
-- name: Add destination Gateways to a group
-  hosts: gateway
-  gather_facts: no
-  tasks:
-    - name: Add destination Gateways to a group
-      add_host:
-        hostname: "{{ hostvars[item].dest }}"
-        groups: gateway_dest
-      with_items: "{{ groups['gateway'] }}"
 
 - name: Restart all destination Gateways
   hosts: gateway_dest

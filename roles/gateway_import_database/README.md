@@ -49,6 +49,7 @@ Under group_vars/all/vars
 Under role gateway_import_database/vars/main.yml
 * database_pass - please use "steps to created vaulted db password" to encrypt gateway user's password
 * database_admin_pass - please use "steps to created vaulted db password" to encrypt root user password if using option 2 above
+* update_db_schema_timeout - timeout for waiting for update db schema to complete in seconds.  Default 120 seconds.
 
 
 
