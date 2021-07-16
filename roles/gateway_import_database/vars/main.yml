@@ -10,3 +10,5 @@ command_mysql_create_otkuser: "CREATE USER IF NOT EXISTS '{{ otkdb_user }}'@'{{ 
 command_mysql_grant_otkuser_privileges: "GRANT SELECT, DELETE, UPDATE, INSERT on {{ otkdb_name }}.* to '{{ otkdb_user }}'@'{{ inventory_hostname}}'; flush privileges;"
 # script to upgrade Gateway database schema
 script_db_schema_upgrade: "sudo -u layer7 /opt/SecureSpan/Appliance/libexec/ssgconfig_launch -databaseUgrade"
+# update db schema timeout (seconds)
+update_db_schema_timeout: 120

@@ -1,7 +1,7 @@
 ---
 # This task stops the gateway application.
 - name: checking to see if gateway pid exists. # noqa 305 must use shell
-  shell: pgrep -f "Gateway.jar"
+  shell: pgrep -u gateway -f "/opt/SecureSpan/JDK/bin/java"
   register: gateway_pid
   ignore_errors: yes
   changed_when: no
@@ -14,7 +14,7 @@
   when: gateway_pid.stdout
 
 - name: checking to see if gateway pid does not exist anymore after stopping Gateway application # noqa 305 must use shell
-  shell: pgrep -f "Gateway.jar"
+  shell: pgrep -u gateway -f "/opt/SecureSpan/JDK/bin/java"
   register: gateway_pid_after
   failed_when: 'gateway_pid_after.rc >= 2 or gateway_pid_after.stdout'
   changed_when: no
