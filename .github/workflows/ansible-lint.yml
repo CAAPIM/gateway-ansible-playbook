@@ -29,6 +29,9 @@ jobs:
         override-deps: |
           ansible~=2.10
           ansible-lint~=5.0
+        skip_list: |
+          - unnamed-task
+          - deprecated-local-action
         # [optional]
         # Arguments to be passed to the ansible-lint
 
@@ -51,4 +54,4 @@ jobs:
         #                         path to directories or files to skip. This option is
         #                         repeatable.
         #   -c C                  Specify configuration file to use. Defaults to ".ansible-lint"
-        args: "-x 208, 504, unnamed-task, deprecated-local-action"
+        args: "-x 208"
